@@ -294,23 +294,64 @@ export function populateEquipmentSection(containerElement, characterData) {
     
     // Function to toggle equipped status
     function toggleEquipped(type, name, isEquipped) {
+        // Find the item in inventory to get its properties
+        const item = inventory.find(item => item.name === name);
+        if (!item) return;
+        
+        // Check if this is a weapon with the "Light" property
+        const isLightWeapon = item.category === "weapon" && 
+                             item.properties && 
+                             item.properties.includes("Light");
+        
         fetch("/toggle_equipped", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
                 type: type,
                 name: name,
-                equipped: isEquipped
+                equipped: isEquipped,
+                item_data: {
+                    category: item.category,
+                    damage: item.damage,
+                    properties: item.properties,
+                    armor_class: item.armor_class,
+                    subcategory: item.subcategory,
+                    isLight: isLightWeapon
+                }
             }),
         }).then(response => response.json())
         .then(data => {
             if (data.success) {
                 // Update UI to reflect changes
                 window.updateCharacterStats();
+                
+                // If the server made additional changes (like unequipping other items),
+                // we need to update the checkboxes to match
+                if (data.updated_equipment) {
+                    updateEquipmentCheckboxes(data.updated_equipment);
+                }
             }
         })
         .catch(error => {
             console.error("Error toggling equipped status:", error);
+        });
+    }
+    
+    // Function to update checkboxes based on server response
+    function updateEquipmentCheckboxes(equipped) {
+        // Update all equipment checkboxes to match the current equipped state
+        document.querySelectorAll('.equipment-checkbox').forEach(checkbox => {
+            const type = checkbox.dataset.type;
+            const name = checkbox.dataset.name;
+            
+            // For most slots, there's a direct mapping
+            if (type in equipped) {
+                checkbox.checked = equipped[type] === name;
+            }
+            // For weapons, we need to handle main and off-hand
+            else if (type === "weapon") {
+                checkbox.checked = equipped.weapon === name || equipped.offhand === name;
+            }
         });
     }
     

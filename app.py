@@ -307,6 +307,7 @@ def toggle_equipped():
     item_type = data.get('type')
     item_name = data.get('name')
     is_equipped = data.get('equipped')
+    item_data = data.get('item_data', {})
     
     character_data = load_data()
     
@@ -314,6 +315,7 @@ def toggle_equipped():
     if 'equipped' not in character_data:
         character_data['equipped'] = {
             "weapon": "",
+            "offhand": "",  # For dual wielding or shield
             "armor": "",
             "shield": "",
             "head": "",
@@ -329,17 +331,76 @@ def toggle_equipped():
             "finger": ""
         }
     
+    # Initialize equipment_data if it doesn't exist
+    if 'equipment_data' not in character_data:
+        character_data['equipment_data'] = {}
+    
     # Handle equipping/unequipping
     if is_equipped:
-        # For all equipment types, only one item can be equipped per slot
-        character_data['equipped'][item_type] = item_name
+        # Special handling for weapons with the Light property
+        if item_type == "weapon":
+            is_light = item_data.get('isLight', False)
+            
+            # If main hand is empty, equip there
+            if not character_data['equipped']['weapon']:
+                character_data['equipped']['weapon'] = item_name
+            # If main hand is full but item is Light and offhand is empty, equip to offhand
+            elif is_light and not character_data['equipped']['offhand']:
+                character_data['equipped']['offhand'] = item_name
+            # Otherwise replace main hand
+            else:
+                character_data['equipped']['weapon'] = item_name
+                # If replacing main hand and it's not Light, clear offhand
+                if not is_light:
+                    character_data['equipped']['offhand'] = ""
+        
+        # Special handling for shields (can't dual wield with shield)
+        elif item_type == "shield":
+            character_data['equipped']['shield'] = item_name
+            # Can't have offhand weapon with shield
+            character_data['equipped']['offhand'] = ""
+        
+        # For all other equipment types, only one item can be equipped per slot
+        else:
+            character_data['equipped'][item_type] = item_name
+        
+        # Store the item's data for reference
+        character_data['equipment_data'][item_name] = {
+            'type': item_type,
+            'category': item_data.get('category', ''),
+            'damage': item_data.get('damage', ''),
+            'properties': item_data.get('properties', []),
+            'armor_class': item_data.get('armor_class', ''),
+            'subcategory': item_data.get('subcategory', '')
+        }
     else:
-        # Only clear if this specific item is equipped
-        if item_type in character_data['equipped'] and character_data['equipped'][item_type] == item_name:
-            character_data['equipped'][item_type] = ""
+        # Handle unequipping
+        if item_type == "weapon":
+            # Check if it's in main hand or offhand
+            if character_data['equipped']['weapon'] == item_name:
+                character_data['equipped']['weapon'] = ""
+            elif character_data['equipped']['offhand'] == item_name:
+                character_data['equipped']['offhand'] = ""
+        else:
+            # Only clear if this specific item is equipped
+            if item_type in character_data['equipped'] and character_data['equipped'][item_type] == item_name:
+                character_data['equipped'][item_type] = ""
+        
+        # Remove from equipment_data if not equipped anywhere
+        is_equipped_elsewhere = False
+        for slot, equipped_item in character_data['equipped'].items():
+            if equipped_item == item_name:
+                is_equipped_elsewhere = True
+                break
+        
+        if not is_equipped_elsewhere and item_name in character_data['equipment_data']:
+            del character_data['equipment_data'][item_name]
     
     save_data(character_data)
-    return jsonify({'success': True})
+    return jsonify({
+        'success': True,
+        'updated_equipment': character_data['equipped']
+    })
 
 @app.route('/save_backstory', methods=['POST'])
 def save_backstory():
