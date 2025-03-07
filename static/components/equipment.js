@@ -327,6 +327,43 @@ export function populateEquipmentSection(containerElement, characterData) {
             }
         });
         
+        // Create a safe item_data object with proper defaults
+        const itemData = {
+            category: item.category || "",
+            damage: item.damage || "",
+            properties: [],
+            armor_class: item.armor_class || "",
+            subcategory: item.subcategory || "",
+            isLight: isLightWeapon,
+            effect: [],
+            actions: []
+        };
+        
+        // Safely add arrays if they exist
+        if (item.properties) {
+            if (Array.isArray(item.properties)) {
+                itemData.properties = item.properties;
+            } else if (typeof item.properties === 'string') {
+                itemData.properties = [item.properties];
+            }
+        }
+        
+        if (item.effect) {
+            if (Array.isArray(item.effect)) {
+                itemData.effect = item.effect;
+            } else if (typeof item.effect === 'object') {
+                itemData.effect = [item.effect];
+            }
+        }
+        
+        if (item.actions) {
+            if (Array.isArray(item.actions)) {
+                itemData.actions = item.actions;
+            } else if (typeof item.actions === 'object') {
+                itemData.actions = [item.actions];
+            }
+        }
+        
         fetch("/toggle_equipped", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -334,27 +371,24 @@ export function populateEquipmentSection(containerElement, characterData) {
                 type: type,
                 name: name,
                 equipped: isEquipped,
-                item_data: {
-                    category: item.category || "",
-                    damage: item.damage || "",
-                    properties: Array.isArray(item.properties) ? item.properties : [],
-                    armor_class: item.armor_class || "",
-                    subcategory: item.subcategory || "",
-                    isLight: isLightWeapon,
-                    effect: Array.isArray(item.effect) ? item.effect : [],
-                    actions: Array.isArray(item.actions) ? item.actions : []
-                }
+                item_data: itemData
             }),
         })
         .then(response => {
             console.log("Toggle equipped response status:", response.status);
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json().then(errorData => {
+                    throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+                }).catch(err => {
+                    // If we can't parse the JSON, just throw the original error
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                });
             }
             return response.json();
         })
         .then(data => {
             if (data.success) {
+                console.log("Equipment updated successfully:", data);
                 // Update UI to reflect changes
                 window.updateCharacterStats();
                 
@@ -363,10 +397,14 @@ export function populateEquipmentSection(containerElement, characterData) {
                 if (data.updated_equipment) {
                     updateEquipmentCheckboxes(data.updated_equipment);
                 }
+            } else {
+                console.error("Server returned success: false", data);
+                alert(`Failed to update equipment: ${data.error || "Unknown error"}`);
             }
         })
         .catch(error => {
             console.error("Error toggling equipped status:", error);
+            alert(`Error equipping item: ${error.message}`);
         });
     }
     

@@ -262,6 +262,13 @@ def toggle_equipped():
         is_equipped = data.get('equipped')
         item_data = data.get('item_data', {})
 
+        # Validate required fields
+        if item_type is None or item_name is None or is_equipped is None:
+            return jsonify({
+                'success': False,
+                'error': "Missing required fields: type, name, or equipped"
+            }), 400
+
         character_data = load_data()
 
         # Initialize equipped if it doesn't exist
@@ -292,12 +299,15 @@ def toggle_equipped():
         if is_equipped:
             # Special handling for weapons with the Light property
             if item_type == "weapon":
-                # Ensure properties is a list before checking for Light property
-                properties = item_data.get('properties', [])
-                if properties is None:
-                    properties = []
+                # Safely get properties and check for Light property
+                properties = []
+                if 'properties' in item_data and item_data['properties'] is not None:
+                    if isinstance(item_data['properties'], list):
+                        properties = item_data['properties']
+                    elif isinstance(item_data['properties'], str):
+                        properties = [item_data['properties']]
                 
-                is_light = "Light" in properties if isinstance(properties, list) else False
+                is_light = "Light" in properties
 
                 # If main hand is empty, equip there
                 if not character_data['equipped']['weapon']:
@@ -322,17 +332,51 @@ def toggle_equipped():
             else:
                 character_data['equipped'][item_type] = item_name
 
-            # Store the item's data for reference
-            character_data['equipment_data'][item_name] = {
+            # Store the item's data for reference - safely handle all fields
+            equipment_data = {
                 'type': item_type,
-                'category': item_data.get('category', ''),
-                'damage': item_data.get('damage', ''),
-                'properties': item_data.get('properties', []) if isinstance(item_data.get('properties'), list) else [],
-                'armor_class': item_data.get('armor_class', ''),
-                'subcategory': item_data.get('subcategory', ''),
-                'effect': item_data.get('effect', []) if isinstance(item_data.get('effect'), list) else [],
-                'actions': item_data.get('actions', []) if isinstance(item_data.get('actions'), list) else []
+                'category': '',
+                'damage': '',
+                'properties': [],
+                'armor_class': '',
+                'subcategory': '',
+                'effect': [],
+                'actions': []
             }
+            
+            # Safely add each field if it exists
+            if 'category' in item_data and item_data['category'] is not None:
+                equipment_data['category'] = str(item_data['category'])
+                
+            if 'damage' in item_data and item_data['damage'] is not None:
+                equipment_data['damage'] = str(item_data['damage'])
+                
+            if 'armor_class' in item_data and item_data['armor_class'] is not None:
+                equipment_data['armor_class'] = str(item_data['armor_class'])
+                
+            if 'subcategory' in item_data and item_data['subcategory'] is not None:
+                equipment_data['subcategory'] = str(item_data['subcategory'])
+                
+            # Handle list fields
+            if 'properties' in item_data and item_data['properties'] is not None:
+                if isinstance(item_data['properties'], list):
+                    equipment_data['properties'] = item_data['properties']
+                elif isinstance(item_data['properties'], str):
+                    equipment_data['properties'] = [item_data['properties']]
+                    
+            if 'effect' in item_data and item_data['effect'] is not None:
+                if isinstance(item_data['effect'], list):
+                    equipment_data['effect'] = item_data['effect']
+                elif isinstance(item_data['effect'], dict):
+                    equipment_data['effect'] = [item_data['effect']]
+                    
+            if 'actions' in item_data and item_data['actions'] is not None:
+                if isinstance(item_data['actions'], list):
+                    equipment_data['actions'] = item_data['actions']
+                elif isinstance(item_data['actions'], dict):
+                    equipment_data['actions'] = [item_data['actions']]
+            
+            character_data['equipment_data'][item_name] = equipment_data
         else:
             # Handle unequipping
             if item_type == "weapon":
