@@ -1,1 +1,493 @@
-{}
+{
+  "predefined_items": {
+    "weapons": {
+      "simple_melee": {
+        "club": {
+          "name": "Club",
+          "category": "weapon",
+          "value": 0.1,
+          "weight": 2,
+          "damage": "1d4 bludgeoning",
+          "properties": ["Light"],
+          "description": "A simple wooden club."
+        },
+        "dagger": {
+          "name": "Dagger",
+          "category": "weapon",
+          "value": 2,
+          "weight": 1,
+          "damage": "1d4 piercing",
+          "properties": ["Finesse", "Light", "Thrown (range 20/60)"],
+          "description": "A small knife with a pointed blade."
+        },
+        "greatclub": {
+          "name": "Greatclub",
+          "category": "weapon",
+          "value": 0.2,
+          "weight": 10,
+          "damage": "1d8 bludgeoning",
+          "properties": ["Two-handed"],
+          "description": "A large, heavy wooden club."
+        },
+        "handaxe": {
+          "name": "Handaxe",
+          "category": "weapon",
+          "value": 5,
+          "weight": 2,
+          "damage": "1d6 slashing",
+          "properties": ["Light", "Thrown (range 20/60)"],
+          "description": "A light axe designed for one-handed use."
+        },
+        "javelin": {
+          "name": "Javelin",
+          "category": "weapon",
+          "value": 0.5,
+          "weight": 2,
+          "damage": "1d6 piercing",
+          "properties": ["Thrown (range 30/120)"],
+          "description": "A light spear designed for throwing."
+        },
+        "light_hammer": {
+          "name": "Light Hammer",
+          "category": "weapon",
+          "value": 2,
+          "weight": 2,
+          "damage": "1d4 bludgeoning",
+          "properties": ["Light", "Thrown (range 20/60)"],
+          "description": "A light hammer designed for one-handed use."
+        },
+        "mace": {
+          "name": "Mace",
+          "category": "weapon",
+          "value": 5,
+          "weight": 4,
+          "damage": "1d6 bludgeoning",
+          "properties": [],
+          "description": "A metal club with a heavy head."
+        },
+        "quarterstaff": {
+          "name": "Quarterstaff",
+          "category": "weapon",
+          "value": 0.2,
+          "weight": 4,
+          "damage": "1d6 bludgeoning",
+          "properties": ["Versatile (1d8)"],
+          "description": "A wooden staff that can be wielded with one or two hands."
+        },
+        "sickle": {
+          "name": "Sickle",
+          "category": "weapon",
+          "value": 1,
+          "weight": 2,
+          "damage": "1d4 slashing",
+          "properties": ["Light"],
+          "description": "A curved blade attached to a short handle."
+        },
+        "spear": {
+          "name": "Spear",
+          "category": "weapon",
+          "value": 1,
+          "weight": 3,
+          "damage": "1d6 piercing",
+          "properties": ["Thrown (range 20/60)", "Versatile (1d8)"],
+          "description": "A simple polearm with a pointed tip."
+        }
+      },
+      "simple_ranged": {
+        "light_crossbow": {
+          "name": "Light Crossbow",
+          "category": "weapon",
+          "value": 25,
+          "weight": 5,
+          "damage": "1d8 piercing",
+          "properties": ["Ammunition (range 80/320)", "Loading", "Two-handed"],
+          "description": "A small crossbow that fires bolts."
+        },
+        "dart": {
+          "name": "Dart",
+          "category": "weapon",
+          "value": 0.05,
+          "weight": 0.25,
+          "damage": "1d4 piercing",
+          "properties": ["Finesse", "Thrown (range 20/60)"],
+          "description": "A small, weighted projectile designed for throwing."
+        },
+        "shortbow": {
+          "name": "Shortbow",
+          "category": "weapon",
+          "value": 25,
+          "weight": 2,
+          "damage": "1d6 piercing",
+          "properties": ["Ammunition (range 80/320)", "Two-handed"],
+          "description": "A small bow that fires arrows."
+        },
+        "sling": {
+          "name": "Sling",
+          "category": "weapon",
+          "value": 0.1,
+          "weight": 0,
+          "damage": "1d4 bludgeoning",
+          "properties": ["Ammunition (range 30/120)"],
+          "description": "A simple leather strap used to hurl small projectiles."
+        }
+      },
+      "martial_melee": {
+        "battleaxe": {
+          "name": "Battleaxe",
+          "category": "weapon",
+          "value": 10,
+          "weight": 4,
+          "damage": "1d8 slashing",
+          "properties": ["Versatile (1d10)"],
+          "description": "A heavy axe designed for combat."
+        },
+        "flail": {
+          "name": "Flail",
+          "category": "weapon",
+          "value": 10,
+          "weight": 2,
+          "damage": "1d8 bludgeoning",
+          "properties": [],
+          "description": "A metal weight attached to a handle by a chain."
+        },
+        "glaive": {
+          "name": "Glaive",
+          "category": "weapon",
+          "value": 20,
+          "weight": 6,
+          "damage": "1d10 slashing",
+          "properties": ["Heavy", "Reach", "Two-handed"],
+          "description": "A polearm with a large, curved blade on the end."
+        },
+        "greataxe": {
+          "name": "Greataxe",
+          "category": "weapon",
+          "value": 30,
+          "weight": 7,
+          "damage": "1d12 slashing",
+          "properties": ["Heavy", "Two-handed"],
+          "description": "A large, heavy axe designed for two-handed use."
+        },
+        "greatsword": {
+          "name": "Greatsword",
+          "category": "weapon",
+          "value": 50,
+          "weight": 6,
+          "damage": "2d6 slashing",
+          "properties": ["Heavy", "Two-handed"],
+          "description": "A large sword designed for two-handed use."
+        },
+        "longsword": {
+          "name": "Longsword",
+          "category": "weapon",
+          "value": 15,
+          "weight": 3,
+          "damage": "1d8 slashing",
+          "properties": ["Versatile (1d10)"],
+          "description": "A versatile sword designed for one or two-handed use."
+        },
+        "rapier": {
+          "name": "Rapier",
+          "category": "weapon",
+          "value": 25,
+          "weight": 2,
+          "damage": "1d8 piercing",
+          "properties": ["Finesse"],
+          "description": "A slender, pointed sword designed for thrusting."
+        },
+        "scimitar": {
+          "name": "Scimitar",
+          "category": "weapon",
+          "value": 25,
+          "weight": 3,
+          "damage": "1d6 slashing",
+          "properties": ["Finesse", "Light"],
+          "description": "A curved sword with a sharp edge on the convex side."
+        },
+        "shortsword": {
+          "name": "Shortsword",
+          "category": "weapon",
+          "value": 10,
+          "weight": 2,
+          "damage": "1d6 piercing",
+          "properties": ["Finesse", "Light"],
+          "description": "A small sword designed for one-handed use."
+        }
+      },
+      "martial_ranged": {
+        "longbow": {
+          "name": "Longbow",
+          "category": "weapon",
+          "value": 50,
+          "weight": 2,
+          "damage": "1d8 piercing",
+          "properties": ["Ammunition (range 150/600)", "Heavy", "Two-handed"],
+          "description": "A large bow that fires arrows with great force."
+        },
+        "heavy_crossbow": {
+          "name": "Heavy Crossbow",
+          "category": "weapon",
+          "value": 50,
+          "weight": 18,
+          "damage": "1d10 piercing",
+          "properties": ["Ammunition (range 100/400)", "Heavy", "Loading", "Two-handed"],
+          "description": "A large crossbow that fires bolts with great force."
+        }
+      }
+    },
+    "armor": {
+      "light_armor": {
+        "padded": {
+          "name": "Padded Armor",
+          "category": "armor",
+          "value": 5,
+          "weight": 8,
+          "armor_class": "11 + Dex modifier",
+          "stealth": "Disadvantage",
+          "description": "Armor made of quilted layers of cloth and batting."
+        },
+        "leather": {
+          "name": "Leather Armor",
+          "category": "armor",
+          "value": 10,
+          "weight": 10,
+          "armor_class": "11 + Dex modifier",
+          "description": "Armor made of hardened leather."
+        },
+        "studded_leather": {
+          "name": "Studded Leather Armor",
+          "category": "armor",
+          "value": 45,
+          "weight": 13,
+          "armor_class": "12 + Dex modifier",
+          "description": "Armor made of tough leather reinforced with close-set rivets."
+        }
+      },
+      "medium_armor": {
+        "hide": {
+          "name": "Hide Armor",
+          "category": "armor",
+          "value": 10,
+          "weight": 12,
+          "armor_class": "12 + Dex modifier (max 2)",
+          "description": "Armor made of thick furs and pelts."
+        },
+        "chain_shirt": {
+          "name": "Chain Shirt",
+          "category": "armor",
+          "value": 50,
+          "weight": 20,
+          "armor_class": "13 + Dex modifier (max 2)",
+          "description": "Armor made of interlocking metal rings worn over a layer of padding."
+        },
+        "scale_mail": {
+          "name": "Scale Mail",
+          "category": "armor",
+          "value": 50,
+          "weight": 45,
+          "armor_class": "14 + Dex modifier (max 2)",
+          "stealth": "Disadvantage",
+          "description": "Armor consisting of a coat and leggings of leather covered with overlapping pieces of metal."
+        },
+        "breastplate": {
+          "name": "Breastplate",
+          "category": "armor",
+          "value": 400,
+          "weight": 20,
+          "armor_class": "14 + Dex modifier (max 2)",
+          "description": "Armor consisting of a fitted metal chest piece worn with supple leather."
+        },
+        "half_plate": {
+          "name": "Half Plate",
+          "category": "armor",
+          "value": 750,
+          "weight": 40,
+          "armor_class": "15 + Dex modifier (max 2)",
+          "stealth": "Disadvantage",
+          "description": "Armor consisting of shaped metal plates that cover most of the body."
+        }
+      },
+      "heavy_armor": {
+        "ring_mail": {
+          "name": "Ring Mail",
+          "category": "armor",
+          "value": 30,
+          "weight": 40,
+          "armor_class": "14",
+          "stealth": "Disadvantage",
+          "description": "Armor made of leather with heavy rings sewn into it."
+        },
+        "chain_mail": {
+          "name": "Chain Mail",
+          "category": "armor",
+          "value": 75,
+          "weight": 55,
+          "armor_class": "16",
+          "strength_requirement": "13",
+          "stealth": "Disadvantage",
+          "description": "Armor made of interlocking metal rings worn over a layer of quilted fabric."
+        },
+        "splint": {
+          "name": "Splint Armor",
+          "category": "armor",
+          "value": 200,
+          "weight": 60,
+          "armor_class": "17",
+          "strength_requirement": "15",
+          "stealth": "Disadvantage",
+          "description": "Armor made of narrow vertical strips of metal riveted to a backing of leather."
+        },
+        "plate": {
+          "name": "Plate Armor",
+          "category": "armor",
+          "value": 1500,
+          "weight": 65,
+          "armor_class": "18",
+          "strength_requirement": "15",
+          "stealth": "Disadvantage",
+          "description": "Armor consisting of shaped, interlocking metal plates to cover the entire body."
+        }
+      },
+      "shields": {
+        "shield": {
+          "name": "Shield",
+          "category": "shield",
+          "value": 10,
+          "weight": 6,
+          "armor_class": "+2",
+          "description": "A wooden or metal shield carried in one hand."
+        }
+      }
+    },
+    "adventuring_gear": {
+      "equipment_packs": {
+        "burglar": {
+          "name": "Burglar's Pack",
+          "category": "misc",
+          "value": 16,
+          "weight": 45,
+          "description": "Includes a backpack, a bag of 1,000 ball bearings, 10 feet of string, a bell, 5 candles, a crowbar, a hammer, 10 pitons, a hooded lantern, 2 flasks of oil, 5 days rations, a tinderbox, a waterskin, and 50 feet of hempen rope."
+        },
+        "diplomat": {
+          "name": "Diplomat's Pack",
+          "category": "misc",
+          "value": 39,
+          "weight": 36,
+          "description": "Includes a chest, 2 cases for maps and scrolls, a set of fine clothes, a bottle of ink, an ink pen, a lamp, 2 flasks of oil, 5 sheets of paper, a vial of perfume, sealing wax, and soap."
+        },
+        "dungeoneer": {
+          "name": "Dungeoneer's Pack",
+          "category": "misc",
+          "value": 12,
+          "weight": 61,
+          "description": "Includes a backpack, a crowbar, a hammer, 10 pitons, 10 torches, a tinderbox, 10 days of rations, a waterskin, and 50 feet of hempen rope."
+        },
+        "explorer": {
+          "name": "Explorer's Pack",
+          "category": "misc",
+          "value": 10,
+          "weight": 59,
+          "description": "Includes a backpack, a bedroll, a mess kit, a tinderbox, 10 torches, 10 days of rations, a waterskin, and 50 feet of hempen rope."
+        }
+      },
+      "tools": {
+        "thieves_tools": {
+          "name": "Thieves' Tools",
+          "category": "misc",
+          "value": 25,
+          "weight": 1,
+          "description": "This set of tools includes a small file, a set of lock picks, a small mirror mounted on a metal handle, a set of narrow-bladed scissors, and a pair of pliers."
+        },
+        "herbalism_kit": {
+          "name": "Herbalism Kit",
+          "category": "misc",
+          "value": 5,
+          "weight": 3,
+          "description": "This kit contains a variety of instruments such as clippers, mortar and pestle, and pouches and vials used by herbalists."
+        },
+        "healers_kit": {
+          "name": "Healer's Kit",
+          "category": "misc",
+          "value": 5,
+          "weight": 3,
+          "description": "This kit is a leather pouch containing bandages, salves, and splints. The kit has ten uses."
+        }
+      },
+      "potions": {
+        "healing_potion": {
+          "name": "Potion of Healing",
+          "category": "potion",
+          "value": 50,
+          "weight": 0.5,
+          "description": "A character who drinks this magical red fluid regains 2d4 + 2 hit points.",
+          "effect": [
+            {
+              "category": "stat",
+              "target": "Health",
+              "amount": 7,
+              "modifier": "none"
+            }
+          ]
+        },
+        "antitoxin": {
+          "name": "Antitoxin",
+          "category": "potion",
+          "value": 50,
+          "weight": 0,
+          "description": "A creature that drinks this vial of liquid gains advantage on saving throws against poison for 1 hour."
+        }
+      },
+      "misc": {
+        "backpack": {
+          "name": "Backpack",
+          "category": "misc",
+          "value": 2,
+          "weight": 5,
+          "description": "A backpack can hold up to 1 cubic foot or 30 pounds of gear."
+        },
+        "bedroll": {
+          "name": "Bedroll",
+          "category": "misc",
+          "value": 1,
+          "weight": 7,
+          "description": "A portable, padded mat for sleeping."
+        },
+        "rope_hempen": {
+          "name": "Hempen Rope (50 feet)",
+          "category": "misc",
+          "value": 1,
+          "weight": 10,
+          "description": "Rope has 2 hit points and can be burst with a DC 17 Strength check."
+        },
+        "rope_silk": {
+          "name": "Silk Rope (50 feet)",
+          "category": "misc",
+          "value": 10,
+          "weight": 5,
+          "description": "Stronger than hempen rope, silk rope has 2 hit points and can be burst with a DC 17 Strength check."
+        },
+        "torch": {
+          "name": "Torch",
+          "category": "misc",
+          "value": 0.01,
+          "weight": 1,
+          "description": "A torch burns for 1 hour, providing bright light in a 20-foot radius and dim light for an additional 20 feet."
+        },
+        "waterskin": {
+          "name": "Waterskin",
+          "category": "misc",
+          "value": 0.2,
+          "weight": 5,
+          "description": "A waterskin can hold up to 4 pints of liquid."
+        },
+        "rations": {
+          "name": "Rations (1 day)",
+          "category": "misc",
+          "value": 0.5,
+          "weight": 2,
+          "description": "Rations consist of dry foods suitable for extended travel, including jerky, dried fruit, hardtack, and nuts."
+        }
+      }
+    }
+  }
+}

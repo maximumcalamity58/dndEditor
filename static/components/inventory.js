@@ -2,6 +2,107 @@ export function populateInventorySection(containerElement) {
     if (!containerElement) return;
 
     containerElement.innerHTML = `
+        <style>
+            .inventory-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+                padding: 10px;
+            }
+            .inventory-item {
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                background-color: #f9f9f9;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                transition: transform 0.2s;
+            }
+            .inventory-item:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            .item-name {
+                margin-top: 0;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+            }
+            .item-details {
+                font-size: 0.9em;
+            }
+            .item-stats {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                margin: 8px 0;
+                font-size: 0.85em;
+                color: #555;
+            }
+            .item-description {
+                font-style: italic;
+                color: #666;
+                margin: 5px 0;
+            }
+            .item-damage, .item-ac, .item-properties {
+                font-weight: bold;
+                color: #444;
+            }
+            .item-effects {
+                font-size: 0.85em;
+                background-color: #f0f0f0;
+                padding: 5px;
+                border-radius: 3px;
+                margin-top: 5px;
+            }
+            .item-effects h5 {
+                margin: 0 0 5px 0;
+            }
+            .item-effects ul {
+                margin: 0;
+                padding-left: 20px;
+            }
+            .item-category-weapon {
+                border-left: 4px solid #c33;
+            }
+            .item-category-armor {
+                border-left: 4px solid #33c;
+            }
+            .item-category-shield {
+                border-left: 4px solid #33c;
+            }
+            .item-category-potion {
+                border-left: 4px solid #3c3;
+            }
+            .item-category-scroll {
+                border-left: 4px solid #c3c;
+            }
+            .item-category-misc {
+                border-left: 4px solid #cc3;
+            }
+            .inventory-header {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15px;
+                padding: 0 10px;
+            }
+            #itemSearch {
+                flex-grow: 1;
+                margin-right: 10px;
+                padding: 8px;
+                border-radius: 4px;
+                border: 1px solid #ccc;
+            }
+            .add-item-btn {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .add-item-btn:hover {
+                background-color: #45a049;
+            }
+        </style>
         <div class="inventory-header">
             <input type="text" id="itemSearch" placeholder="Search items...">
             <button id="addItemBtn" class="add-item-btn">+ Add Item</button>
@@ -15,7 +116,11 @@ export function populateInventorySection(containerElement) {
                 </label>
                 <div id="predefinedContainer" style="display: none;">
                     <input type="text" id="predefinedSearch" placeholder="Search predefined items...">
-                    <select id="predefinedItemsSelect"></select>
+                    <select id="predefinedItemsSelect" size="10" style="width: 100%; margin: 10px 0;"></select>
+                    <div>
+                        <label>Quantity:</label>
+                        <input type="number" id="predefinedQuantity" value="1" min="1">
+                    </div>
                 </div>
                 <div id="customItemContainer">
                     <label>Name:</label>
@@ -87,12 +192,21 @@ export function populateInventorySection(containerElement) {
         const usePredefined = document.getElementById("usePredefined").checked;
         const predefinedContainer = document.getElementById("predefinedContainer");
         const customItemContainer = document.getElementById("customItemContainer");
+        
         if (usePredefined) {
             predefinedContainer.style.display = "block";
             customItemContainer.style.display = "none";
+            
+            // When switching to predefined, update the predefined quantity field
+            const quantity = document.getElementById("itemQuantity").value;
+            document.getElementById("predefinedQuantity").value = quantity;
         } else {
             predefinedContainer.style.display = "none";
             customItemContainer.style.display = "block";
+            
+            // When switching to custom, update the custom quantity field
+            const quantity = document.getElementById("predefinedQuantity").value;
+            document.getElementById("itemQuantity").value = quantity;
         }
     }
 
@@ -128,12 +242,39 @@ export function populateInventorySection(containerElement) {
                 const predefinedItems = data.predefined_items || {};
                 const select = document.getElementById("predefinedItemsSelect");
                 select.innerHTML = "";
-                Object.keys(predefinedItems).forEach(key => {
-                    const item = predefinedItems[key];
-                    const option = document.createElement("option");
-                    option.value = key;
-                    option.text = item.name;
-                    select.appendChild(option);
+                
+                // Create option groups for each category
+                const categories = {
+                    "Weapons": ["weapons"],
+                    "Armor": ["armor"],
+                    "Adventuring Gear": ["adventuring_gear"]
+                };
+                
+                // Create option groups and populate them
+                Object.entries(categories).forEach(([groupName, categoryKeys]) => {
+                    const optGroup = document.createElement("optgroup");
+                    optGroup.label = groupName;
+                    
+                    // Process each category
+                    categoryKeys.forEach(categoryKey => {
+                        if (!predefinedItems[categoryKey]) return;
+                        
+                        // Process subcategories (like simple_melee, light_armor, etc.)
+                        Object.entries(predefinedItems[categoryKey]).forEach(([subcatKey, subcatItems]) => {
+                            // Process items in subcategory
+                            Object.entries(subcatItems).forEach(([itemKey, item]) => {
+                                const fullKey = `${categoryKey}.${subcatKey}.${itemKey}`;
+                                const option = document.createElement("option");
+                                option.value = fullKey;
+                                option.text = item.name;
+                                optGroup.appendChild(option);
+                            });
+                        });
+                    });
+                    
+                    if (optGroup.children.length > 0) {
+                        select.appendChild(optGroup);
+                    }
                 });
             })
             .catch(() => console.warn("Failed to load predefined items"));
@@ -157,17 +298,68 @@ export function populateInventorySection(containerElement) {
         const inventoryList = document.getElementById("inventoryList");
         const itemElement = document.createElement("div");
         itemElement.classList.add("inventory-item");
+        
+        // Determine item category for styling
+        const categoryClass = item.category ? `item-category-${item.category}` : '';
+        if (categoryClass) {
+            itemElement.classList.add(categoryClass);
+        }
+        
+        // Build the item details HTML
+        let detailsHtml = '';
+        
+        // Add damage for weapons
+        if (item.damage) {
+            detailsHtml += `<p class="item-damage">Damage: ${item.damage}</p>`;
+        }
+        
+        // Add armor class for armor
+        if (item.armor_class) {
+            detailsHtml += `<p class="item-ac">AC: ${item.armor_class}</p>`;
+        }
+        
+        // Add properties for weapons
+        if (item.properties && item.properties.length > 0) {
+            detailsHtml += `<p class="item-properties">Properties: ${item.properties.join(', ')}</p>`;
+        }
+        
+        // Add basic details
+        detailsHtml += `
+            <p class="item-description">${item.description || ""}</p>
+            <div class="item-stats">
+                <span>Value: ${item.value} gp</span>
+                <span>Weight: ${item.weight} lb</span>
+                <span>Quantity: ${item.quantity}</span>
+            </div>
+        `;
+        
+        // Add effects if any
+        if (item.effect && item.effect.length > 0) {
+            detailsHtml += `<div class="item-effects"><h5>Effects:</h5><ul>`;
+            item.effect.forEach(effect => {
+                let effectText = `${effect.target}`;
+                if (effect.category === "stat") {
+                    effectText += `: ${effect.amount > 0 ? '+' : ''}${effect.amount}`;
+                    if (effect.modifier === "per") {
+                        effectText += ` per ${effect.perTarget} (${effect.perAmount})`;
+                    }
+                }
+                detailsHtml += `<li>${effectText}</li>`;
+            });
+            detailsHtml += `</ul></div>`;
+        }
+        
         itemElement.innerHTML = `
             <h4 class="item-name">${item.name}</h4>
-            <p>${item.description || ""}</p>
-            <p>Value: ${item.value}</p>
-            <p>Weight: ${item.weight}</p>
-            <p>Quantity: ${item.quantity}</p>
+            <div class="item-details">
+                ${detailsHtml}
+            </div>
             <div class="item-actions">
                 <button class="edit-item">Edit</button>
                 <button class="remove-item">Remove</button>
             </div>
         `;
+        
         inventoryList.appendChild(itemElement);
 
         itemElement.querySelector(".edit-item").addEventListener("click", () => editItem(index, item));
@@ -177,10 +369,12 @@ export function populateInventorySection(containerElement) {
     function editItem(index, item) {
         editingItemIndex = index;
         document.getElementById("itemModalTitle").textContent = "Edit Item";
+        
         if (item.predefined) {
             document.getElementById("usePredefined").checked = true;
             togglePredefined();
             document.getElementById("predefinedItemsSelect").value = item.predefinedKey;
+            document.getElementById("predefinedQuantity").value = item.quantity || 1;
         } else {
             document.getElementById("usePredefined").checked = false;
             togglePredefined();
@@ -188,13 +382,15 @@ export function populateInventorySection(containerElement) {
             document.getElementById("itemDescription").value = item.description || "";
             document.getElementById("itemValue").value = item.value;
             document.getElementById("itemWeight").value = item.weight;
-            document.getElementById("itemCategory").value = item.category;
-            document.getElementById("itemQuantity").value = item.quantity;
+            document.getElementById("itemCategory").value = item.category || "misc";
+            document.getElementById("itemQuantity").value = item.quantity || 1;
             document.getElementById("itemEffectsContainer").innerHTML = "";
+            
             if (item.effect && Array.isArray(item.effect)) {
                 item.effect.forEach(effect => addItemEffectRow(effect));
             }
         }
+        
         document.getElementById("itemModal").classList.remove("hidden");
     }
 
@@ -218,9 +414,37 @@ export function populateInventorySection(containerElement) {
                 alert("Please select a predefined item.");
                 return;
             }
-            itemData.predefined = true;
-            itemData.predefinedKey = predefinedKey;
-            // Additional predefined item data could be merged here if needed
+            
+            // Fetch the predefined item data
+            fetch("/static/items.json")
+                .then(response => response.json())
+                .then(data => {
+                    // Parse the key path (e.g., "weapons.simple_melee.dagger")
+                    const keyParts = predefinedKey.split('.');
+                    let itemTemplate = data.predefined_items;
+                    
+                    // Navigate through the object structure
+                    for (const part of keyParts) {
+                        if (!itemTemplate[part]) {
+                            alert("Item not found in predefined items.");
+                            return;
+                        }
+                        itemTemplate = itemTemplate[part];
+                    }
+                    
+                    // Create a copy of the template with quantity
+                    itemData = JSON.parse(JSON.stringify(itemTemplate));
+                    itemData.predefined = true;
+                    itemData.predefinedKey = predefinedKey;
+                    itemData.quantity = parseInt(document.getElementById("itemQuantity").value) || 1;
+                    
+                    // Save the item
+                    saveItemToServer(itemData);
+                })
+                .catch(error => {
+                    console.error("Error loading predefined item:", error);
+                    alert("Failed to load predefined item data.");
+                });
         } else {
             const name = document.getElementById("itemName").value.trim();
             if (!name) {
@@ -249,17 +473,24 @@ export function populateInventorySection(containerElement) {
                 }
                 itemData.effect.push(effectData);
             });
+            
+            // Save the custom item
+            saveItemToServer(itemData);
         }
-
+    }
+    
+    function saveItemToServer(itemData) {
         fetch("/save_item", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ index: editingItemIndex, item: itemData }),
         }).then(() => {
             loadInventory();
+            closeItemModal();
+        }).catch(error => {
+            console.error("Error saving item:", error);
+            alert("Failed to save item.");
         });
-
-        closeItemModal();
     }
 
     function addItemEffectRow(effect = {}) {
