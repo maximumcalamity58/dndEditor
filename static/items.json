@@ -606,6 +606,131 @@
           "description": "A creature that drinks this vial of liquid gains advantage on saving throws against poison for 1 hour."
         }
       },
+      "artisan_tools": {
+        "alchemist_supplies": {
+          "name": "Alchemist's Supplies",
+          "category": "misc",
+          "value": 50,
+          "weight": 8,
+          "description": "These special tools include the items needed to pursue alchemy. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        },
+        "brewer_supplies": {
+          "name": "Brewer's Supplies",
+          "category": "misc",
+          "value": 20,
+          "weight": 9,
+          "description": "These special tools include the items needed for brewing. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        },
+        "calligrapher_supplies": {
+          "name": "Calligrapher's Supplies",
+          "category": "misc",
+          "value": 10,
+          "weight": 5,
+          "description": "These special tools include the items needed for calligraphy. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        },
+        "carpenter_tools": {
+          "name": "Carpenter's Tools",
+          "category": "misc",
+          "value": 8,
+          "weight": 6,
+          "description": "These special tools include the items needed for carpentry. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        },
+        "cartographer_tools": {
+          "name": "Cartographer's Tools",
+          "category": "misc",
+          "value": 15,
+          "weight": 6,
+          "description": "These special tools include the items needed for mapmaking. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        },
+        "jeweler_tools": {
+          "name": "Jeweler's Tools",
+          "category": "misc",
+          "value": 25,
+          "weight": 2,
+          "description": "These special tools include the items needed for working with precious stones and metals. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        },
+        "leatherworker_tools": {
+          "name": "Leatherworker's Tools",
+          "category": "misc",
+          "value": 5,
+          "weight": 5,
+          "description": "These special tools include the items needed for working with leather. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        },
+        "smith_tools": {
+          "name": "Smith's Tools",
+          "category": "misc",
+          "value": 20,
+          "weight": 8,
+          "description": "These special tools include the items needed for metalworking. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        }
+      },
+      "musical_instruments": {
+        "bagpipes": {
+          "name": "Bagpipes",
+          "category": "misc",
+          "value": 30,
+          "weight": 6,
+          "description": "A wind instrument that produces sound when air is forced through pipes."
+        },
+        "drum": {
+          "name": "Drum",
+          "category": "misc",
+          "value": 6,
+          "weight": 3,
+          "description": "A percussion instrument that produces sound when struck."
+        },
+        "dulcimer": {
+          "name": "Dulcimer",
+          "category": "misc",
+          "value": 25,
+          "weight": 10,
+          "description": "A stringed instrument that produces sound when strings are struck with small hammers."
+        },
+        "flute": {
+          "name": "Flute",
+          "category": "misc",
+          "value": 2,
+          "weight": 1,
+          "description": "A wind instrument that produces sound when air is blown across a hole."
+        },
+        "lute": {
+          "name": "Lute",
+          "category": "misc",
+          "value": 35,
+          "weight": 2,
+          "description": "A stringed instrument that produces sound when strings are plucked."
+        },
+        "horn": {
+          "name": "Horn",
+          "category": "misc",
+          "value": 3,
+          "weight": 2,
+          "description": "A wind instrument that produces sound when air is blown through it."
+        }
+      },
+      "gaming_sets": {
+        "dice_set": {
+          "name": "Dice Set",
+          "category": "misc",
+          "value": 0.1,
+          "weight": 0.1,
+          "description": "A set of various dice used for games of chance."
+        },
+        "playing_card_set": {
+          "name": "Playing Card Set",
+          "category": "misc",
+          "value": 0.5,
+          "weight": 0.1,
+          "description": "A set of cards used for games of chance."
+        },
+        "chess_set": {
+          "name": "Chess Set",
+          "category": "misc",
+          "value": 1,
+          "weight": 0.5,
+          "description": "A board and pieces used for playing chess."
+        }
+      },
       "misc": {
         "backpack": {
           "name": "Backpack",
@@ -760,6 +885,216 @@
           "value": 25,
           "weight": 1,
           "description": "As an action, you can splash the contents of this flask onto a creature or throw it up to 20 feet, shattering it on impact. In either case, make a ranged attack against a target creature. If the target is a fiend or undead, it takes 2d6 radiant damage."
+        },
+        "acid_vial": {
+          "name": "Acid (vial)",
+          "category": "misc",
+          "value": 25,
+          "weight": 1,
+          "description": "As an action, you can splash the contents of this vial onto a creature within 5 feet of you or throw the vial up to 20 feet, shattering it on impact. Make a ranged attack against a creature or object, treating the acid as an improvised weapon. On a hit, the target takes 2d6 acid damage."
+        },
+        "alchemist_fire": {
+          "name": "Alchemist's Fire (flask)",
+          "category": "misc",
+          "value": 50,
+          "weight": 1,
+          "description": "This sticky, adhesive fluid ignites when exposed to air. As an action, you can throw this flask up to 20 feet, shattering it on impact. Make a ranged attack against a creature or object. On a hit, the target takes 1d4 fire damage at the start of each of its turns."
+        },
+        "ball_bearings": {
+          "name": "Ball Bearings (bag of 1,000)",
+          "category": "misc",
+          "value": 1,
+          "weight": 2,
+          "description": "As an action, you can spill these tiny metal balls to cover a 10-foot-square area. A creature moving across the covered area must succeed on a DC 10 Dexterity saving throw or fall prone."
+        },
+        "bell": {
+          "name": "Bell",
+          "category": "misc",
+          "value": 1,
+          "weight": 0,
+          "description": "A small bell that rings when shaken."
+        },
+        "blanket": {
+          "name": "Blanket",
+          "category": "misc",
+          "value": 0.5,
+          "weight": 3,
+          "description": "A cloth covering used for warmth or protection."
+        },
+        "book": {
+          "name": "Book",
+          "category": "misc",
+          "value": 25,
+          "weight": 5,
+          "description": "A book might contain poetry, historical accounts, information pertaining to a particular field of lore, diagrams and notes, or just about anything else that can be represented using text or pictures."
+        },
+        "caltrops": {
+          "name": "Caltrops (bag of 20)",
+          "category": "misc",
+          "value": 1,
+          "weight": 2,
+          "description": "As an action, you can spread a bag of caltrops to cover a 5-foot-square area. Any creature that enters the area must succeed on a DC 15 Dexterity saving throw or stop moving and take 1 piercing damage."
+        },
+        "candle": {
+          "name": "Candle",
+          "category": "misc",
+          "value": 0.01,
+          "weight": 0,
+          "description": "For 1 hour, a candle sheds bright light in a 5-foot radius and dim light for an additional 5 feet."
+        },
+        "chain": {
+          "name": "Chain (10 feet)",
+          "category": "misc",
+          "value": 5,
+          "weight": 10,
+          "description": "A chain has 10 hit points. It can be burst with a successful DC 20 Strength check."
+        },
+        "chalk": {
+          "name": "Chalk (1 piece)",
+          "category": "misc",
+          "value": 0.01,
+          "weight": 0,
+          "description": "A piece of chalk used for writing on hard surfaces."
+        },
+        "climbers_kit": {
+          "name": "Climber's Kit",
+          "category": "misc",
+          "value": 25,
+          "weight": 12,
+          "description": "A climber's kit includes special pitons, boot tips, gloves, and a harness. You can use the climber's kit as an action to anchor yourself; when you do, you can't fall more than 25 feet from the point where you anchored yourself."
+        },
+        "fishing_tackle": {
+          "name": "Fishing Tackle",
+          "category": "misc",
+          "value": 1,
+          "weight": 4,
+          "description": "This kit includes a wooden rod, silken line, corkwood bobbers, steel hooks, lead sinkers, velvet lures, and narrow netting."
+        },
+        "hourglass": {
+          "name": "Hourglass",
+          "category": "misc",
+          "value": 25,
+          "weight": 1,
+          "description": "A timepiece that measures the passage of time by the flow of sand."
+        },
+        "hunting_trap": {
+          "name": "Hunting Trap",
+          "category": "misc",
+          "value": 5,
+          "weight": 25,
+          "description": "When you use your action to set it, this trap forms a saw-toothed steel ring that snaps shut when a creature steps on a pressure plate in the center. A creature that steps on the plate must succeed on a DC 13 Dexterity saving throw or take 1d4 piercing damage and stop moving."
+        },
+        "ink": {
+          "name": "Ink (1 ounce bottle)",
+          "category": "misc",
+          "value": 10,
+          "weight": 0,
+          "description": "A bottle of ink used for writing."
+        },
+        "ink_pen": {
+          "name": "Ink Pen",
+          "category": "misc",
+          "value": 0.02,
+          "weight": 0,
+          "description": "A pen used for writing with ink."
+        },
+        "magnifying_glass": {
+          "name": "Magnifying Glass",
+          "category": "misc",
+          "value": 100,
+          "weight": 0,
+          "description": "This lens allows a closer look at small objects. It is also useful as a substitute for flint and steel when starting fires. Lighting a fire with a magnifying glass requires light as bright as sunlight to focus, tinder to ignite, and about 5 minutes for the fire to ignite."
+        },
+        "mess_kit": {
+          "name": "Mess Kit",
+          "category": "misc",
+          "value": 0.2,
+          "weight": 1,
+          "description": "This tin box contains a cup and simple cutlery. The box clamps together, and one side can be used as a cooking pan and the other as a plate or shallow bowl."
+        },
+        "paper": {
+          "name": "Paper (one sheet)",
+          "category": "misc",
+          "value": 0.2,
+          "weight": 0,
+          "description": "A sheet of paper used for writing."
+        },
+        "parchment": {
+          "name": "Parchment (one sheet)",
+          "category": "misc",
+          "value": 0.1,
+          "weight": 0,
+          "description": "A sheet of parchment used for writing."
+        },
+        "perfume": {
+          "name": "Perfume (vial)",
+          "category": "misc",
+          "value": 5,
+          "weight": 0,
+          "description": "A vial of perfume used for scenting."
+        },
+        "poison_basic": {
+          "name": "Poison, Basic (vial)",
+          "category": "misc",
+          "value": 100,
+          "weight": 0,
+          "description": "You can use the poison in this vial to coat one slashing or piercing weapon or up to three pieces of ammunition. Applying the poison takes an action. A creature hit by the poisoned weapon or ammunition must make a DC 10 Constitution saving throw or take 1d4 poison damage."
+        },
+        "sealing_wax": {
+          "name": "Sealing Wax",
+          "category": "misc",
+          "value": 0.5,
+          "weight": 0,
+          "description": "Wax used to seal letters and documents."
+        },
+        "shovel": {
+          "name": "Shovel",
+          "category": "misc",
+          "value": 2,
+          "weight": 5,
+          "description": "A tool used for digging."
+        },
+        "signal_whistle": {
+          "name": "Signal Whistle",
+          "category": "misc",
+          "value": 0.05,
+          "weight": 0,
+          "description": "A whistle used for signaling."
+        },
+        "signet_ring": {
+          "name": "Signet Ring",
+          "category": "misc",
+          "value": 5,
+          "weight": 0,
+          "description": "A ring with a unique symbol used to make a seal in wax."
+        },
+        "soap": {
+          "name": "Soap",
+          "category": "misc",
+          "value": 0.02,
+          "weight": 0,
+          "description": "A bar of soap used for cleaning."
+        },
+        "spellbook": {
+          "name": "Spellbook",
+          "category": "misc",
+          "value": 50,
+          "weight": 3,
+          "description": "Essential for wizards, a spellbook is a leather-bound tome with 100 blank vellum pages suitable for recording spells."
+        },
+        "tent": {
+          "name": "Tent, Two-person",
+          "category": "misc",
+          "value": 2,
+          "weight": 20,
+          "description": "A simple and portable canvas shelter, a tent sleeps two."
+        },
+        "whetstone": {
+          "name": "Whetstone",
+          "category": "misc",
+          "value": 0.01,
+          "weight": 1,
+          "description": "A stone used to sharpen blades."
         }
       }
     }

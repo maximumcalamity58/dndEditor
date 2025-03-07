@@ -219,6 +219,32 @@ export function populateInventorySection(containerElement) {
                 align-items: center;
                 z-index: 1000;
             }
+            
+            /* Modal Tabs */
+            .modal-tabs {
+                display: flex;
+                margin-bottom: 15px;
+                border-bottom: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
+            }
+            .modal-tab {
+                padding: 10px 20px;
+                background: none;
+                border: none;
+                color: var(--text-color-secondary, rgba(255, 255, 255, 0.7));
+                cursor: pointer;
+                font-size: 1em;
+                font-weight: 600;
+                transition: all 0.2s;
+                border-bottom: 3px solid transparent;
+                margin-bottom: -1px;
+            }
+            .modal-tab:hover {
+                color: var(--text-color-primary, rgba(255, 255, 255, 0.9));
+            }
+            .modal-tab.active {
+                color: var(--accent-color, #6a8fc5);
+                border-bottom: 3px solid var(--accent-color, #6a8fc5);
+            }
             .modal.hidden {
                 display: none;
             }
@@ -302,45 +328,105 @@ export function populateInventorySection(containerElement) {
             
             /* Predefined Items Section */
             #predefinedContainer {
-                border: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
-                border-radius: 6px;
-                padding: 15px;
-                margin: 15px 0;
-                background-color: var(--bg-color-secondary, rgba(40, 40, 40, 0.6));
+                display: flex;
+                flex-direction: column;
+                height: 500px;
+                max-height: 70vh;
+            }
+            .search-container {
+                margin-bottom: 15px;
             }
             #predefinedSearch {
                 width: 100%;
-                padding: 8px 10px;
+                padding: 10px 12px;
                 border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
                 margin-bottom: 10px;
                 background-color: rgba(30, 30, 30, 0.6);
                 color: rgba(255, 255, 255, 0.9);
+                font-size: 1em;
+            }
+            .category-filters {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+            .category-filter {
+                background-color: rgba(30, 30, 30, 0.6);
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
+                color: var(--text-color-secondary, rgba(255, 255, 255, 0.7));
+                border-radius: 20px;
+                padding: 5px 12px;
+                font-size: 0.85em;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .category-filter:hover, .category-filter.active {
+                background-color: var(--accent-color, #4a6fa5);
+                color: white;
+                border-color: var(--accent-color, #4a6fa5);
+            }
+            .items-container {
+                flex: 1;
+                margin-bottom: 15px;
+                min-height: 200px;
             }
             #predefinedItemsSelect {
                 width: 100%;
+                height: 100%;
                 border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
                 padding: 5px;
                 background-color: rgba(30, 30, 30, 0.6);
                 color: rgba(255, 255, 255, 0.9);
+                overflow-y: auto;
             }
             #predefinedItemsSelect optgroup {
                 font-weight: bold;
                 color: var(--accent-color, #6a8fc5);
                 background-color: rgba(20, 20, 20, 0.8);
+                padding: 5px;
             }
             #predefinedItemsSelect option {
                 background-color: rgba(30, 30, 30, 0.6);
                 color: rgba(255, 255, 255, 0.9);
+                padding: 8px 10px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                cursor: pointer;
+            }
+            #predefinedItemsSelect option:hover {
+                background-color: rgba(74, 111, 165, 0.3);
+            }
+            .item-preview {
+                background-color: rgba(40, 40, 40, 0.6);
+                border: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
+                border-radius: 6px;
+                padding: 15px;
+                margin-bottom: 15px;
+                max-height: 150px;
+                overflow-y: auto;
+            }
+            .item-preview h4 {
+                margin-top: 0;
+                margin-bottom: 10px;
+                color: var(--accent-color, #6a8fc5);
+                border-bottom: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
+                padding-bottom: 5px;
+            }
+            .quantity-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
             #predefinedQuantity {
                 width: 80px;
-                padding: 6px 8px;
+                padding: 8px 10px;
                 border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
                 background-color: rgba(30, 30, 30, 0.6);
                 color: rgba(255, 255, 255, 0.9);
+                font-size: 1em;
             }
             
             /* Effects Section */
@@ -453,18 +539,34 @@ export function populateInventorySection(containerElement) {
         <div id="itemModal" class="modal hidden">
             <div class="modal-content">
                 <h3 id="itemModalTitle">Add Item</h3>
-                <label>
-                    <input type="checkbox" id="usePredefined"> Use Predefined Item
-                </label>
-                <div id="predefinedContainer" style="display: none;">
-                    <input type="text" id="predefinedSearch" placeholder="Search predefined items...">
-                    <select id="predefinedItemsSelect" size="10" style="width: 100%; margin: 10px 0;"></select>
-                    <div>
+                <div class="modal-tabs">
+                    <button id="predefinedTabBtn" class="modal-tab active">Predefined Items</button>
+                    <button id="customTabBtn" class="modal-tab">Custom Item</button>
+                </div>
+                <div id="predefinedContainer">
+                    <div class="search-container">
+                        <input type="text" id="predefinedSearch" placeholder="Search items...">
+                        <div class="category-filters">
+                            <button class="category-filter active" data-category="all">All</button>
+                            <button class="category-filter" data-category="weapon">Weapons</button>
+                            <button class="category-filter" data-category="armor">Armor</button>
+                            <button class="category-filter" data-category="clothing">Clothing</button>
+                            <button class="category-filter" data-category="misc">Gear</button>
+                        </div>
+                    </div>
+                    <div class="items-container">
+                        <select id="predefinedItemsSelect" size="12"></select>
+                    </div>
+                    <div class="item-preview" id="itemPreview">
+                        <h4 id="previewName">Select an item</h4>
+                        <div id="previewDetails"></div>
+                    </div>
+                    <div class="quantity-container">
                         <label>Quantity:</label>
                         <input type="number" id="predefinedQuantity" value="1" min="1">
                     </div>
                 </div>
-                <div id="customItemContainer">
+                <div id="customItemContainer" style="display: none;">
                     <div class="form-row">
                         <div class="form-group">
                             <label>Name:</label>
@@ -581,7 +683,7 @@ export function populateInventorySection(containerElement) {
                     <button id="addItemEffectBtn" class="add-item-effect-btn">+ Add Effect</button>
                 </div>
                 <div class="modal-actions">
-                    <button id="saveItemBtn" class="save-btn">Save</button>
+                    <button id="saveItemBtn" class="save-btn">Add to Inventory</button>
                     <button id="closeItemBtn" class="close-btn">Cancel</button>
                 </div>
             </div>
@@ -593,7 +695,11 @@ export function populateInventorySection(containerElement) {
         document.getElementById("closeItemBtn").addEventListener("click", closeItemModal);
         document.getElementById("saveItemBtn").addEventListener("click", saveItem);
         document.getElementById("addItemEffectBtn").addEventListener("click", () => addItemEffectRow());
-        document.getElementById("usePredefined").addEventListener("change", togglePredefined);
+        // Modal tab switching
+        document.getElementById("predefinedTabBtn").addEventListener("click", () => toggleItemTabs('predefined'));
+        document.getElementById("customTabBtn").addEventListener("click", () => toggleItemTabs('custom'));
+        
+        // Search and filtering
         document.getElementById("predefinedSearch").addEventListener("input", filterPredefinedItems);
         document.getElementById("itemSearch").addEventListener("input", filterInventoryItems);
         document.getElementById("itemCategory").addEventListener("change", toggleItemDetails);
@@ -601,6 +707,11 @@ export function populateInventorySection(containerElement) {
         // Add event listeners to filter buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', filterByCategory);
+        });
+        
+        // Add event listeners to category filter buttons
+        document.querySelectorAll('.category-filter').forEach(btn => {
+            btn.addEventListener('click', filterPredefinedByCategory);
         });
 
         loadInventory();
@@ -611,15 +722,26 @@ export function populateInventorySection(containerElement) {
 
     function openItemModal() {
         document.getElementById("itemModalTitle").textContent = "Add Item";
-        document.getElementById("usePredefined").checked = false;
-        togglePredefined();
+        // Reset form fields
         document.getElementById("itemName").value = "";
         document.getElementById("itemDescription").value = "";
         document.getElementById("itemValue").value = "";
         document.getElementById("itemWeight").value = "";
         document.getElementById("itemCategory").value = "misc";
         document.getElementById("itemQuantity").value = "1";
+        document.getElementById("predefinedQuantity").value = "1";
         document.getElementById("itemEffectsContainer").innerHTML = "";
+        
+        // Show predefined tab by default
+        document.getElementById("predefinedTabBtn").classList.add("active");
+        document.getElementById("customTabBtn").classList.remove("active");
+        document.getElementById("predefinedContainer").style.display = "flex";
+        document.getElementById("customItemContainer").style.display = "none";
+        
+        // Reset item preview
+        document.getElementById("previewName").textContent = "Select an item";
+        document.getElementById("previewDetails").innerHTML = "";
+        
         editingItemIndex = null;
         document.getElementById("itemModal").classList.remove("hidden");
     }
@@ -628,23 +750,23 @@ export function populateInventorySection(containerElement) {
         document.getElementById("itemModal").classList.add("hidden");
     }
 
-    function togglePredefined() {
-        const usePredefined = document.getElementById("usePredefined").checked;
-        const predefinedContainer = document.getElementById("predefinedContainer");
-        const customItemContainer = document.getElementById("customItemContainer");
-        
-        if (usePredefined) {
-            predefinedContainer.style.display = "block";
-            customItemContainer.style.display = "none";
+    function toggleItemTabs(tab) {
+        if (tab === 'predefined') {
+            document.getElementById("predefinedTabBtn").classList.add("active");
+            document.getElementById("customTabBtn").classList.remove("active");
+            document.getElementById("predefinedContainer").style.display = "flex";
+            document.getElementById("customItemContainer").style.display = "none";
             
-            // When switching to predefined, update the predefined quantity field
+            // Sync quantity
             const quantity = document.getElementById("itemQuantity").value;
             document.getElementById("predefinedQuantity").value = quantity;
         } else {
-            predefinedContainer.style.display = "none";
-            customItemContainer.style.display = "block";
+            document.getElementById("predefinedTabBtn").classList.remove("active");
+            document.getElementById("customTabBtn").classList.add("active");
+            document.getElementById("predefinedContainer").style.display = "none";
+            document.getElementById("customItemContainer").style.display = "block";
             
-            // When switching to custom, update the custom quantity field
+            // Sync quantity
             const quantity = document.getElementById("predefinedQuantity").value;
             document.getElementById("itemQuantity").value = quantity;
         }
@@ -652,14 +774,46 @@ export function populateInventorySection(containerElement) {
 
     function filterPredefinedItems() {
         const query = document.getElementById("predefinedSearch").value.toLowerCase();
+        const activeCategory = document.querySelector('.category-filter.active').dataset.category;
         const select = document.getElementById("predefinedItemsSelect");
-        Array.from(select.options).forEach(option => {
-            if (option.text.toLowerCase().includes(query)) {
-                option.style.display = "";
+        
+        // First hide/show optgroups based on category
+        Array.from(select.children).forEach(optgroup => {
+            const category = optgroup.label.toLowerCase();
+            const shouldShowCategory = activeCategory === 'all' || 
+                                      (activeCategory === 'weapon' && category.includes('weapon')) ||
+                                      (activeCategory === 'armor' && category.includes('armor')) ||
+                                      (activeCategory === 'clothing' && category.includes('clothing')) ||
+                                      (activeCategory === 'misc' && !category.includes('weapon') && 
+                                                                  !category.includes('armor') && 
+                                                                  !category.includes('clothing'));
+            
+            if (shouldShowCategory) {
+                optgroup.style.display = "";
+                
+                // Then filter options within visible optgroups
+                Array.from(optgroup.children).forEach(option => {
+                    if (option.text.toLowerCase().includes(query)) {
+                        option.style.display = "";
+                    } else {
+                        option.style.display = "none";
+                    }
+                });
             } else {
-                option.style.display = "none";
+                optgroup.style.display = "none";
             }
         });
+    }
+    
+    function filterPredefinedByCategory(e) {
+        // Update active button
+        document.querySelectorAll('.category-filter').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        e.target.classList.add('active');
+        
+        // Filter items
+        filterPredefinedItems();
     }
 
     function filterInventoryItems() {
@@ -722,30 +876,58 @@ export function populateInventorySection(containerElement) {
                 
                 // Create option groups for each category
                 const categories = {
-                    "Weapons": ["weapons"],
-                    "Armor": ["armor"],
-                    "Adventuring Gear": ["adventuring_gear"]
+                    "Simple Melee Weapons": ["weapons.simple_melee"],
+                    "Simple Ranged Weapons": ["weapons.simple_ranged"],
+                    "Martial Melee Weapons": ["weapons.martial_melee"],
+                    "Martial Ranged Weapons": ["weapons.martial_ranged"],
+                    "Light Armor": ["armor.light_armor"],
+                    "Medium Armor": ["armor.medium_armor"],
+                    "Heavy Armor": ["armor.heavy_armor"],
+                    "Shields": ["armor.shields"],
+                    "Clothing - Head": ["clothing.head"],
+                    "Clothing - Neck": ["clothing.neck"],
+                    "Clothing - Shoulders": ["clothing.shoulders"],
+                    "Clothing - Hands": ["clothing.hands"],
+                    "Clothing - Waist": ["clothing.waist"],
+                    "Clothing - Feet": ["clothing.feet"],
+                    "Equipment Packs": ["adventuring_gear.equipment_packs"],
+                    "Tools": ["adventuring_gear.tools"],
+                    "Potions": ["adventuring_gear.potions"],
+                    "Artisan Tools": ["adventuring_gear.artisan_tools"],
+                    "Musical Instruments": ["adventuring_gear.musical_instruments"],
+                    "Gaming Sets": ["adventuring_gear.gaming_sets"],
+                    "Adventuring Gear": ["adventuring_gear.misc"]
                 };
                 
+                // Store all items for preview functionality
+                window.allPredefinedItems = {};
+                
                 // Create option groups and populate them
-                Object.entries(categories).forEach(([groupName, categoryKeys]) => {
+                Object.entries(categories).forEach(([groupName, paths]) => {
                     const optGroup = document.createElement("optgroup");
                     optGroup.label = groupName;
                     
-                    // Process each category
-                    categoryKeys.forEach(categoryKey => {
-                        if (!predefinedItems[categoryKey]) return;
+                    // Process each path
+                    paths.forEach(path => {
+                        const pathParts = path.split('.');
+                        let currentObj = predefinedItems;
                         
-                        // Process subcategories (like simple_melee, light_armor, etc.)
-                        Object.entries(predefinedItems[categoryKey]).forEach(([subcatKey, subcatItems]) => {
-                            // Process items in subcategory
-                            Object.entries(subcatItems).forEach(([itemKey, item]) => {
-                                const fullKey = `${categoryKey}.${subcatKey}.${itemKey}`;
-                                const option = document.createElement("option");
-                                option.value = fullKey;
-                                option.text = item.name;
-                                optGroup.appendChild(option);
-                            });
+                        // Navigate to the correct object
+                        for (const part of pathParts) {
+                            if (!currentObj[part]) return;
+                            currentObj = currentObj[part];
+                        }
+                        
+                        // Process items in this category
+                        Object.entries(currentObj).forEach(([itemKey, item]) => {
+                            const fullKey = `${path}.${itemKey}`;
+                            const option = document.createElement("option");
+                            option.value = fullKey;
+                            option.text = item.name;
+                            optGroup.appendChild(option);
+                            
+                            // Store for preview
+                            window.allPredefinedItems[fullKey] = item;
                         });
                     });
                     
@@ -753,8 +935,48 @@ export function populateInventorySection(containerElement) {
                         select.appendChild(optGroup);
                     }
                 });
+                
+                // Add event listener for item selection
+                select.addEventListener('change', showItemPreview);
             })
             .catch(() => console.warn("Failed to load predefined items"));
+    }
+    
+    function showItemPreview() {
+        const select = document.getElementById("predefinedItemsSelect");
+        const previewName = document.getElementById("previewName");
+        const previewDetails = document.getElementById("previewDetails");
+        
+        if (select.value && window.allPredefinedItems[select.value]) {
+            const item = window.allPredefinedItems[select.value];
+            previewName.textContent = item.name;
+            
+            let detailsHtml = `<p class="preview-description">${item.description || ""}</p>`;
+            
+            if (item.damage) {
+                detailsHtml += `<p class="preview-damage">Damage: ${item.damage}</p>`;
+            }
+            
+            if (item.armor_class) {
+                detailsHtml += `<p class="preview-ac">AC: ${item.armor_class}</p>`;
+            }
+            
+            if (item.properties && item.properties.length > 0) {
+                detailsHtml += `<p class="preview-properties">Properties: ${item.properties.join(', ')}</p>`;
+            }
+            
+            detailsHtml += `
+                <div class="preview-stats">
+                    <span>Value: ${item.value} gp</span>
+                    <span>Weight: ${item.weight} lb</span>
+                </div>
+            `;
+            
+            previewDetails.innerHTML = detailsHtml;
+        } else {
+            previewName.textContent = "Select an item";
+            previewDetails.innerHTML = "";
+        }
     }
 
     function loadInventory() {
@@ -848,13 +1070,18 @@ export function populateInventorySection(containerElement) {
         document.getElementById("itemModalTitle").textContent = "Edit Item";
         
         if (item.predefined) {
-            document.getElementById("usePredefined").checked = true;
-            togglePredefined();
+            // Show predefined tab
+            toggleItemTabs('predefined');
+            
+            // Set values
             document.getElementById("predefinedItemsSelect").value = item.predefinedKey;
             document.getElementById("predefinedQuantity").value = item.quantity || 1;
+            
+            // Show preview
+            showItemPreview();
         } else {
-            document.getElementById("usePredefined").checked = false;
-            togglePredefined();
+            // Show custom tab
+            toggleItemTabs('custom');
             
             // Basic item data
             document.getElementById("itemName").value = item.name;
@@ -901,9 +1128,9 @@ export function populateInventorySection(containerElement) {
     }
 
     function saveItem() {
-        const usePredefined = document.getElementById("usePredefined").checked;
+        const isPredefinedTab = document.getElementById("predefinedTabBtn").classList.contains("active");
         let itemData = {};
-        if (usePredefined) {
+        if (isPredefinedTab) {
             const select = document.getElementById("predefinedItemsSelect");
             const predefinedKey = select.value;
             if (!predefinedKey) {
