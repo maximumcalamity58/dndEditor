@@ -1202,6 +1202,11 @@ export function populateInventorySection(containerElement) {
             itemElement.dataset.subcategory = item.subcategory;
         }
         
+        // Add subcategory as a data attribute for filtering
+        if (item.subcategory) {
+            itemElement.dataset.subcategory = item.subcategory;
+        }
+        
         // Build the item details HTML
         let detailsHtml = '';
         
