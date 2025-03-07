@@ -101,7 +101,12 @@ def load_predefined_items():
 def save_custom_item():
     """Saves a custom item to the custom_items section in items.json."""
     items = load_items()
-    custom_items = items.get("custom_items", {})
+    
+    # Initialize custom_items if it doesn't exist
+    if "custom_items" not in items:
+        items["custom_items"] = {}
+    
+    custom_items = items["custom_items"]
 
     request_data = request.json
     item_key = request_data.get("key")  # Unique key for the item

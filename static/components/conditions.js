@@ -47,6 +47,19 @@ export function populateConditionsSection(containerElement, characterData) {
                 color: #aaa;
                 margin-top: 5px;
                 display: none;
+                position: absolute;
+                background: #333;
+                border: 1px solid #555;
+                padding: 8px;
+                border-radius: 4px;
+                width: 250px;
+                z-index: 10;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                left: 100%;
+                top: 0;
+            }
+            .condition-item {
+                position: relative;
             }
             .condition-item:hover .condition-description {
                 display: block;
@@ -78,6 +91,29 @@ export function populateConditionsSection(containerElement, characterData) {
             }
             .condition-type.vulnerability {
                 background-color: rgba(155, 89, 182, 0.7);
+            }
+            .damage-type-controls {
+                display: flex;
+                gap: 10px;
+                margin-left: auto;
+                margin-right: 10px;
+            }
+            .damage-type-controls label {
+                display: flex;
+                align-items: center;
+                gap: 3px;
+                cursor: pointer;
+                padding: 2px 5px;
+                border-radius: 3px;
+            }
+            .damage-type-controls label:nth-child(1) {
+                background-color: rgba(46, 204, 113, 0.2);
+            }
+            .damage-type-controls label:nth-child(2) {
+                background-color: rgba(243, 156, 18, 0.2);
+            }
+            .damage-type-controls label:nth-child(3) {
+                background-color: rgba(155, 89, 182, 0.2);
             }
         </style>
         <div class="conditions-container">
@@ -154,87 +190,63 @@ export function populateConditionsSection(containerElement, characterData) {
         });
     });
     
-    // Add resistances section
-    const resistancesSection = document.createElement("div");
-    resistancesSection.innerHTML = `<h4>Damage Resistances</h4>`;
-    conditionsList.appendChild(resistancesSection);
+    // Add damage types section (combining resistances, immunities, vulnerabilities)
+    const damageTypesSection = document.createElement("div");
+    damageTypesSection.innerHTML = `<h4>Damage Types</h4>`;
+    conditionsList.appendChild(damageTypesSection);
     
     damageTypes.forEach(damageType => {
         const hasResistance = characterData.conditions && 
                              characterData.conditions.resistances && 
                              characterData.conditions.resistances.includes(damageType.name);
-        
-        const resistanceItem = document.createElement("div");
-        resistanceItem.className = `condition-item ${hasResistance ? 'resistance' : ''}`;
-        resistanceItem.innerHTML = `
-            <input type="checkbox" class="condition-checkbox" data-condition="${damageType.name}" 
-                   data-type="resistance" ${hasResistance ? 'checked' : ''}>
-            <span class="condition-name">${damageType.name}</span>
-            ${hasResistance ? '<span class="condition-type resistance">Resistant</span>' : ''}
-            <div class="condition-description">${damageType.description}</div>
-        `;
-        resistancesSection.appendChild(resistanceItem);
-        
-        // Add event listener to toggle resistance
-        const checkbox = resistanceItem.querySelector('.condition-checkbox');
-        checkbox.addEventListener('change', function() {
-            toggleCondition(this.dataset.condition, this.dataset.type, this.checked);
-        });
-    });
-    
-    // Add immunities section
-    const immunitiesSection = document.createElement("div");
-    immunitiesSection.innerHTML = `<h4>Damage Immunities</h4>`;
-    conditionsList.appendChild(immunitiesSection);
-    
-    damageTypes.forEach(damageType => {
         const hasImmunity = characterData.conditions && 
                            characterData.conditions.immunities && 
                            characterData.conditions.immunities.includes(damageType.name);
-        
-        const immunityItem = document.createElement("div");
-        immunityItem.className = `condition-item ${hasImmunity ? 'immunity' : ''}`;
-        immunityItem.innerHTML = `
-            <input type="checkbox" class="condition-checkbox" data-condition="${damageType.name}" 
-                   data-type="immunity" ${hasImmunity ? 'checked' : ''}>
-            <span class="condition-name">${damageType.name}</span>
-            ${hasImmunity ? '<span class="condition-type immunity">Immune</span>' : ''}
-            <div class="condition-description">${damageType.description}</div>
-        `;
-        immunitiesSection.appendChild(immunityItem);
-        
-        // Add event listener to toggle immunity
-        const checkbox = immunityItem.querySelector('.condition-checkbox');
-        checkbox.addEventListener('change', function() {
-            toggleCondition(this.dataset.condition, this.dataset.type, this.checked);
-        });
-    });
-    
-    // Add vulnerabilities section
-    const vulnerabilitiesSection = document.createElement("div");
-    vulnerabilitiesSection.innerHTML = `<h4>Damage Vulnerabilities</h4>`;
-    conditionsList.appendChild(vulnerabilitiesSection);
-    
-    damageTypes.forEach(damageType => {
         const hasVulnerability = characterData.conditions && 
                                 characterData.conditions.vulnerabilities && 
                                 characterData.conditions.vulnerabilities.includes(damageType.name);
         
-        const vulnerabilityItem = document.createElement("div");
-        vulnerabilityItem.className = `condition-item ${hasVulnerability ? 'vulnerability' : ''}`;
-        vulnerabilityItem.innerHTML = `
-            <input type="checkbox" class="condition-checkbox" data-condition="${damageType.name}" 
-                   data-type="vulnerability" ${hasVulnerability ? 'checked' : ''}>
+        // Determine the primary class for styling
+        let primaryClass = '';
+        let statusLabel = '';
+        
+        if (hasImmunity) {
+            primaryClass = 'immunity';
+            statusLabel = '<span class="condition-type immunity">Immune</span>';
+        } else if (hasResistance) {
+            primaryClass = 'resistance';
+            statusLabel = '<span class="condition-type resistance">Resistant</span>';
+        } else if (hasVulnerability) {
+            primaryClass = 'vulnerability';
+            statusLabel = '<span class="condition-type vulnerability">Vulnerable</span>';
+        }
+        
+        const damageTypeItem = document.createElement("div");
+        damageTypeItem.className = `condition-item ${primaryClass}`;
+        damageTypeItem.innerHTML = `
             <span class="condition-name">${damageType.name}</span>
-            ${hasVulnerability ? '<span class="condition-type vulnerability">Vulnerable</span>' : ''}
+            ${statusLabel}
+            <div class="damage-type-controls">
+                <label title="Resistance"><input type="checkbox" class="condition-checkbox" 
+                       data-condition="${damageType.name}" data-type="resistance" 
+                       ${hasResistance ? 'checked' : ''}> R</label>
+                <label title="Immunity"><input type="checkbox" class="condition-checkbox" 
+                       data-condition="${damageType.name}" data-type="immunity" 
+                       ${hasImmunity ? 'checked' : ''}> I</label>
+                <label title="Vulnerability"><input type="checkbox" class="condition-checkbox" 
+                       data-condition="${damageType.name}" data-type="vulnerability" 
+                       ${hasVulnerability ? 'checked' : ''}> V</label>
+            </div>
             <div class="condition-description">${damageType.description}</div>
         `;
-        vulnerabilitiesSection.appendChild(vulnerabilityItem);
+        damageTypesSection.appendChild(damageTypeItem);
         
-        // Add event listener to toggle vulnerability
-        const checkbox = vulnerabilityItem.querySelector('.condition-checkbox');
-        checkbox.addEventListener('change', function() {
-            toggleCondition(this.dataset.condition, this.dataset.type, this.checked);
+        // Add event listeners to toggle checkboxes
+        const checkboxes = damageTypeItem.querySelectorAll('.condition-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                toggleCondition(this.dataset.condition, this.dataset.type, this.checked);
+            });
         });
     });
     

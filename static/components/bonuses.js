@@ -171,7 +171,22 @@ export function populateBonusesSection(containerElement) {
         document.getElementById("effectsContainer").innerHTML = "";
         editingBonusIndex = index;
 
-        effects.forEach(effect => addEffectRow(effect));
+        // Filter out duplicate effects (like Health -> hit_points_max/current)
+        const uniqueEffects = effects.filter(effect => 
+            !(effect.target === "hit_points_max" || effect.target === "hit_points_current") ||
+            effect.target === "hit_points_max"
+        );
+        
+        uniqueEffects.forEach(effect => {
+            // Convert hit_points_max back to Health for editing
+            if (effect.target === "hit_points_max") {
+                const healthEffect = {...effect, target: "Health"};
+                addEffectRow(healthEffect);
+            } else {
+                addEffectRow(effect);
+            }
+        });
+        
         document.getElementById("bonusModal").classList.remove("hidden");
     }
 

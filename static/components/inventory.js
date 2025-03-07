@@ -1041,6 +1041,7 @@ export function populateInventorySection(containerElement) {
             .then(response => response.json())
             .then(data => {
                 const predefinedItems = data.predefined_items || {};
+                const customItems = data.custom_items || {};
                 const select = document.getElementById("predefinedItemsSelect");
                 select.innerHTML = "";
                 
@@ -1099,12 +1100,92 @@ export function populateInventorySection(containerElement) {
                             // Store for preview
                             window.allPredefinedItems[fullKey] = item;
                         });
+                        
+                        // Add custom items to the appropriate category
+                        Object.entries(customItems).forEach(([itemKey, item]) => {
+                            // Check if this custom item belongs in this category
+                            const itemCategory = item.category;
+                            const itemSubcategory = item.subcategory;
+                            
+                            // Map category/subcategory to path
+                            const categoryMap = {
+                                'weapon': {
+                                    'simple_melee': 'weapons.simple_melee',
+                                    'simple_ranged': 'weapons.simple_ranged',
+                                    'martial_melee': 'weapons.martial_melee',
+                                    'martial_ranged': 'weapons.martial_ranged'
+                                },
+                                'armor': {
+                                    'light_armor': 'armor.light_armor',
+                                    'medium_armor': 'armor.medium_armor',
+                                    'heavy_armor': 'armor.heavy_armor'
+                                },
+                                'shield': {
+                                    'shields': 'armor.shields'
+                                },
+                                'clothing': {
+                                    'head': 'clothing.head',
+                                    'neck': 'clothing.neck',
+                                    'shoulders': 'clothing.shoulders',
+                                    'hands': 'clothing.hands',
+                                    'waist': 'clothing.waist',
+                                    'feet': 'clothing.feet'
+                                },
+                                'misc': {
+                                    'equipment_packs': 'adventuring_gear.equipment_packs',
+                                    'tools': 'adventuring_gear.tools',
+                                    'misc': 'adventuring_gear.misc'
+                                },
+                                'potion': {
+                                    'potions': 'adventuring_gear.potions'
+                                }
+                            };
+                            
+                            // Check if this item belongs in the current path
+                            if (itemCategory && itemSubcategory && 
+                                categoryMap[itemCategory] && 
+                                categoryMap[itemCategory][itemSubcategory] === path) {
+                                
+                                const fullKey = `custom.${itemKey}`;
+                                const option = document.createElement("option");
+                                option.value = fullKey;
+                                option.text = `${item.name} (Custom)`;
+                                optGroup.appendChild(option);
+                                
+                                // Store for preview
+                                window.allPredefinedItems[fullKey] = item;
+                            }
+                        });
                     });
                     
                     if (optGroup.children.length > 0) {
                         select.appendChild(optGroup);
                     }
                 });
+                
+                // Add a separate section for custom items that don't fit elsewhere
+                const customGroup = document.createElement("optgroup");
+                customGroup.label = "Custom Items";
+                let hasCustomItems = false;
+                
+                Object.entries(customItems).forEach(([itemKey, item]) => {
+                    // Check if this item was already added to a specific category
+                    const fullKey = `custom.${itemKey}`;
+                    if (!window.allPredefinedItems[fullKey]) {
+                        const option = document.createElement("option");
+                        option.value = fullKey;
+                        option.text = item.name;
+                        customGroup.appendChild(option);
+                        
+                        // Store for preview
+                        window.allPredefinedItems[fullKey] = item;
+                        hasCustomItems = true;
+                    }
+                });
+                
+                if (hasCustomItems) {
+                    select.appendChild(customGroup);
+                }
                 
                 // Add event listener for item selection
                 select.addEventListener('change', showItemPreview);
@@ -1456,11 +1537,27 @@ export function populateInventorySection(containerElement) {
     }
     
     function saveItemToServer(itemData) {
+        // First save to inventory
         fetch("/save_item", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ index: editingItemIndex, item: itemData }),
         }).then(() => {
+            // If this is a custom item (not predefined), also save to custom items
+            if (!itemData.predefined && itemData.name) {
+                // Create a safe key from the item name
+                const itemKey = itemData.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                
+                fetch("/save_custom_item", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ key: itemKey, item: itemData }),
+                }).then(() => {
+                    // Reload predefined items to include the new custom item
+                    loadPredefinedItems();
+                });
+            }
+            
             loadInventory();
             closeItemModal();
         }).catch(error => {
