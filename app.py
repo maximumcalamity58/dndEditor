@@ -392,6 +392,9 @@ def toggle_equipped():
                     character_data['equipped']['weapon'] = ""
                 elif character_data['equipped']['offhand'] == item_name:
                     character_data['equipped']['offhand'] = ""
+            # Special case for offhand items - allow unequipping from equipment panel
+            elif item_type == "offhand":
+                character_data['equipped']['offhand'] = ""
             else:
                 # Only clear if this specific item is equipped
                 if item_type in character_data['equipped'] and character_data['equipped'][item_type] == item_name:

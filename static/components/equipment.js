@@ -31,6 +31,7 @@ export function populateEquipmentSection(containerElement, characterData) {
                 margin-bottom: 5px;
                 background: #333;
                 border: 1px solid #555;
+                justify-content: center;
             }
             .equipment-item:hover {
                 background: #3a3a3a;
@@ -43,11 +44,13 @@ export function populateEquipmentSection(containerElement, characterData) {
             .equipment-name {
                 flex-grow: 1;
                 font-weight: bold;
+                text-align: center;
             }
             .equipment-details {
                 color: #aaa;
                 font-size: 0.9em;
                 margin-left: 10px;
+                text-align: center;
             }
             .equipment-category {
                 display: inline-block;
@@ -160,32 +163,82 @@ export function populateEquipmentSection(containerElement, characterData) {
     } else {
         weaponsList.innerHTML = '';
         weapons.forEach(weapon => {
-            const isEquipped = equipped.weapon === weapon.name;
+            const isMainHandEquipped = equipped.weapon === weapon.name;
+            const isOffHandEquipped = equipped.offhand === weapon.name;
             const weaponItem = document.createElement("div");
             weaponItem.className = "equipment-item";
-            weaponItem.innerHTML = `
-                <input type="checkbox" class="equipment-checkbox" data-type="weapon" 
-                       data-name="${weapon.name}" ${isEquipped ? 'checked' : ''}>
-                <span class="equipment-name">${weapon.name}</span>
-                <span class="equipment-details">${weapon.damage || ''}</span>
-                <span class="equipment-category category-weapon">${getSubcategoryLabel(weapon.category, weapon.subcategory)}</span>
-            `;
+            
+            // Check if the weapon has the Light property for dual wielding
+            const hasLightProperty = weapon.properties && 
+                                    Array.isArray(weapon.properties) && 
+                                    weapon.properties.includes("Light");
+            
+            // Create HTML with both main hand and offhand options if it's a Light weapon
+            if (hasLightProperty) {
+                weaponItem.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; margin-right: 10px;">
+                        <label style="font-size: 0.8em; color: #aaa;">Main</label>
+                        <input type="checkbox" class="equipment-checkbox" data-type="weapon" 
+                               data-name="${weapon.name}" ${isMainHandEquipped ? 'checked' : ''}>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; margin-right: 10px;">
+                        <label style="font-size: 0.8em; color: #aaa;">Off</label>
+                        <input type="checkbox" class="equipment-checkbox" data-type="offhand" 
+                               data-name="${weapon.name}" ${isOffHandEquipped ? 'checked' : ''}>
+                    </div>
+                    <span class="equipment-name">${weapon.name}</span>
+                    <span class="equipment-details">${weapon.damage || ''}</span>
+                    <span class="equipment-category category-weapon">${getSubcategoryLabel(weapon.category, weapon.subcategory)}</span>
+                `;
+            } else {
+                // Regular weapon without dual-wield option
+                weaponItem.innerHTML = `
+                    <input type="checkbox" class="equipment-checkbox" data-type="weapon" 
+                           data-name="${weapon.name}" ${isMainHandEquipped ? 'checked' : ''}>
+                    <span class="equipment-name">${weapon.name}</span>
+                    <span class="equipment-details">${weapon.damage || ''}</span>
+                    <span class="equipment-category category-weapon">${getSubcategoryLabel(weapon.category, weapon.subcategory)}</span>
+                `;
+            }
+            
             weaponsList.appendChild(weaponItem);
             
-            // Add event listener to toggle equipped status
-            const checkbox = weaponItem.querySelector('.equipment-checkbox');
-            checkbox.addEventListener('change', function() {
-                toggleEquipped(this.dataset.type, this.dataset.name, this.checked);
-                
-                // Uncheck other weapon checkboxes if this one is checked
-                if (this.checked) {
-                    document.querySelectorAll('.equipment-checkbox[data-type="weapon"]').forEach(cb => {
-                        if (cb !== this) cb.checked = false;
-                    });
-                }
-                
-                // Update all panels immediately
-                window.updateCharacterStats();
+            // Add event listeners to toggle equipped status
+            weaponItem.querySelectorAll('.equipment-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    toggleEquipped(this.dataset.type, this.dataset.name, this.checked);
+                    
+                    // If this is a main hand weapon being equipped
+                    if (this.dataset.type === "weapon" && this.checked) {
+                        // Uncheck other main hand weapons
+                        document.querySelectorAll('.equipment-checkbox[data-type="weapon"]').forEach(cb => {
+                            if (cb !== this) cb.checked = false;
+                        });
+                        
+                        // If the weapon is not Light, also uncheck all offhand weapons
+                        if (!hasLightProperty) {
+                            document.querySelectorAll('.equipment-checkbox[data-type="offhand"]').forEach(cb => {
+                                cb.checked = false;
+                            });
+                        }
+                    }
+                    
+                    // If this is an offhand weapon being equipped
+                    if (this.dataset.type === "offhand" && this.checked) {
+                        // Uncheck other offhand weapons
+                        document.querySelectorAll('.equipment-checkbox[data-type="offhand"]').forEach(cb => {
+                            if (cb !== this) cb.checked = false;
+                        });
+                        
+                        // Also uncheck shield if any
+                        document.querySelectorAll('.equipment-checkbox[data-type="shield"]').forEach(cb => {
+                            cb.checked = false;
+                        });
+                    }
+                    
+                    // Update all panels immediately
+                    window.updateCharacterStats();
+                });
             });
         });
     }

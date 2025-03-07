@@ -36,6 +36,7 @@ export function populateActionsSection(containerElement, characterData) {
                 background: #333;
                 border: 1px solid #555;
                 transition: all 0.2s ease;
+                text-align: center;
             }
             .action-item:hover {
                 background: #3a3a3a;
@@ -44,9 +45,10 @@ export function populateActionsSection(containerElement, characterData) {
             }
             .action-header {
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 align-items: center;
                 margin-bottom: 5px;
+                gap: 10px;
             }
             .action-name {
                 font-weight: bold;
@@ -63,12 +65,14 @@ export function populateActionsSection(containerElement, characterData) {
                 color: #aaa;
                 font-size: 0.9em;
                 margin-top: 5px;
+                text-align: center;
             }
             .action-stats {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 8px;
                 margin-top: 8px;
+                justify-content: center;
             }
             .action-stat {
                 font-size: 0.9em;
@@ -81,6 +85,7 @@ export function populateActionsSection(containerElement, characterData) {
                 display: flex;
                 gap: 8px;
                 margin-top: 10px;
+                justify-content: center;
             }
             .action-button {
                 padding: 5px 10px;
@@ -137,6 +142,7 @@ export function populateActionsSection(containerElement, characterData) {
                 background: #333;
                 border-radius: 4px;
                 border: 1px solid #555;
+                justify-content: center;
             }
             .dice-input {
                 display: flex;
@@ -552,35 +558,122 @@ export function populateActionsSection(containerElement, characterData) {
                 const dice = button.dataset.dice;
                 const modifier = parseInt(button.dataset.modifier) || 0;
                 const description = button.dataset.description;
-                
+                    
+                // Create a modal for the action result
+                const actionModal = document.createElement("div");
+                actionModal.className = "modal-overlay";
+                actionModal.style.zIndex = "2000"; // Ensure it's above other modals
+                    
+                let resultHtml = "";
+                    
                 // Handle different action types
                 if (effectType === 'damage' || effectType === 'heal') {
                     // Roll damage/healing dice
                     if (dice) {
                         const [count, sides] = dice.split('d').map(Number);
                         const roll = rollDice(count, sides, modifier);
-                        
-                        let message = '';
+                            
+                        let title = '';
+                        let result = '';
+                            
                         if (effectType === 'damage') {
-                            message = `${itemName} deals ${roll.total} damage`;
-                            if (target) message += ` (${target})`;
+                            title = `${itemName} - Damage`;
+                            result = `<div style="font-size: 1.2em; text-align: center; margin-bottom: 10px;">
+                                Deals <strong>${roll.total}</strong> damage${target ? ` (${target})` : ''}
+                            </div>`;
                         } else {
-                            message = `${itemName} heals for ${roll.total} hit points`;
+                            title = `${itemName} - Healing`;
+                            result = `<div style="font-size: 1.2em; text-align: center; margin-bottom: 10px;">
+                                Heals for <strong>${roll.total}</strong> hit points
+                            </div>`;
                         }
-                        
-                        if (description) {
-                            message += `\n${description}`;
-                        }
-                        
-                        alert(message);
+                            
+                        resultHtml = `
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="modal-title">${title}</div>
+                                    <button class="modal-close action-modal-close">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    ${result}
+                                    <div style="color: #aaa; text-align: center;">
+                                        Roll: [${roll.rolls.join(', ')}]${modifier ? ` + ${modifier}` : ''}
+                                    </div>
+                                    ${description ? `<div style="margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">${description}</div>` : ''}
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="action-button action-modal-close">Close</button>
+                                </div>
+                            </div>
+                        `;
                     }
                 } else if (effectType === 'status') {
-                    alert(`${itemName} applies ${target} status effect.\n${description || ''}`);
+                    resultHtml = `
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-title">${itemName} - Status Effect</div>
+                                <button class="modal-close action-modal-close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="font-size: 1.2em; text-align: center; margin-bottom: 10px;">
+                                    Applies <strong>${target}</strong> status effect
+                                </div>
+                                ${description ? `<div style="margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">${description}</div>` : ''}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="action-button action-modal-close">Close</button>
+                            </div>
+                        </div>
+                    `;
                 } else if (effectType === 'spell') {
-                    alert(`${itemName} casts ${target || 'a spell'}.\n${description || ''}`);
+                    resultHtml = `
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-title">${itemName} - Cast Spell</div>
+                                <button class="modal-close action-modal-close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="font-size: 1.2em; text-align: center; margin-bottom: 10px;">
+                                    Casts <strong>${target || 'a spell'}</strong>
+                                </div>
+                                ${description ? `<div style="margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">${description}</div>` : ''}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="action-button action-modal-close">Close</button>
+                            </div>
+                        </div>
+                    `;
                 } else {
-                    alert(`Used ${itemName}: ${description || 'No description available'}`);
+                    resultHtml = `
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-title">${itemName}</div>
+                                <button class="modal-close action-modal-close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="font-size: 1.2em; text-align: center; margin-bottom: 10px;">
+                                    Item used
+                                </div>
+                                ${description ? `<div style="margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">${description}</div>` : 
+                                '<div style="color: #888; text-align: center;">No description available</div>'}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="action-button action-modal-close">Close</button>
+                            </div>
+                        </div>
+                    `;
                 }
+                    
+                // Add the modal to the document
+                actionModal.innerHTML = resultHtml;
+                document.body.appendChild(actionModal);
+                    
+                // Add event listeners to close buttons
+                actionModal.querySelectorAll(".action-modal-close").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        document.body.removeChild(actionModal);
+                    });
+                });
             });
         });
     }
@@ -881,25 +974,44 @@ export function populateActionsSection(containerElement, characterData) {
         const weaponItem = inventory.find(item => item.name === currentWeapon);
         
         if (weaponItem && weaponItem.damage) {
-            // Parse damage string (e.g., "1d8 slashing")
-            const damageMatch = weaponItem.damage.match(/(\d+)d(\d+)(?:\s*\+\s*(\d+))?/);
+            // Split damage string for multiple damage types (e.g., "1d8 slashing plus 1d6 fire")
+            const damageParts = weaponItem.damage.split(" plus ");
+            let totalDamage = 0;
+            let allRolls = [];
+            let damageDetails = "";
             
-            if (damageMatch) {
-                const diceCount = parseInt(damageMatch[1]);
-                const diceType = parseInt(damageMatch[2]);
-                const damageBonus = damageMatch[3] ? parseInt(damageMatch[3]) : 0;
+            damageParts.forEach((damagePart, index) => {
+                // Parse each damage part (e.g., "1d8 slashing" or "1d6 fire")
+                const damageMatch = damagePart.match(/(\d+)d(\d+)(?:\s*\+\s*(\d+))?\s*(\w+)?/);
                 
-                // Roll damage
-                const damageRoll = rollDice(diceCount, diceType, damageBonus);
-                
-                // Add to attack result
-                attackResult.innerHTML += `
-                    <div style="margin-top: 10px;">Damage Roll: ${damageRoll.total}</div>
-                    <div style="font-size: 0.9em; color: #aaa;">
-                        Rolls: [${damageRoll.rolls.join(', ')}]${damageBonus ? ` + ${damageBonus}` : ''}
-                    </div>
-                `;
-            }
+                if (damageMatch) {
+                    const diceCount = parseInt(damageMatch[1]);
+                    const diceType = parseInt(damageMatch[2]);
+                    const damageBonus = damageMatch[3] ? parseInt(damageMatch[3]) : 0;
+                    const damageType = damageMatch[4] || "";
+                    
+                    // Roll damage
+                    const damageRoll = rollDice(diceCount, diceType, damageBonus);
+                    totalDamage += damageRoll.total;
+                    allRolls.push(...damageRoll.rolls);
+                    
+                    // Add to damage details
+                    damageDetails += `
+                        <div style="margin-top: 5px;">
+                            <span style="color: #aaa;">${diceCount}d${diceType}${damageBonus ? ` + ${damageBonus}` : ''} ${damageType}:</span> 
+                            ${damageRoll.total} <span style="color: #aaa;">[${damageRoll.rolls.join(', ')}${damageBonus ? ` + ${damageBonus}` : ''}]</span>
+                        </div>
+                    `;
+                }
+            });
+            
+            // Add to attack result
+            attackResult.innerHTML += `
+                <div style="margin-top: 10px; text-align: center;">
+                    <div style="font-weight: bold; font-size: 1.1em;">Total Damage: ${totalDamage}</div>
+                    ${damageDetails}
+                </div>
+            `;
         }
     });
     
