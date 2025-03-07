@@ -124,7 +124,7 @@ export function populateConditionsSection(containerElement, characterData) {
         { name: "Thunder", description: "Damage type: Thunder" }
     ];
 
-    const conditionsList = document.getElementById("conditionsList");
+    const conditionsList = containerElement.querySelector("#conditionsList");
     
     // Add standard conditions section
     const conditionsSection = document.createElement("div");
