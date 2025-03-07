@@ -192,22 +192,16 @@ def debug_routes():
         })
     return jsonify(routes)
 
-if __name__ == "__main__":
-    # Print all routes at startup
-    print("Registered routes:")
-    for rule in app.url_map.iter_rules():
-        print(f"{rule} - {rule.endpoint} - {rule.methods}")
-    
-    app.run(debug=True)
+
 @app.route('/toggle_condition', methods=['POST'])
 def toggle_condition():
     data = request.json
     condition_name = data.get('condition')
     condition_type = data.get('type')
     is_active = data.get('active')
-    
+
     character_data = load_data()
-    
+
     # Initialize conditions structure if it doesn't exist
     if 'conditions' not in character_data:
         character_data['conditions'] = {
@@ -216,20 +210,20 @@ def toggle_condition():
             'immunities': [],
             'vulnerabilities': []
         }
-    
+
     # Ensure all condition lists exist
     for key in ['active', 'resistances', 'immunities', 'vulnerabilities']:
         if key not in character_data['conditions']:
             character_data['conditions'][key] = []
-    
+
     # Update the condition
     condition_list = character_data['conditions'][condition_type]
-    
+
     if is_active and condition_name not in condition_list:
         condition_list.append(condition_name)
     elif not is_active and condition_name in condition_list:
         condition_list.remove(condition_name)
-    
+
     # Handle special cases for damage types
     # If something is immune, it can't be resistant or vulnerable
     if condition_type == 'immunity' and is_active:
@@ -237,37 +231,36 @@ def toggle_condition():
             character_data['conditions']['resistances'].remove(condition_name)
         if condition_name in character_data['conditions']['vulnerabilities']:
             character_data['conditions']['vulnerabilities'].remove(condition_name)
-    
+
     # If something is resistant, it can't be vulnerable
     if condition_type == 'resistance' and is_active:
         if condition_name in character_data['conditions']['vulnerabilities']:
             character_data['conditions']['vulnerabilities'].remove(condition_name)
-    
+
     # If something is vulnerable, it can't be resistant
     if condition_type == 'vulnerability' and is_active:
         if condition_name in character_data['conditions']['resistances']:
             character_data['conditions']['resistances'].remove(condition_name)
-    
+
     save_data(character_data)
-    
+
     # Return the updated conditions for UI updates
     return jsonify({
         'updated': True,
         'conditions': character_data['conditions']
     })
 
+
 @app.route('/toggle_equipped', methods=['POST'])
 def toggle_equipped():
-    print("toggle_equipped route called")
     data = request.json
-    print(f"Request data: {data}")
     item_type = data.get('type')
     item_name = data.get('name')
     is_equipped = data.get('equipped')
     item_data = data.get('item_data', {})
-    
+
     character_data = load_data()
-    
+
     # Initialize equipped if it doesn't exist
     if 'equipped' not in character_data:
         character_data['equipped'] = {
@@ -287,17 +280,17 @@ def toggle_equipped():
             "feet": "",
             "finger": ""
         }
-    
+
     # Initialize equipment_data if it doesn't exist
     if 'equipment_data' not in character_data:
         character_data['equipment_data'] = {}
-    
+
     # Handle equipping/unequipping
     if is_equipped:
         # Special handling for weapons with the Light property
         if item_type == "weapon":
             is_light = item_data.get('isLight', False)
-            
+
             # If main hand is empty, equip there
             if not character_data['equipped']['weapon']:
                 character_data['equipped']['weapon'] = item_name
@@ -310,17 +303,17 @@ def toggle_equipped():
                 # If replacing main hand and it's not Light, clear offhand
                 if not is_light:
                     character_data['equipped']['offhand'] = ""
-        
+
         # Special handling for shields (can't dual wield with shield)
         elif item_type == "shield":
             character_data['equipped']['shield'] = item_name
             # Can't have offhand weapon with shield
             character_data['equipped']['offhand'] = ""
-        
+
         # For all other equipment types, only one item can be equipped per slot
         else:
             character_data['equipped'][item_type] = item_name
-        
+
         # Store the item's data for reference
         character_data['equipment_data'][item_name] = {
             'type': item_type,
@@ -342,65 +335,71 @@ def toggle_equipped():
             # Only clear if this specific item is equipped
             if item_type in character_data['equipped'] and character_data['equipped'][item_type] == item_name:
                 character_data['equipped'][item_type] = ""
-        
+
         # Remove from equipment_data if not equipped anywhere
         is_equipped_elsewhere = False
         for slot, equipped_item in character_data['equipped'].items():
             if equipped_item == item_name:
                 is_equipped_elsewhere = True
                 break
-        
+
         if not is_equipped_elsewhere and item_name in character_data['equipment_data']:
             del character_data['equipment_data'][item_name]
-    
+
     save_data(character_data)
     return jsonify({
         'success': True,
         'updated_equipment': character_data['equipped']
     })
 
+
 @app.route('/save_backstory', methods=['POST'])
 def save_backstory():
     data = request.json
     backstory = data.get('backstory')
-    
+
     character_data = load_data()
-    
+
     # Ensure player_info exists
     if 'player_info' not in character_data:
         character_data['player_info'] = {}
-    
+
     # Save backstory to player_info
     character_data['player_info']['backstory'] = backstory
-    
+
     # Save the updated character data
     save_data(character_data)
-    
+
     return jsonify({'success': True})
+
 
 @app.route('/save_character_image', methods=['POST'])
 def save_character_image():
     data = request.json
     image_url = data.get('image_url')
-    
+
     character_data = load_data()
-    
+
     # Ensure player_info exists
     if 'player_info' not in character_data:
         character_data['player_info'] = {}
-    
+
     character_data['player_info']['image_url'] = image_url
     save_data(character_data)
-    
+
     return jsonify({'success': True})
+
 
 @app.route('/save_notes', methods=['POST'])
 def save_notes():
     data = request.json
     notes = data.get('notes')
-    
+
     character_data = load_data()
     character_data['notes'] = notes
     save_data(character_data)
-    
+
     return jsonify({'success': True})
+
+if __name__ == "__main__":
+    app.run(debug=True)
