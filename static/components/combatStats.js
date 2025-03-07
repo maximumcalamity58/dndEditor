@@ -1,54 +1,74 @@
-import { generateDeathSaves, getProficiencyBonus } from "../helpers.js";
+import { generateDeathSaves, getFinalStat, getFinalProficiencyBonus } from "../helpers.js";
 
 export function populateCombatStats(containerElement, characterData) {
-    const stats = characterData.combat_stats;
-    const proficiencyBonus = getProficiencyBonus(characterData.player_info.level);
+    if (!containerElement) return;
+
+    // Fetch final computed stats with all bonuses applied
+    const hitPointsCurrent = getFinalStat("hit_points_current", characterData);
+    const hitPointsMax = getFinalStat("hit_points_max", characterData);
+    const hitPointsTemp = getFinalStat("hit_points_temp", characterData);
+    const armorClass = getFinalStat("armor_class", characterData);
+    const speed = getFinalStat("speed", characterData);
+    const initiative = getFinalStat("initiative", characterData);
+    const proficiencyBonus = getFinalProficiencyBonus(characterData);
+    const deathSavesSuccesses = getFinalStat("death_saves_successes", characterData);
+    const deathSavesFailures = getFinalStat("death_saves_failures", characterData);
+    const spellcastingAbility = characterData.combat_stats.spellcasting_ability;
+    const spellSaveDC = getFinalStat("spellcasting_save_dc", characterData);
+    const spellAttackBonus = getFinalStat("spellcasting_attack", characterData);
 
     containerElement.innerHTML = `
         <div class="info-box">
-            <h3>Combat Stats</h3>
-            <hr>
+            <h3>Combat</h3>
             <div class="stats-container">
                 <div class="stat-item">
                     <strong>Hit Points</strong>
-                    <div>${stats.hit_points.current} / ${stats.hit_points.max}</div>
-                    <small>+ ${stats.hit_points.temp} Temp HP</small>
+                    <div>${hitPointsCurrent} / ${hitPointsMax}</div>
+                    <small>+ ${hitPointsTemp} Temp HP</small>
                 </div>
                 <div class="stat-item">
                     <strong>Armor Class</strong>
-                    <div>${stats.armor_class}</div>
+                    <div>${armorClass}</div>
                 </div>
                 <div class="stat-item">
                     <strong>Speed</strong>
-                    <div>${stats.speed} ft</div>
+                    <div>${speed} ft</div>
                 </div>
                 <div class="stat-item">
                     <strong>Initiative</strong>
-                    <div>${stats.initiative}</div>
+                    <div>${initiative}</div>
                 </div>
                 <div class="stat-item proficiency-box">
                     <strong>Proficiency Bonus</strong>
-                    <div class="proficiency-value">${proficiencyBonus}</div>
+                    <div class="proficiency-value">+${proficiencyBonus}</div>
                 </div>
             </div>
         </div>
 
         <div class="info-box">
             <h3>Death Saves</h3>
-            <hr>
-            <div class="death-saves">
-                <span>Successes:</span> ${generateDeathSaves(stats.death_saves.successes)}
-                <span>Failures:</span> ${generateDeathSaves(stats.death_saves.failures)}
+            <div class="death-saves-container">
+                <div class="death-save-box">
+                    <strong>Successes</strong>
+                    <div class="death-save-checkboxes">
+                        ${generateDeathSaves(deathSavesSuccesses)}
+                    </div>
+                </div>
+                <div class="death-save-box">
+                    <strong>Failures</strong>
+                    <div class="death-save-checkboxes">
+                        ${generateDeathSaves(deathSavesFailures)}
+                    </div>
+                </div>
             </div>
         </div>
         
         <div class="info-box">
             <h3>Spellcasting</h3>
-            <hr>
             <div class="stats-container">
-                <div class="stat-item"><strong>Ability</strong> <div>${stats.spellcasting.ability}</div></div>
-                <div class="stat-item"><strong>Save DC</strong> <div>${stats.spellcasting.save_dc}</div></div>
-                <div class="stat-item"><strong>Attack Bonus</strong> <div>${stats.spellcasting.attack}</div></div>
+                <div class="stat-item"><strong>Ability</strong> <div>${spellcastingAbility}</div></div>
+                <div class="stat-item"><strong>Save DC</strong> <div>${spellSaveDC}</div></div>
+                <div class="stat-item"><strong>Attack Bonus</strong> <div>${spellAttackBonus}</div></div>
             </div>
         </div>
     `;

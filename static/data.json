@@ -5,7 +5,8 @@
         "class": "Wizard",
         "background": "Sage",
         "level": 5,
-        "experience": 3200
+        "experience": 3200,
+        "backstory": "backstory"
     },
     "conditions": {
         "active": [],
@@ -137,21 +138,11 @@
             "proficient": false
         }
     ],
-    "bonuses": [
-        {
-            "title": "disadvantage :(",
-            "effects": [
-                {
-                    "category": "advantage",
-                    "target": "Strength"
-                }
-            ]
-        }
-    ],
+    "bonuses": [],
     "equipped": {
-        "weapon": "",
-        "armor": "",
-        "shield": "",
+        "weapon": "tentacle whip",
+        "armor": "arm",
+        "shield": "Shield",
         "head": "",
         "neck": "",
         "shoulders": "",
@@ -162,41 +153,180 @@
         "waist": "",
         "legs": "",
         "feet": "",
-        "finger": ""
+        "finger": "",
+        "offhand": ""
     },
-    "notes": "",
+    "notes": "this is a note\n\nhi this is something to remember\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndfdkisfkm",
     "inventory": [
         {
-            "name": "Silk Rope (50 feet)",
-            "category": "misc",
-            "value": 10,
-            "weight": 5,
-            "description": "Stronger than hempen rope, silk rope has 2 hit points and can be burst with a DC 17 Strength check.",
+            "name": "Club",
+            "category": "weapon",
+            "value": 0.1,
+            "weight": 2,
+            "damage": "1d4 bludgeoning",
+            "properties": [
+                "Light"
+            ],
+            "description": "A simple wooden club.",
             "predefined": true,
-            "predefinedKey": "adventuring_gear.misc.rope_silk",
+            "predefinedKey": "weapons.simple_melee.club",
             "quantity": 1
         },
         {
-            "name": "sword 2",
-            "description": "",
+            "name": "Hide Armor",
+            "category": "armor",
             "value": 10,
-            "weight": 10,
-            "category": "misc",
-            "subcategory": "equipment_packs",
-            "quantity": 1,
-            "effect": []
+            "weight": 12,
+            "armor_class": "12 + Dex modifier (max 2)",
+            "description": "Armor made of thick furs and pelts.",
+            "predefined": true,
+            "predefinedKey": "armor.medium_armor.hide",
+            "quantity": 1
         },
         {
-            "name": "nj",
+            "name": "arm",
+            "description": "",
+            "value": 0,
+            "weight": 0,
+            "category": "armor",
+            "subcategory": "light_armor",
+            "quantity": 1,
+            "armor_class": "20",
+            "effect": [],
+            "actions": []
+        },
+        {
+            "name": "weapon 50",
             "description": "",
             "value": 0,
             "weight": 0,
             "category": "weapon",
             "subcategory": "simple_melee",
             "quantity": 1,
-            "damage": "1d6 slashing",
-            "properties": [],
-            "effect": []
+            "damage": "1d10 slashing +3 plus 4d8 force plus 2d10 poison",
+            "properties": [
+                "Light"
+            ],
+            "effect": [
+                {
+                    "category": "stat",
+                    "target": "Strength",
+                    "amount": 1,
+                    "modifier": "none"
+                }
+            ],
+            "actions": [
+                {
+                    "name": "mega kill",
+                    "actionType": "reaction",
+                    "effectType": "damage",
+                    "description": "kills",
+                    "target": "Slashing",
+                    "dice": "1d4",
+                    "modifier": 1000
+                }
+            ]
+        },
+        {
+            "name": "tentacle whip",
+            "description": "",
+            "value": 0,
+            "weight": 0,
+            "category": "weapon",
+            "subcategory": "simple_melee",
+            "quantity": 1,
+            "damage": "1d4 slashing +1 plus 1d12 cold",
+            "properties": [
+                "Finesse",
+                "Light"
+            ],
+            "effect": [
+                {
+                    "category": "stat",
+                    "target": "Strength",
+                    "amount": 1,
+                    "modifier": "none"
+                }
+            ],
+            "actions": []
+        },
+        {
+            "name": "Shield",
+            "category": "shield",
+            "value": 10,
+            "weight": 6,
+            "armor_class": "+2",
+            "description": "A wooden or metal shield carried in one hand.",
+            "predefined": true,
+            "predefinedKey": "armor.shields.shield",
+            "quantity": 1
         }
-    ]
+    ],
+    "equipment": {},
+    "equipment_data": {
+        "arm": {
+            "type": "armor",
+            "category": "armor",
+            "damage": "",
+            "properties": [],
+            "armor_class": "20",
+            "subcategory": "light_armor",
+            "effect": [],
+            "actions": []
+        },
+        "weapon 3": {
+            "type": "weapon",
+            "category": "weapon",
+            "damage": "1d4 slashing",
+            "properties": [
+                "Light"
+            ],
+            "armor_class": "",
+            "subcategory": "simple_melee",
+            "effect": [],
+            "actions": []
+        },
+        "tentacle whip": {
+            "type": "weapon",
+            "category": "weapon",
+            "damage": "1d4 slashing +1 plus 1d12 cold",
+            "properties": [
+                "Finesse",
+                "Light"
+            ],
+            "armor_class": "",
+            "subcategory": "simple_melee",
+            "effect": [
+                {
+                    "category": "stat",
+                    "target": "Strength",
+                    "amount": 1,
+                    "modifier": "none"
+                }
+            ],
+            "actions": []
+        },
+        "Club": {
+            "type": "offhand",
+            "category": "weapon",
+            "damage": "1d4 bludgeoning",
+            "properties": [
+                "Light"
+            ],
+            "armor_class": "",
+            "subcategory": "",
+            "effect": [],
+            "actions": []
+        },
+        "Shield": {
+            "type": "shield",
+            "category": "shield",
+            "damage": "",
+            "properties": [],
+            "armor_class": "+2",
+            "subcategory": "",
+            "effect": [],
+            "actions": []
+        }
+    }
 }

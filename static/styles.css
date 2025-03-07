@@ -606,3 +606,7 @@ button:hover {
     text-align: center;
 }
 
+.lm_close_tab {
+    display: none;
+}
+

@@ -1,1102 +1,1319 @@
 {
-  "predefined_items": {
-    "weapons": {
-      "simple_melee": {
-        "club": {
-          "name": "Club",
-          "category": "weapon",
-          "value": 0.1,
-          "weight": 2,
-          "damage": "1d4 bludgeoning",
-          "properties": ["Light"],
-          "description": "A simple wooden club."
-        },
-        "dagger": {
-          "name": "Dagger",
-          "category": "weapon",
-          "value": 2,
-          "weight": 1,
-          "damage": "1d4 piercing",
-          "properties": ["Finesse", "Light", "Thrown (range 20/60)"],
-          "description": "A small knife with a pointed blade."
-        },
-        "greatclub": {
-          "name": "Greatclub",
-          "category": "weapon",
-          "value": 0.2,
-          "weight": 10,
-          "damage": "1d8 bludgeoning",
-          "properties": ["Two-handed"],
-          "description": "A large, heavy wooden club."
-        },
-        "handaxe": {
-          "name": "Handaxe",
-          "category": "weapon",
-          "value": 5,
-          "weight": 2,
-          "damage": "1d6 slashing",
-          "properties": ["Light", "Thrown (range 20/60)"],
-          "description": "A light axe designed for one-handed use."
-        },
-        "javelin": {
-          "name": "Javelin",
-          "category": "weapon",
-          "value": 0.5,
-          "weight": 2,
-          "damage": "1d6 piercing",
-          "properties": ["Thrown (range 30/120)"],
-          "description": "A light spear designed for throwing."
-        },
-        "light_hammer": {
-          "name": "Light Hammer",
-          "category": "weapon",
-          "value": 2,
-          "weight": 2,
-          "damage": "1d4 bludgeoning",
-          "properties": ["Light", "Thrown (range 20/60)"],
-          "description": "A light hammer designed for one-handed use."
-        },
-        "mace": {
-          "name": "Mace",
-          "category": "weapon",
-          "value": 5,
-          "weight": 4,
-          "damage": "1d6 bludgeoning",
-          "properties": [],
-          "description": "A metal club with a heavy head."
-        },
-        "quarterstaff": {
-          "name": "Quarterstaff",
-          "category": "weapon",
-          "value": 0.2,
-          "weight": 4,
-          "damage": "1d6 bludgeoning",
-          "properties": ["Versatile (1d8)"],
-          "description": "A wooden staff that can be wielded with one or two hands."
-        },
-        "sickle": {
-          "name": "Sickle",
-          "category": "weapon",
-          "value": 1,
-          "weight": 2,
-          "damage": "1d4 slashing",
-          "properties": ["Light"],
-          "description": "A curved blade attached to a short handle."
-        },
-        "spear": {
-          "name": "Spear",
-          "category": "weapon",
-          "value": 1,
-          "weight": 3,
-          "damage": "1d6 piercing",
-          "properties": ["Thrown (range 20/60)", "Versatile (1d8)"],
-          "description": "A simple polearm with a pointed tip."
-        }
-      },
-      "simple_ranged": {
-        "light_crossbow": {
-          "name": "Light Crossbow",
-          "category": "weapon",
-          "value": 25,
-          "weight": 5,
-          "damage": "1d8 piercing",
-          "properties": ["Ammunition (range 80/320)", "Loading", "Two-handed"],
-          "description": "A small crossbow that fires bolts."
-        },
-        "dart": {
-          "name": "Dart",
-          "category": "weapon",
-          "value": 0.05,
-          "weight": 0.25,
-          "damage": "1d4 piercing",
-          "properties": ["Finesse", "Thrown (range 20/60)"],
-          "description": "A small, weighted projectile designed for throwing."
-        },
-        "shortbow": {
-          "name": "Shortbow",
-          "category": "weapon",
-          "value": 25,
-          "weight": 2,
-          "damage": "1d6 piercing",
-          "properties": ["Ammunition (range 80/320)", "Two-handed"],
-          "description": "A small bow that fires arrows."
-        },
-        "sling": {
-          "name": "Sling",
-          "category": "weapon",
-          "value": 0.1,
-          "weight": 0,
-          "damage": "1d4 bludgeoning",
-          "properties": ["Ammunition (range 30/120)"],
-          "description": "A simple leather strap used to hurl small projectiles."
-        }
-      },
-      "martial_melee": {
-        "battleaxe": {
-          "name": "Battleaxe",
-          "category": "weapon",
-          "value": 10,
-          "weight": 4,
-          "damage": "1d8 slashing",
-          "properties": ["Versatile (1d10)"],
-          "description": "A heavy axe designed for combat."
-        },
-        "flail": {
-          "name": "Flail",
-          "category": "weapon",
-          "value": 10,
-          "weight": 2,
-          "damage": "1d8 bludgeoning",
-          "properties": [],
-          "description": "A metal weight attached to a handle by a chain."
-        },
-        "glaive": {
-          "name": "Glaive",
-          "category": "weapon",
-          "value": 20,
-          "weight": 6,
-          "damage": "1d10 slashing",
-          "properties": ["Heavy", "Reach", "Two-handed"],
-          "description": "A polearm with a large, curved blade on the end."
-        },
-        "greataxe": {
-          "name": "Greataxe",
-          "category": "weapon",
-          "value": 30,
-          "weight": 7,
-          "damage": "1d12 slashing",
-          "properties": ["Heavy", "Two-handed"],
-          "description": "A large, heavy axe designed for two-handed use."
-        },
-        "greatsword": {
-          "name": "Greatsword",
-          "category": "weapon",
-          "value": 50,
-          "weight": 6,
-          "damage": "2d6 slashing",
-          "properties": ["Heavy", "Two-handed"],
-          "description": "A large sword designed for two-handed use."
-        },
-        "longsword": {
-          "name": "Longsword",
-          "category": "weapon",
-          "value": 15,
-          "weight": 3,
-          "damage": "1d8 slashing",
-          "properties": ["Versatile (1d10)"],
-          "description": "A versatile sword designed for one or two-handed use."
-        },
-        "rapier": {
-          "name": "Rapier",
-          "category": "weapon",
-          "value": 25,
-          "weight": 2,
-          "damage": "1d8 piercing",
-          "properties": ["Finesse"],
-          "description": "A slender, pointed sword designed for thrusting."
-        },
-        "scimitar": {
-          "name": "Scimitar",
-          "category": "weapon",
-          "value": 25,
-          "weight": 3,
-          "damage": "1d6 slashing",
-          "properties": ["Finesse", "Light"],
-          "description": "A curved sword with a sharp edge on the convex side."
-        },
-        "shortsword": {
-          "name": "Shortsword",
-          "category": "weapon",
-          "value": 10,
-          "weight": 2,
-          "damage": "1d6 piercing",
-          "properties": ["Finesse", "Light"],
-          "description": "A small sword designed for one-handed use."
-        }
-      },
-      "martial_ranged": {
-        "longbow": {
-          "name": "Longbow",
-          "category": "weapon",
-          "value": 50,
-          "weight": 2,
-          "damage": "1d8 piercing",
-          "properties": ["Ammunition (range 150/600)", "Heavy", "Two-handed"],
-          "description": "A large bow that fires arrows with great force."
-        },
-        "heavy_crossbow": {
-          "name": "Heavy Crossbow",
-          "category": "weapon",
-          "value": 50,
-          "weight": 18,
-          "damage": "1d10 piercing",
-          "properties": ["Ammunition (range 100/400)", "Heavy", "Loading", "Two-handed"],
-          "description": "A large crossbow that fires bolts with great force."
-        },
-        "hand_crossbow": {
-          "name": "Hand Crossbow",
-          "category": "weapon",
-          "value": 75,
-          "weight": 3,
-          "damage": "1d6 piercing",
-          "properties": ["Ammunition (range 30/120)", "Light", "Loading"],
-          "description": "A small, one-handed crossbow that's easy to conceal."
-        },
-        "blowgun": {
-          "name": "Blowgun",
-          "category": "weapon",
-          "value": 10,
-          "weight": 1,
-          "damage": "1 piercing",
-          "properties": ["Ammunition (range 25/100)", "Loading"],
-          "description": "A simple tube for firing small darts."
-        },
-        "net": {
-          "name": "Net",
-          "category": "weapon",
-          "value": 1,
-          "weight": 3,
-          "damage": "—",
-          "properties": ["Special", "Thrown (range 5/15)"],
-          "description": "A net used to restrain creatures. A Large or smaller creature hit by a net is restrained until freed."
-        }
-      }
-    },
-    "armor": {
-      "light_armor": {
-        "padded": {
-          "name": "Padded Armor",
-          "category": "armor",
-          "value": 5,
-          "weight": 8,
-          "armor_class": "11 + Dex modifier",
-          "stealth": "Disadvantage",
-          "description": "Armor made of quilted layers of cloth and batting."
-        },
-        "leather": {
-          "name": "Leather Armor",
-          "category": "armor",
-          "value": 10,
-          "weight": 10,
-          "armor_class": "11 + Dex modifier",
-          "description": "Armor made of hardened leather."
-        },
-        "studded_leather": {
-          "name": "Studded Leather Armor",
-          "category": "armor",
-          "value": 45,
-          "weight": 13,
-          "armor_class": "12 + Dex modifier",
-          "description": "Armor made of tough leather reinforced with close-set rivets."
-        }
-      },
-      "medium_armor": {
-        "hide": {
-          "name": "Hide Armor",
-          "category": "armor",
-          "value": 10,
-          "weight": 12,
-          "armor_class": "12 + Dex modifier (max 2)",
-          "description": "Armor made of thick furs and pelts."
-        },
-        "chain_shirt": {
-          "name": "Chain Shirt",
-          "category": "armor",
-          "value": 50,
-          "weight": 20,
-          "armor_class": "13 + Dex modifier (max 2)",
-          "description": "Armor made of interlocking metal rings worn over a layer of padding."
-        },
-        "scale_mail": {
-          "name": "Scale Mail",
-          "category": "armor",
-          "value": 50,
-          "weight": 45,
-          "armor_class": "14 + Dex modifier (max 2)",
-          "stealth": "Disadvantage",
-          "description": "Armor consisting of a coat and leggings of leather covered with overlapping pieces of metal."
-        },
-        "breastplate": {
-          "name": "Breastplate",
-          "category": "armor",
-          "value": 400,
-          "weight": 20,
-          "armor_class": "14 + Dex modifier (max 2)",
-          "description": "Armor consisting of a fitted metal chest piece worn with supple leather."
-        },
-        "half_plate": {
-          "name": "Half Plate",
-          "category": "armor",
-          "value": 750,
-          "weight": 40,
-          "armor_class": "15 + Dex modifier (max 2)",
-          "stealth": "Disadvantage",
-          "description": "Armor consisting of shaped metal plates that cover most of the body."
-        }
-      },
-      "heavy_armor": {
-        "ring_mail": {
-          "name": "Ring Mail",
-          "category": "armor",
-          "value": 30,
-          "weight": 40,
-          "armor_class": "14",
-          "stealth": "Disadvantage",
-          "description": "Armor made of leather with heavy rings sewn into it."
-        },
-        "chain_mail": {
-          "name": "Chain Mail",
-          "category": "armor",
-          "value": 75,
-          "weight": 55,
-          "armor_class": "16",
-          "strength_requirement": "13",
-          "stealth": "Disadvantage",
-          "description": "Armor made of interlocking metal rings worn over a layer of quilted fabric."
-        },
-        "splint": {
-          "name": "Splint Armor",
-          "category": "armor",
-          "value": 200,
-          "weight": 60,
-          "armor_class": "17",
-          "strength_requirement": "15",
-          "stealth": "Disadvantage",
-          "description": "Armor made of narrow vertical strips of metal riveted to a backing of leather."
-        },
-        "plate": {
-          "name": "Plate Armor",
-          "category": "armor",
-          "value": 1500,
-          "weight": 65,
-          "armor_class": "18",
-          "strength_requirement": "15",
-          "stealth": "Disadvantage",
-          "description": "Armor consisting of shaped, interlocking metal plates to cover the entire body."
-        }
-      },
-      "shields": {
-        "shield": {
-          "name": "Shield",
-          "category": "shield",
-          "value": 10,
-          "weight": 6,
-          "armor_class": "+2",
-          "description": "A wooden or metal shield carried in one hand."
-        }
-      }
-    },
-    "clothing": {
-      "head": {
-        "helmet": {
-          "name": "Helmet",
-          "category": "clothing",
-          "slot": "head",
-          "value": 10,
-          "weight": 2,
-          "description": "A protective covering for the head."
-        },
-        "hat": {
-          "name": "Hat",
-          "category": "clothing",
-          "slot": "head",
-          "value": 5,
-          "weight": 0.5,
-          "description": "A fashionable or practical head covering."
-        },
-        "circlet": {
-          "name": "Circlet",
-          "category": "clothing",
-          "slot": "head",
-          "value": 25,
-          "weight": 0.5,
-          "description": "A decorative band worn around the head."
-        }
-      },
-      "neck": {
-        "amulet": {
-          "name": "Amulet",
-          "category": "clothing",
-          "slot": "neck",
-          "value": 15,
-          "weight": 0.5,
-          "description": "A pendant worn around the neck, often for decoration or as a symbol."
-        },
-        "necklace": {
-          "name": "Necklace",
-          "category": "clothing",
-          "slot": "neck",
-          "value": 25,
-          "weight": 0.5,
-          "description": "A decorative chain or string of beads worn around the neck."
-        },
-        "scarf": {
-          "name": "Scarf",
-          "category": "clothing",
-          "slot": "neck",
-          "value": 3,
-          "weight": 0.5,
-          "description": "A length of fabric worn around the neck for warmth or decoration."
-        }
-      },
-      "shoulders": {
-        "cloak": {
-          "name": "Cloak",
-          "category": "clothing",
-          "slot": "shoulders",
-          "value": 5,
-          "weight": 3,
-          "description": "A loose outer garment worn over the shoulders."
-        },
-        "mantle": {
-          "name": "Mantle",
-          "category": "clothing",
-          "slot": "shoulders",
-          "value": 10,
-          "weight": 2,
-          "description": "A loose sleeveless cloak or shawl."
-        }
-      },
-      "hands": {
-        "gloves": {
-          "name": "Gloves",
-          "category": "clothing",
-          "slot": "hands",
-          "value": 2,
-          "weight": 0.5,
-          "description": "Coverings for the hands with separate parts for each finger."
-        },
-        "gauntlets": {
-          "name": "Gauntlets",
-          "category": "clothing",
-          "slot": "hands",
-          "value": 5,
-          "weight": 1,
-          "description": "Armored gloves that protect the hands and wrists."
-        },
-        "bracers": {
-          "name": "Bracers",
-          "category": "clothing",
-          "slot": "wrists",
-          "value": 10,
-          "weight": 1,
-          "description": "Armor pieces that protect the forearms."
-        }
-      },
-      "waist": {
-        "belt": {
-          "name": "Belt",
-          "category": "clothing",
-          "slot": "waist",
-          "value": 1,
-          "weight": 0.5,
-          "description": "A strip of leather or cloth worn around the waist."
-        },
-        "sash": {
-          "name": "Sash",
-          "category": "clothing",
-          "slot": "waist",
-          "value": 2,
-          "weight": 0.5,
-          "description": "A long strip of cloth worn around the waist or over the shoulder."
-        }
-      },
-      "feet": {
-        "boots": {
-          "name": "Boots",
-          "category": "clothing",
-          "slot": "feet",
-          "value": 5,
-          "weight": 2,
-          "description": "Sturdy footwear that covers the foot and ankle."
-        },
-        "shoes": {
-          "name": "Shoes",
-          "category": "clothing",
-          "slot": "feet",
-          "value": 2,
-          "weight": 1,
-          "description": "Lightweight footwear."
-        },
-        "sandals": {
-          "name": "Sandals",
-          "category": "clothing",
-          "slot": "feet",
-          "value": 1,
-          "weight": 0.5,
-          "description": "Open footwear consisting of a sole held to the foot by straps."
-        }
-      }
-    },
-    "adventuring_gear": {
-      "equipment_packs": {
-        "burglar": {
-          "name": "Burglar's Pack",
-          "category": "misc",
-          "value": 16,
-          "weight": 45,
-          "description": "Includes a backpack, a bag of 1,000 ball bearings, 10 feet of string, a bell, 5 candles, a crowbar, a hammer, 10 pitons, a hooded lantern, 2 flasks of oil, 5 days rations, a tinderbox, a waterskin, and 50 feet of hempen rope."
-        },
-        "diplomat": {
-          "name": "Diplomat's Pack",
-          "category": "misc",
-          "value": 39,
-          "weight": 36,
-          "description": "Includes a chest, 2 cases for maps and scrolls, a set of fine clothes, a bottle of ink, an ink pen, a lamp, 2 flasks of oil, 5 sheets of paper, a vial of perfume, sealing wax, and soap."
-        },
-        "dungeoneer": {
-          "name": "Dungeoneer's Pack",
-          "category": "misc",
-          "value": 12,
-          "weight": 61,
-          "description": "Includes a backpack, a crowbar, a hammer, 10 pitons, 10 torches, a tinderbox, 10 days of rations, a waterskin, and 50 feet of hempen rope."
-        },
-        "explorer": {
-          "name": "Explorer's Pack",
-          "category": "misc",
-          "value": 10,
-          "weight": 59,
-          "description": "Includes a backpack, a bedroll, a mess kit, a tinderbox, 10 torches, 10 days of rations, a waterskin, and 50 feet of hempen rope."
-        }
-      },
-      "tools": {
-        "thieves_tools": {
-          "name": "Thieves' Tools",
-          "category": "misc",
-          "value": 25,
-          "weight": 1,
-          "description": "This set of tools includes a small file, a set of lock picks, a small mirror mounted on a metal handle, a set of narrow-bladed scissors, and a pair of pliers."
-        },
-        "herbalism_kit": {
-          "name": "Herbalism Kit",
-          "category": "misc",
-          "value": 5,
-          "weight": 3,
-          "description": "This kit contains a variety of instruments such as clippers, mortar and pestle, and pouches and vials used by herbalists."
-        },
-        "healers_kit": {
-          "name": "Healer's Kit",
-          "category": "misc",
-          "value": 5,
-          "weight": 3,
-          "description": "This kit is a leather pouch containing bandages, salves, and splints. The kit has ten uses."
-        }
-      },
-      "potions": {
-        "healing_potion": {
-          "name": "Potion of Healing",
-          "category": "potion",
-          "value": 50,
-          "weight": 0.5,
-          "description": "A character who drinks this magical red fluid regains 2d4 + 2 hit points.",
-          "effect": [
-            {
-              "category": "stat",
-              "target": "Health",
-              "amount": 7,
-              "modifier": "none"
+    "predefined_items": {
+        "weapons": {
+            "simple_melee": {
+                "club": {
+                    "name": "Club",
+                    "category": "weapon",
+                    "value": 0.1,
+                    "weight": 2,
+                    "damage": "1d4 bludgeoning",
+                    "properties": [
+                        "Light"
+                    ],
+                    "description": "A simple wooden club."
+                },
+                "dagger": {
+                    "name": "Dagger",
+                    "category": "weapon",
+                    "value": 2,
+                    "weight": 1,
+                    "damage": "1d4 piercing",
+                    "properties": [
+                        "Finesse",
+                        "Light",
+                        "Thrown (range 20/60)"
+                    ],
+                    "description": "A small knife with a pointed blade."
+                },
+                "greatclub": {
+                    "name": "Greatclub",
+                    "category": "weapon",
+                    "value": 0.2,
+                    "weight": 10,
+                    "damage": "1d8 bludgeoning",
+                    "properties": [
+                        "Two-handed"
+                    ],
+                    "description": "A large, heavy wooden club."
+                },
+                "handaxe": {
+                    "name": "Handaxe",
+                    "category": "weapon",
+                    "value": 5,
+                    "weight": 2,
+                    "damage": "1d6 slashing",
+                    "properties": [
+                        "Light",
+                        "Thrown (range 20/60)"
+                    ],
+                    "description": "A light axe designed for one-handed use."
+                },
+                "javelin": {
+                    "name": "Javelin",
+                    "category": "weapon",
+                    "value": 0.5,
+                    "weight": 2,
+                    "damage": "1d6 piercing",
+                    "properties": [
+                        "Thrown (range 30/120)"
+                    ],
+                    "description": "A light spear designed for throwing."
+                },
+                "light_hammer": {
+                    "name": "Light Hammer",
+                    "category": "weapon",
+                    "value": 2,
+                    "weight": 2,
+                    "damage": "1d4 bludgeoning",
+                    "properties": [
+                        "Light",
+                        "Thrown (range 20/60)"
+                    ],
+                    "description": "A light hammer designed for one-handed use."
+                },
+                "mace": {
+                    "name": "Mace",
+                    "category": "weapon",
+                    "value": 5,
+                    "weight": 4,
+                    "damage": "1d6 bludgeoning",
+                    "properties": [],
+                    "description": "A metal club with a heavy head."
+                },
+                "quarterstaff": {
+                    "name": "Quarterstaff",
+                    "category": "weapon",
+                    "value": 0.2,
+                    "weight": 4,
+                    "damage": "1d6 bludgeoning",
+                    "properties": [
+                        "Versatile (1d8)"
+                    ],
+                    "description": "A wooden staff that can be wielded with one or two hands."
+                },
+                "sickle": {
+                    "name": "Sickle",
+                    "category": "weapon",
+                    "value": 1,
+                    "weight": 2,
+                    "damage": "1d4 slashing",
+                    "properties": [
+                        "Light"
+                    ],
+                    "description": "A curved blade attached to a short handle."
+                },
+                "spear": {
+                    "name": "Spear",
+                    "category": "weapon",
+                    "value": 1,
+                    "weight": 3,
+                    "damage": "1d6 piercing",
+                    "properties": [
+                        "Thrown (range 20/60)",
+                        "Versatile (1d8)"
+                    ],
+                    "description": "A simple polearm with a pointed tip."
+                }
+            },
+            "simple_ranged": {
+                "light_crossbow": {
+                    "name": "Light Crossbow",
+                    "category": "weapon",
+                    "value": 25,
+                    "weight": 5,
+                    "damage": "1d8 piercing",
+                    "properties": [
+                        "Ammunition (range 80/320)",
+                        "Loading",
+                        "Two-handed"
+                    ],
+                    "description": "A small crossbow that fires bolts."
+                },
+                "dart": {
+                    "name": "Dart",
+                    "category": "weapon",
+                    "value": 0.05,
+                    "weight": 0.25,
+                    "damage": "1d4 piercing",
+                    "properties": [
+                        "Finesse",
+                        "Thrown (range 20/60)"
+                    ],
+                    "description": "A small, weighted projectile designed for throwing."
+                },
+                "shortbow": {
+                    "name": "Shortbow",
+                    "category": "weapon",
+                    "value": 25,
+                    "weight": 2,
+                    "damage": "1d6 piercing",
+                    "properties": [
+                        "Ammunition (range 80/320)",
+                        "Two-handed"
+                    ],
+                    "description": "A small bow that fires arrows."
+                },
+                "sling": {
+                    "name": "Sling",
+                    "category": "weapon",
+                    "value": 0.1,
+                    "weight": 0,
+                    "damage": "1d4 bludgeoning",
+                    "properties": [
+                        "Ammunition (range 30/120)"
+                    ],
+                    "description": "A simple leather strap used to hurl small projectiles."
+                }
+            },
+            "martial_melee": {
+                "battleaxe": {
+                    "name": "Battleaxe",
+                    "category": "weapon",
+                    "value": 10,
+                    "weight": 4,
+                    "damage": "1d8 slashing",
+                    "properties": [
+                        "Versatile (1d10)"
+                    ],
+                    "description": "A heavy axe designed for combat."
+                },
+                "flail": {
+                    "name": "Flail",
+                    "category": "weapon",
+                    "value": 10,
+                    "weight": 2,
+                    "damage": "1d8 bludgeoning",
+                    "properties": [],
+                    "description": "A metal weight attached to a handle by a chain."
+                },
+                "glaive": {
+                    "name": "Glaive",
+                    "category": "weapon",
+                    "value": 20,
+                    "weight": 6,
+                    "damage": "1d10 slashing",
+                    "properties": [
+                        "Heavy",
+                        "Reach",
+                        "Two-handed"
+                    ],
+                    "description": "A polearm with a large, curved blade on the end."
+                },
+                "greataxe": {
+                    "name": "Greataxe",
+                    "category": "weapon",
+                    "value": 30,
+                    "weight": 7,
+                    "damage": "1d12 slashing",
+                    "properties": [
+                        "Heavy",
+                        "Two-handed"
+                    ],
+                    "description": "A large, heavy axe designed for two-handed use."
+                },
+                "greatsword": {
+                    "name": "Greatsword",
+                    "category": "weapon",
+                    "value": 50,
+                    "weight": 6,
+                    "damage": "2d6 slashing",
+                    "properties": [
+                        "Heavy",
+                        "Two-handed"
+                    ],
+                    "description": "A large sword designed for two-handed use."
+                },
+                "longsword": {
+                    "name": "Longsword",
+                    "category": "weapon",
+                    "value": 15,
+                    "weight": 3,
+                    "damage": "1d8 slashing",
+                    "properties": [
+                        "Versatile (1d10)"
+                    ],
+                    "description": "A versatile sword designed for one or two-handed use."
+                },
+                "rapier": {
+                    "name": "Rapier",
+                    "category": "weapon",
+                    "value": 25,
+                    "weight": 2,
+                    "damage": "1d8 piercing",
+                    "properties": [
+                        "Finesse"
+                    ],
+                    "description": "A slender, pointed sword designed for thrusting."
+                },
+                "scimitar": {
+                    "name": "Scimitar",
+                    "category": "weapon",
+                    "value": 25,
+                    "weight": 3,
+                    "damage": "1d6 slashing",
+                    "properties": [
+                        "Finesse",
+                        "Light"
+                    ],
+                    "description": "A curved sword with a sharp edge on the convex side."
+                },
+                "shortsword": {
+                    "name": "Shortsword",
+                    "category": "weapon",
+                    "value": 10,
+                    "weight": 2,
+                    "damage": "1d6 piercing",
+                    "properties": [
+                        "Finesse",
+                        "Light"
+                    ],
+                    "description": "A small sword designed for one-handed use."
+                }
+            },
+            "martial_ranged": {
+                "longbow": {
+                    "name": "Longbow",
+                    "category": "weapon",
+                    "value": 50,
+                    "weight": 2,
+                    "damage": "1d8 piercing",
+                    "properties": [
+                        "Ammunition (range 150/600)",
+                        "Heavy",
+                        "Two-handed"
+                    ],
+                    "description": "A large bow that fires arrows with great force."
+                },
+                "heavy_crossbow": {
+                    "name": "Heavy Crossbow",
+                    "category": "weapon",
+                    "value": 50,
+                    "weight": 18,
+                    "damage": "1d10 piercing",
+                    "properties": [
+                        "Ammunition (range 100/400)",
+                        "Heavy",
+                        "Loading",
+                        "Two-handed"
+                    ],
+                    "description": "A large crossbow that fires bolts with great force."
+                },
+                "hand_crossbow": {
+                    "name": "Hand Crossbow",
+                    "category": "weapon",
+                    "value": 75,
+                    "weight": 3,
+                    "damage": "1d6 piercing",
+                    "properties": [
+                        "Ammunition (range 30/120)",
+                        "Light",
+                        "Loading"
+                    ],
+                    "description": "A small, one-handed crossbow that's easy to conceal."
+                },
+                "blowgun": {
+                    "name": "Blowgun",
+                    "category": "weapon",
+                    "value": 10,
+                    "weight": 1,
+                    "damage": "1 piercing",
+                    "properties": [
+                        "Ammunition (range 25/100)",
+                        "Loading"
+                    ],
+                    "description": "A simple tube for firing small darts."
+                },
+                "net": {
+                    "name": "Net",
+                    "category": "weapon",
+                    "value": 1,
+                    "weight": 3,
+                    "damage": "\u2014",
+                    "properties": [
+                        "Special",
+                        "Thrown (range 5/15)"
+                    ],
+                    "description": "A net used to restrain creatures. A Large or smaller creature hit by a net is restrained until freed."
+                }
             }
-          ]
         },
-        "antitoxin": {
-          "name": "Antitoxin",
-          "category": "potion",
-          "value": 50,
-          "weight": 0,
-          "description": "A creature that drinks this vial of liquid gains advantage on saving throws against poison for 1 hour."
+        "armor": {
+            "light_armor": {
+                "padded": {
+                    "name": "Padded Armor",
+                    "category": "armor",
+                    "value": 5,
+                    "weight": 8,
+                    "armor_class": "11 + Dex modifier",
+                    "stealth": "Disadvantage",
+                    "description": "Armor made of quilted layers of cloth and batting."
+                },
+                "leather": {
+                    "name": "Leather Armor",
+                    "category": "armor",
+                    "value": 10,
+                    "weight": 10,
+                    "armor_class": "11 + Dex modifier",
+                    "description": "Armor made of hardened leather."
+                },
+                "studded_leather": {
+                    "name": "Studded Leather Armor",
+                    "category": "armor",
+                    "value": 45,
+                    "weight": 13,
+                    "armor_class": "12 + Dex modifier",
+                    "description": "Armor made of tough leather reinforced with close-set rivets."
+                }
+            },
+            "medium_armor": {
+                "hide": {
+                    "name": "Hide Armor",
+                    "category": "armor",
+                    "value": 10,
+                    "weight": 12,
+                    "armor_class": "12 + Dex modifier (max 2)",
+                    "description": "Armor made of thick furs and pelts."
+                },
+                "chain_shirt": {
+                    "name": "Chain Shirt",
+                    "category": "armor",
+                    "value": 50,
+                    "weight": 20,
+                    "armor_class": "13 + Dex modifier (max 2)",
+                    "description": "Armor made of interlocking metal rings worn over a layer of padding."
+                },
+                "scale_mail": {
+                    "name": "Scale Mail",
+                    "category": "armor",
+                    "value": 50,
+                    "weight": 45,
+                    "armor_class": "14 + Dex modifier (max 2)",
+                    "stealth": "Disadvantage",
+                    "description": "Armor consisting of a coat and leggings of leather covered with overlapping pieces of metal."
+                },
+                "breastplate": {
+                    "name": "Breastplate",
+                    "category": "armor",
+                    "value": 400,
+                    "weight": 20,
+                    "armor_class": "14 + Dex modifier (max 2)",
+                    "description": "Armor consisting of a fitted metal chest piece worn with supple leather."
+                },
+                "half_plate": {
+                    "name": "Half Plate",
+                    "category": "armor",
+                    "value": 750,
+                    "weight": 40,
+                    "armor_class": "15 + Dex modifier (max 2)",
+                    "stealth": "Disadvantage",
+                    "description": "Armor consisting of shaped metal plates that cover most of the body."
+                }
+            },
+            "heavy_armor": {
+                "ring_mail": {
+                    "name": "Ring Mail",
+                    "category": "armor",
+                    "value": 30,
+                    "weight": 40,
+                    "armor_class": "14",
+                    "stealth": "Disadvantage",
+                    "description": "Armor made of leather with heavy rings sewn into it."
+                },
+                "chain_mail": {
+                    "name": "Chain Mail",
+                    "category": "armor",
+                    "value": 75,
+                    "weight": 55,
+                    "armor_class": "16",
+                    "strength_requirement": "13",
+                    "stealth": "Disadvantage",
+                    "description": "Armor made of interlocking metal rings worn over a layer of quilted fabric."
+                },
+                "splint": {
+                    "name": "Splint Armor",
+                    "category": "armor",
+                    "value": 200,
+                    "weight": 60,
+                    "armor_class": "17",
+                    "strength_requirement": "15",
+                    "stealth": "Disadvantage",
+                    "description": "Armor made of narrow vertical strips of metal riveted to a backing of leather."
+                },
+                "plate": {
+                    "name": "Plate Armor",
+                    "category": "armor",
+                    "value": 1500,
+                    "weight": 65,
+                    "armor_class": "18",
+                    "strength_requirement": "15",
+                    "stealth": "Disadvantage",
+                    "description": "Armor consisting of shaped, interlocking metal plates to cover the entire body."
+                }
+            },
+            "shields": {
+                "shield": {
+                    "name": "Shield",
+                    "category": "shield",
+                    "value": 10,
+                    "weight": 6,
+                    "armor_class": "+2",
+                    "description": "A wooden or metal shield carried in one hand."
+                }
+            }
+        },
+        "clothing": {
+            "head": {
+                "helmet": {
+                    "name": "Helmet",
+                    "category": "clothing",
+                    "slot": "head",
+                    "value": 10,
+                    "weight": 2,
+                    "description": "A protective covering for the head."
+                },
+                "hat": {
+                    "name": "Hat",
+                    "category": "clothing",
+                    "slot": "head",
+                    "value": 5,
+                    "weight": 0.5,
+                    "description": "A fashionable or practical head covering."
+                },
+                "circlet": {
+                    "name": "Circlet",
+                    "category": "clothing",
+                    "slot": "head",
+                    "value": 25,
+                    "weight": 0.5,
+                    "description": "A decorative band worn around the head."
+                }
+            },
+            "neck": {
+                "amulet": {
+                    "name": "Amulet",
+                    "category": "clothing",
+                    "slot": "neck",
+                    "value": 15,
+                    "weight": 0.5,
+                    "description": "A pendant worn around the neck, often for decoration or as a symbol."
+                },
+                "necklace": {
+                    "name": "Necklace",
+                    "category": "clothing",
+                    "slot": "neck",
+                    "value": 25,
+                    "weight": 0.5,
+                    "description": "A decorative chain or string of beads worn around the neck."
+                },
+                "scarf": {
+                    "name": "Scarf",
+                    "category": "clothing",
+                    "slot": "neck",
+                    "value": 3,
+                    "weight": 0.5,
+                    "description": "A length of fabric worn around the neck for warmth or decoration."
+                }
+            },
+            "shoulders": {
+                "cloak": {
+                    "name": "Cloak",
+                    "category": "clothing",
+                    "slot": "shoulders",
+                    "value": 5,
+                    "weight": 3,
+                    "description": "A loose outer garment worn over the shoulders."
+                },
+                "mantle": {
+                    "name": "Mantle",
+                    "category": "clothing",
+                    "slot": "shoulders",
+                    "value": 10,
+                    "weight": 2,
+                    "description": "A loose sleeveless cloak or shawl."
+                }
+            },
+            "hands": {
+                "gloves": {
+                    "name": "Gloves",
+                    "category": "clothing",
+                    "slot": "hands",
+                    "value": 2,
+                    "weight": 0.5,
+                    "description": "Coverings for the hands with separate parts for each finger."
+                },
+                "gauntlets": {
+                    "name": "Gauntlets",
+                    "category": "clothing",
+                    "slot": "hands",
+                    "value": 5,
+                    "weight": 1,
+                    "description": "Armored gloves that protect the hands and wrists."
+                },
+                "bracers": {
+                    "name": "Bracers",
+                    "category": "clothing",
+                    "slot": "wrists",
+                    "value": 10,
+                    "weight": 1,
+                    "description": "Armor pieces that protect the forearms."
+                }
+            },
+            "waist": {
+                "belt": {
+                    "name": "Belt",
+                    "category": "clothing",
+                    "slot": "waist",
+                    "value": 1,
+                    "weight": 0.5,
+                    "description": "A strip of leather or cloth worn around the waist."
+                },
+                "sash": {
+                    "name": "Sash",
+                    "category": "clothing",
+                    "slot": "waist",
+                    "value": 2,
+                    "weight": 0.5,
+                    "description": "A long strip of cloth worn around the waist or over the shoulder."
+                }
+            },
+            "feet": {
+                "boots": {
+                    "name": "Boots",
+                    "category": "clothing",
+                    "slot": "feet",
+                    "value": 5,
+                    "weight": 2,
+                    "description": "Sturdy footwear that covers the foot and ankle."
+                },
+                "shoes": {
+                    "name": "Shoes",
+                    "category": "clothing",
+                    "slot": "feet",
+                    "value": 2,
+                    "weight": 1,
+                    "description": "Lightweight footwear."
+                },
+                "sandals": {
+                    "name": "Sandals",
+                    "category": "clothing",
+                    "slot": "feet",
+                    "value": 1,
+                    "weight": 0.5,
+                    "description": "Open footwear consisting of a sole held to the foot by straps."
+                }
+            }
+        },
+        "adventuring_gear": {
+            "equipment_packs": {
+                "burglar": {
+                    "name": "Burglar's Pack",
+                    "category": "misc",
+                    "value": 16,
+                    "weight": 45,
+                    "description": "Includes a backpack, a bag of 1,000 ball bearings, 10 feet of string, a bell, 5 candles, a crowbar, a hammer, 10 pitons, a hooded lantern, 2 flasks of oil, 5 days rations, a tinderbox, a waterskin, and 50 feet of hempen rope."
+                },
+                "diplomat": {
+                    "name": "Diplomat's Pack",
+                    "category": "misc",
+                    "value": 39,
+                    "weight": 36,
+                    "description": "Includes a chest, 2 cases for maps and scrolls, a set of fine clothes, a bottle of ink, an ink pen, a lamp, 2 flasks of oil, 5 sheets of paper, a vial of perfume, sealing wax, and soap."
+                },
+                "dungeoneer": {
+                    "name": "Dungeoneer's Pack",
+                    "category": "misc",
+                    "value": 12,
+                    "weight": 61,
+                    "description": "Includes a backpack, a crowbar, a hammer, 10 pitons, 10 torches, a tinderbox, 10 days of rations, a waterskin, and 50 feet of hempen rope."
+                },
+                "explorer": {
+                    "name": "Explorer's Pack",
+                    "category": "misc",
+                    "value": 10,
+                    "weight": 59,
+                    "description": "Includes a backpack, a bedroll, a mess kit, a tinderbox, 10 torches, 10 days of rations, a waterskin, and 50 feet of hempen rope."
+                }
+            },
+            "tools": {
+                "thieves_tools": {
+                    "name": "Thieves' Tools",
+                    "category": "misc",
+                    "value": 25,
+                    "weight": 1,
+                    "description": "This set of tools includes a small file, a set of lock picks, a small mirror mounted on a metal handle, a set of narrow-bladed scissors, and a pair of pliers."
+                },
+                "herbalism_kit": {
+                    "name": "Herbalism Kit",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 3,
+                    "description": "This kit contains a variety of instruments such as clippers, mortar and pestle, and pouches and vials used by herbalists."
+                },
+                "healers_kit": {
+                    "name": "Healer's Kit",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 3,
+                    "description": "This kit is a leather pouch containing bandages, salves, and splints. The kit has ten uses."
+                }
+            },
+            "potions": {
+                "healing_potion": {
+                    "name": "Potion of Healing",
+                    "category": "potion",
+                    "value": 50,
+                    "weight": 0.5,
+                    "description": "A character who drinks this magical red fluid regains 2d4 + 2 hit points.",
+                    "effect": [
+                        {
+                            "category": "stat",
+                            "target": "Health",
+                            "amount": 7,
+                            "modifier": "none"
+                        }
+                    ]
+                },
+                "antitoxin": {
+                    "name": "Antitoxin",
+                    "category": "potion",
+                    "value": 50,
+                    "weight": 0,
+                    "description": "A creature that drinks this vial of liquid gains advantage on saving throws against poison for 1 hour."
+                }
+            },
+            "artisan_tools": {
+                "alchemist_supplies": {
+                    "name": "Alchemist's Supplies",
+                    "category": "misc",
+                    "value": 50,
+                    "weight": 8,
+                    "description": "These special tools include the items needed to pursue alchemy. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+                },
+                "brewer_supplies": {
+                    "name": "Brewer's Supplies",
+                    "category": "misc",
+                    "value": 20,
+                    "weight": 9,
+                    "description": "These special tools include the items needed for brewing. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+                },
+                "calligrapher_supplies": {
+                    "name": "Calligrapher's Supplies",
+                    "category": "misc",
+                    "value": 10,
+                    "weight": 5,
+                    "description": "These special tools include the items needed for calligraphy. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+                },
+                "carpenter_tools": {
+                    "name": "Carpenter's Tools",
+                    "category": "misc",
+                    "value": 8,
+                    "weight": 6,
+                    "description": "These special tools include the items needed for carpentry. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+                },
+                "cartographer_tools": {
+                    "name": "Cartographer's Tools",
+                    "category": "misc",
+                    "value": 15,
+                    "weight": 6,
+                    "description": "These special tools include the items needed for mapmaking. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+                },
+                "jeweler_tools": {
+                    "name": "Jeweler's Tools",
+                    "category": "misc",
+                    "value": 25,
+                    "weight": 2,
+                    "description": "These special tools include the items needed for working with precious stones and metals. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+                },
+                "leatherworker_tools": {
+                    "name": "Leatherworker's Tools",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 5,
+                    "description": "These special tools include the items needed for working with leather. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+                },
+                "smith_tools": {
+                    "name": "Smith's Tools",
+                    "category": "misc",
+                    "value": 20,
+                    "weight": 8,
+                    "description": "These special tools include the items needed for metalworking. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+                }
+            },
+            "musical_instruments": {
+                "bagpipes": {
+                    "name": "Bagpipes",
+                    "category": "misc",
+                    "value": 30,
+                    "weight": 6,
+                    "description": "A wind instrument that produces sound when air is forced through pipes."
+                },
+                "drum": {
+                    "name": "Drum",
+                    "category": "misc",
+                    "value": 6,
+                    "weight": 3,
+                    "description": "A percussion instrument that produces sound when struck."
+                },
+                "dulcimer": {
+                    "name": "Dulcimer",
+                    "category": "misc",
+                    "value": 25,
+                    "weight": 10,
+                    "description": "A stringed instrument that produces sound when strings are struck with small hammers."
+                },
+                "flute": {
+                    "name": "Flute",
+                    "category": "misc",
+                    "value": 2,
+                    "weight": 1,
+                    "description": "A wind instrument that produces sound when air is blown across a hole."
+                },
+                "lute": {
+                    "name": "Lute",
+                    "category": "misc",
+                    "value": 35,
+                    "weight": 2,
+                    "description": "A stringed instrument that produces sound when strings are plucked."
+                },
+                "horn": {
+                    "name": "Horn",
+                    "category": "misc",
+                    "value": 3,
+                    "weight": 2,
+                    "description": "A wind instrument that produces sound when air is blown through it."
+                }
+            },
+            "gaming_sets": {
+                "dice_set": {
+                    "name": "Dice Set",
+                    "category": "misc",
+                    "value": 0.1,
+                    "weight": 0.1,
+                    "description": "A set of various dice used for games of chance."
+                },
+                "playing_card_set": {
+                    "name": "Playing Card Set",
+                    "category": "misc",
+                    "value": 0.5,
+                    "weight": 0.1,
+                    "description": "A set of cards used for games of chance."
+                },
+                "chess_set": {
+                    "name": "Chess Set",
+                    "category": "misc",
+                    "value": 1,
+                    "weight": 0.5,
+                    "description": "A board and pieces used for playing chess."
+                }
+            },
+            "misc": {
+                "backpack": {
+                    "name": "Backpack",
+                    "category": "misc",
+                    "value": 2,
+                    "weight": 5,
+                    "description": "A backpack can hold up to 1 cubic foot or 30 pounds of gear."
+                },
+                "bedroll": {
+                    "name": "Bedroll",
+                    "category": "misc",
+                    "value": 1,
+                    "weight": 7,
+                    "description": "A portable, padded mat for sleeping."
+                },
+                "rope_hempen": {
+                    "name": "Hempen Rope (50 feet)",
+                    "category": "misc",
+                    "value": 1,
+                    "weight": 10,
+                    "description": "Rope has 2 hit points and can be burst with a DC 17 Strength check."
+                },
+                "rope_silk": {
+                    "name": "Silk Rope (50 feet)",
+                    "category": "misc",
+                    "value": 10,
+                    "weight": 5,
+                    "description": "Stronger than hempen rope, silk rope has 2 hit points and can be burst with a DC 17 Strength check."
+                },
+                "torch": {
+                    "name": "Torch",
+                    "category": "misc",
+                    "value": 0.01,
+                    "weight": 1,
+                    "description": "A torch burns for 1 hour, providing bright light in a 20-foot radius and dim light for an additional 20 feet."
+                },
+                "waterskin": {
+                    "name": "Waterskin",
+                    "category": "misc",
+                    "value": 0.2,
+                    "weight": 5,
+                    "description": "A waterskin can hold up to 4 pints of liquid."
+                },
+                "rations": {
+                    "name": "Rations (1 day)",
+                    "category": "misc",
+                    "value": 0.5,
+                    "weight": 2,
+                    "description": "Rations consist of dry foods suitable for extended travel, including jerky, dried fruit, hardtack, and nuts."
+                },
+                "lantern_hooded": {
+                    "name": "Hooded Lantern",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 2,
+                    "description": "A hooded lantern casts bright light in a 30-foot radius and dim light for an additional 30 feet. Once lit, it burns for 6 hours on a flask (1 pint) of oil."
+                },
+                "lantern_bullseye": {
+                    "name": "Bullseye Lantern",
+                    "category": "misc",
+                    "value": 10,
+                    "weight": 2,
+                    "description": "A bullseye lantern casts bright light in a 60-foot cone and dim light for an additional 60 feet. Once lit, it burns for 6 hours on a flask (1 pint) of oil."
+                },
+                "oil_flask": {
+                    "name": "Oil (flask)",
+                    "category": "misc",
+                    "value": 0.1,
+                    "weight": 1,
+                    "description": "Oil usually comes in a clay flask that holds 1 pint. As an action, you can splash the oil or throw it up to 20 feet, shattering it on impact."
+                },
+                "tinderbox": {
+                    "name": "Tinderbox",
+                    "category": "misc",
+                    "value": 0.5,
+                    "weight": 1,
+                    "description": "This small container holds flint, fire steel, and tinder used to kindle a fire."
+                },
+                "grappling_hook": {
+                    "name": "Grappling Hook",
+                    "category": "misc",
+                    "value": 2,
+                    "weight": 4,
+                    "description": "A metal hook attached to a rope, used for climbing or grabbing distant objects."
+                },
+                "hammer": {
+                    "name": "Hammer",
+                    "category": "misc",
+                    "value": 1,
+                    "weight": 3,
+                    "description": "A simple tool used for pounding nails or breaking small objects."
+                },
+                "piton": {
+                    "name": "Piton",
+                    "category": "misc",
+                    "value": 0.05,
+                    "weight": 0.25,
+                    "description": "A metal spike that can be driven into a wall or cliff to serve as an anchor point."
+                },
+                "crowbar": {
+                    "name": "Crowbar",
+                    "category": "misc",
+                    "value": 2,
+                    "weight": 5,
+                    "description": "Using a crowbar grants advantage to Strength checks where the crowbar's leverage can be applied."
+                },
+                "mirror_steel": {
+                    "name": "Mirror, Steel",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 0.5,
+                    "description": "A polished steel mirror useful for grooming, signaling, or looking around corners."
+                },
+                "spyglass": {
+                    "name": "Spyglass",
+                    "category": "misc",
+                    "value": 1000,
+                    "weight": 1,
+                    "description": "Objects viewed through a spyglass are magnified to twice their size."
+                },
+                "lock": {
+                    "name": "Lock",
+                    "category": "misc",
+                    "value": 10,
+                    "weight": 1,
+                    "description": "A key is provided with the lock. Without the key, a creature proficient with thieves' tools can pick this lock with a successful DC 15 Dexterity check."
+                },
+                "manacles": {
+                    "name": "Manacles",
+                    "category": "misc",
+                    "value": 2,
+                    "weight": 6,
+                    "description": "These metal restraints can bind a Small or Medium creature. Escaping requires a DC 20 Dexterity check."
+                },
+                "component_pouch": {
+                    "name": "Component Pouch",
+                    "category": "misc",
+                    "value": 25,
+                    "weight": 2,
+                    "description": "A small, watertight leather belt pouch that has compartments to hold all the material components and other special items you need to cast your spells."
+                },
+                "holy_symbol": {
+                    "name": "Holy Symbol",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 1,
+                    "description": "A representation of a god or pantheon. A cleric or paladin can use a holy symbol as a spellcasting focus."
+                },
+                "holy_water": {
+                    "name": "Holy Water (flask)",
+                    "category": "misc",
+                    "value": 25,
+                    "weight": 1,
+                    "description": "As an action, you can splash the contents of this flask onto a creature or throw it up to 20 feet, shattering it on impact. In either case, make a ranged attack against a target creature. If the target is a fiend or undead, it takes 2d6 radiant damage."
+                },
+                "acid_vial": {
+                    "name": "Acid (vial)",
+                    "category": "misc",
+                    "value": 25,
+                    "weight": 1,
+                    "description": "As an action, you can splash the contents of this vial onto a creature within 5 feet of you or throw the vial up to 20 feet, shattering it on impact. Make a ranged attack against a creature or object, treating the acid as an improvised weapon. On a hit, the target takes 2d6 acid damage."
+                },
+                "alchemist_fire": {
+                    "name": "Alchemist's Fire (flask)",
+                    "category": "misc",
+                    "value": 50,
+                    "weight": 1,
+                    "description": "This sticky, adhesive fluid ignites when exposed to air. As an action, you can throw this flask up to 20 feet, shattering it on impact. Make a ranged attack against a creature or object. On a hit, the target takes 1d4 fire damage at the start of each of its turns."
+                },
+                "ball_bearings": {
+                    "name": "Ball Bearings (bag of 1,000)",
+                    "category": "misc",
+                    "value": 1,
+                    "weight": 2,
+                    "description": "As an action, you can spill these tiny metal balls to cover a 10-foot-square area. A creature moving across the covered area must succeed on a DC 10 Dexterity saving throw or fall prone."
+                },
+                "bell": {
+                    "name": "Bell",
+                    "category": "misc",
+                    "value": 1,
+                    "weight": 0,
+                    "description": "A small bell that rings when shaken."
+                },
+                "blanket": {
+                    "name": "Blanket",
+                    "category": "misc",
+                    "value": 0.5,
+                    "weight": 3,
+                    "description": "A cloth covering used for warmth or protection."
+                },
+                "book": {
+                    "name": "Book",
+                    "category": "misc",
+                    "value": 25,
+                    "weight": 5,
+                    "description": "A book might contain poetry, historical accounts, information pertaining to a particular field of lore, diagrams and notes, or just about anything else that can be represented using text or pictures."
+                },
+                "caltrops": {
+                    "name": "Caltrops (bag of 20)",
+                    "category": "misc",
+                    "value": 1,
+                    "weight": 2,
+                    "description": "As an action, you can spread a bag of caltrops to cover a 5-foot-square area. Any creature that enters the area must succeed on a DC 15 Dexterity saving throw or stop moving and take 1 piercing damage."
+                },
+                "candle": {
+                    "name": "Candle",
+                    "category": "misc",
+                    "value": 0.01,
+                    "weight": 0,
+                    "description": "For 1 hour, a candle sheds bright light in a 5-foot radius and dim light for an additional 5 feet."
+                },
+                "chain": {
+                    "name": "Chain (10 feet)",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 10,
+                    "description": "A chain has 10 hit points. It can be burst with a successful DC 20 Strength check."
+                },
+                "chalk": {
+                    "name": "Chalk (1 piece)",
+                    "category": "misc",
+                    "value": 0.01,
+                    "weight": 0,
+                    "description": "A piece of chalk used for writing on hard surfaces."
+                },
+                "climbers_kit": {
+                    "name": "Climber's Kit",
+                    "category": "misc",
+                    "value": 25,
+                    "weight": 12,
+                    "description": "A climber's kit includes special pitons, boot tips, gloves, and a harness. You can use the climber's kit as an action to anchor yourself; when you do, you can't fall more than 25 feet from the point where you anchored yourself."
+                },
+                "fishing_tackle": {
+                    "name": "Fishing Tackle",
+                    "category": "misc",
+                    "value": 1,
+                    "weight": 4,
+                    "description": "This kit includes a wooden rod, silken line, corkwood bobbers, steel hooks, lead sinkers, velvet lures, and narrow netting."
+                },
+                "hourglass": {
+                    "name": "Hourglass",
+                    "category": "misc",
+                    "value": 25,
+                    "weight": 1,
+                    "description": "A timepiece that measures the passage of time by the flow of sand."
+                },
+                "hunting_trap": {
+                    "name": "Hunting Trap",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 25,
+                    "description": "When you use your action to set it, this trap forms a saw-toothed steel ring that snaps shut when a creature steps on a pressure plate in the center. A creature that steps on the plate must succeed on a DC 13 Dexterity saving throw or take 1d4 piercing damage and stop moving."
+                },
+                "ink": {
+                    "name": "Ink (1 ounce bottle)",
+                    "category": "misc",
+                    "value": 10,
+                    "weight": 0,
+                    "description": "A bottle of ink used for writing."
+                },
+                "ink_pen": {
+                    "name": "Ink Pen",
+                    "category": "misc",
+                    "value": 0.02,
+                    "weight": 0,
+                    "description": "A pen used for writing with ink."
+                },
+                "magnifying_glass": {
+                    "name": "Magnifying Glass",
+                    "category": "misc",
+                    "value": 100,
+                    "weight": 0,
+                    "description": "This lens allows a closer look at small objects. It is also useful as a substitute for flint and steel when starting fires. Lighting a fire with a magnifying glass requires light as bright as sunlight to focus, tinder to ignite, and about 5 minutes for the fire to ignite."
+                },
+                "mess_kit": {
+                    "name": "Mess Kit",
+                    "category": "misc",
+                    "value": 0.2,
+                    "weight": 1,
+                    "description": "This tin box contains a cup and simple cutlery. The box clamps together, and one side can be used as a cooking pan and the other as a plate or shallow bowl."
+                },
+                "paper": {
+                    "name": "Paper (one sheet)",
+                    "category": "misc",
+                    "value": 0.2,
+                    "weight": 0,
+                    "description": "A sheet of paper used for writing."
+                },
+                "parchment": {
+                    "name": "Parchment (one sheet)",
+                    "category": "misc",
+                    "value": 0.1,
+                    "weight": 0,
+                    "description": "A sheet of parchment used for writing."
+                },
+                "perfume": {
+                    "name": "Perfume (vial)",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 0,
+                    "description": "A vial of perfume used for scenting."
+                },
+                "poison_basic": {
+                    "name": "Poison, Basic (vial)",
+                    "category": "misc",
+                    "value": 100,
+                    "weight": 0,
+                    "description": "You can use the poison in this vial to coat one slashing or piercing weapon or up to three pieces of ammunition. Applying the poison takes an action. A creature hit by the poisoned weapon or ammunition must make a DC 10 Constitution saving throw or take 1d4 poison damage."
+                },
+                "sealing_wax": {
+                    "name": "Sealing Wax",
+                    "category": "misc",
+                    "value": 0.5,
+                    "weight": 0,
+                    "description": "Wax used to seal letters and documents."
+                },
+                "shovel": {
+                    "name": "Shovel",
+                    "category": "misc",
+                    "value": 2,
+                    "weight": 5,
+                    "description": "A tool used for digging."
+                },
+                "signal_whistle": {
+                    "name": "Signal Whistle",
+                    "category": "misc",
+                    "value": 0.05,
+                    "weight": 0,
+                    "description": "A whistle used for signaling."
+                },
+                "signet_ring": {
+                    "name": "Signet Ring",
+                    "category": "misc",
+                    "value": 5,
+                    "weight": 0,
+                    "description": "A ring with a unique symbol used to make a seal in wax."
+                },
+                "soap": {
+                    "name": "Soap",
+                    "category": "misc",
+                    "value": 0.02,
+                    "weight": 0,
+                    "description": "A bar of soap used for cleaning."
+                },
+                "spellbook": {
+                    "name": "Spellbook",
+                    "category": "misc",
+                    "value": 50,
+                    "weight": 3,
+                    "description": "Essential for wizards, a spellbook is a leather-bound tome with 100 blank vellum pages suitable for recording spells."
+                },
+                "tent": {
+                    "name": "Tent, Two-person",
+                    "category": "misc",
+                    "value": 2,
+                    "weight": 20,
+                    "description": "A simple and portable canvas shelter, a tent sleeps two."
+                },
+                "whetstone": {
+                    "name": "Whetstone",
+                    "category": "misc",
+                    "value": 0.01,
+                    "weight": 1,
+                    "description": "A stone used to sharpen blades."
+                }
+            }
         }
-      },
-      "artisan_tools": {
-        "alchemist_supplies": {
-          "name": "Alchemist's Supplies",
-          "category": "misc",
-          "value": 50,
-          "weight": 8,
-          "description": "These special tools include the items needed to pursue alchemy. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+    },
+    "custom_items": {
+        "sword": {
+            "name": "sword",
+            "description": "sword",
+            "value": 10,
+            "weight": 10,
+            "category": "weapon",
+            "subcategory": "simple_melee",
+            "quantity": 1,
+            "damage": "1d6 slashing",
+            "properties": [
+                "finesse"
+            ],
+            "effect": []
         },
-        "brewer_supplies": {
-          "name": "Brewer's Supplies",
-          "category": "misc",
-          "value": 20,
-          "weight": 9,
-          "description": "These special tools include the items needed for brewing. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        "sword_2": {
+            "name": "sword 2",
+            "description": "",
+            "value": 10,
+            "weight": 10,
+            "category": "misc",
+            "subcategory": "equipment_packs",
+            "quantity": 1,
+            "effect": []
         },
-        "calligrapher_supplies": {
-          "name": "Calligrapher's Supplies",
-          "category": "misc",
-          "value": 10,
-          "weight": 5,
-          "description": "These special tools include the items needed for calligraphy. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        "nj": {
+            "name": "nj",
+            "description": "",
+            "value": 0,
+            "weight": 0,
+            "category": "weapon",
+            "subcategory": "simple_melee",
+            "quantity": 1,
+            "damage": "1d6 slashing",
+            "properties": [],
+            "effect": []
         },
-        "carpenter_tools": {
-          "name": "Carpenter's Tools",
-          "category": "misc",
-          "value": 8,
-          "weight": 6,
-          "description": "These special tools include the items needed for carpentry. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        "weapon": {
+            "name": "weapon",
+            "description": "",
+            "value": 0,
+            "weight": 0,
+            "category": "weapon",
+            "subcategory": "simple_melee",
+            "quantity": 1,
+            "damage": "1d4 slashing +1 plus 2d6 fire",
+            "properties": [
+                "Light"
+            ],
+            "effect": [
+                {
+                    "category": "stat",
+                    "target": "Strength",
+                    "amount": 1,
+                    "modifier": "none"
+                }
+            ]
         },
-        "cartographer_tools": {
-          "name": "Cartographer's Tools",
-          "category": "misc",
-          "value": 15,
-          "weight": 6,
-          "description": "These special tools include the items needed for mapmaking. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        "arm": {
+            "name": "arm",
+            "description": "",
+            "value": 0,
+            "weight": 0,
+            "category": "armor",
+            "subcategory": "light_armor",
+            "quantity": 1,
+            "armor_class": "20",
+            "effect": [],
+            "actions": []
         },
-        "jeweler_tools": {
-          "name": "Jeweler's Tools",
-          "category": "misc",
-          "value": 25,
-          "weight": 2,
-          "description": "These special tools include the items needed for working with precious stones and metals. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        "weapon_3": {
+            "name": "weapon 3",
+            "description": "",
+            "value": 0,
+            "weight": 0,
+            "category": "weapon",
+            "subcategory": "simple_melee",
+            "quantity": 1,
+            "damage": "1d4 slashing",
+            "properties": [
+                "Light"
+            ],
+            "effect": [],
+            "actions": []
         },
-        "leatherworker_tools": {
-          "name": "Leatherworker's Tools",
-          "category": "misc",
-          "value": 5,
-          "weight": 5,
-          "description": "These special tools include the items needed for working with leather. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        "weapon_50": {
+            "name": "weapon 50",
+            "description": "",
+            "value": 0,
+            "weight": 0,
+            "category": "weapon",
+            "subcategory": "simple_melee",
+            "quantity": 1,
+            "damage": "1d10 slashing +3 plus 4d8 force plus 2d10 poison",
+            "properties": [
+                "Light"
+            ],
+            "effect": [
+                {
+                    "category": "stat",
+                    "target": "Strength",
+                    "amount": 1,
+                    "modifier": "none"
+                }
+            ],
+            "actions": [
+                {
+                    "name": "mega kill",
+                    "actionType": "reaction",
+                    "effectType": "damage",
+                    "description": "kills",
+                    "target": "Slashing",
+                    "dice": "1d4",
+                    "modifier": 1000
+                }
+            ]
         },
-        "smith_tools": {
-          "name": "Smith's Tools",
-          "category": "misc",
-          "value": 20,
-          "weight": 8,
-          "description": "These special tools include the items needed for metalworking. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make using them."
+        "tentacle_whip": {
+            "name": "tentacle whip",
+            "description": "",
+            "value": 0,
+            "weight": 0,
+            "category": "weapon",
+            "subcategory": "simple_melee",
+            "quantity": 1,
+            "damage": "1d4 slashing +1 plus 1d12 cold",
+            "properties": [
+                "Finesse",
+                "Light"
+            ],
+            "effect": [
+                {
+                    "category": "stat",
+                    "target": "Strength",
+                    "amount": 1,
+                    "modifier": "none"
+                }
+            ],
+            "actions": []
         }
-      },
-      "musical_instruments": {
-        "bagpipes": {
-          "name": "Bagpipes",
-          "category": "misc",
-          "value": 30,
-          "weight": 6,
-          "description": "A wind instrument that produces sound when air is forced through pipes."
-        },
-        "drum": {
-          "name": "Drum",
-          "category": "misc",
-          "value": 6,
-          "weight": 3,
-          "description": "A percussion instrument that produces sound when struck."
-        },
-        "dulcimer": {
-          "name": "Dulcimer",
-          "category": "misc",
-          "value": 25,
-          "weight": 10,
-          "description": "A stringed instrument that produces sound when strings are struck with small hammers."
-        },
-        "flute": {
-          "name": "Flute",
-          "category": "misc",
-          "value": 2,
-          "weight": 1,
-          "description": "A wind instrument that produces sound when air is blown across a hole."
-        },
-        "lute": {
-          "name": "Lute",
-          "category": "misc",
-          "value": 35,
-          "weight": 2,
-          "description": "A stringed instrument that produces sound when strings are plucked."
-        },
-        "horn": {
-          "name": "Horn",
-          "category": "misc",
-          "value": 3,
-          "weight": 2,
-          "description": "A wind instrument that produces sound when air is blown through it."
-        }
-      },
-      "gaming_sets": {
-        "dice_set": {
-          "name": "Dice Set",
-          "category": "misc",
-          "value": 0.1,
-          "weight": 0.1,
-          "description": "A set of various dice used for games of chance."
-        },
-        "playing_card_set": {
-          "name": "Playing Card Set",
-          "category": "misc",
-          "value": 0.5,
-          "weight": 0.1,
-          "description": "A set of cards used for games of chance."
-        },
-        "chess_set": {
-          "name": "Chess Set",
-          "category": "misc",
-          "value": 1,
-          "weight": 0.5,
-          "description": "A board and pieces used for playing chess."
-        }
-      },
-      "misc": {
-        "backpack": {
-          "name": "Backpack",
-          "category": "misc",
-          "value": 2,
-          "weight": 5,
-          "description": "A backpack can hold up to 1 cubic foot or 30 pounds of gear."
-        },
-        "bedroll": {
-          "name": "Bedroll",
-          "category": "misc",
-          "value": 1,
-          "weight": 7,
-          "description": "A portable, padded mat for sleeping."
-        },
-        "rope_hempen": {
-          "name": "Hempen Rope (50 feet)",
-          "category": "misc",
-          "value": 1,
-          "weight": 10,
-          "description": "Rope has 2 hit points and can be burst with a DC 17 Strength check."
-        },
-        "rope_silk": {
-          "name": "Silk Rope (50 feet)",
-          "category": "misc",
-          "value": 10,
-          "weight": 5,
-          "description": "Stronger than hempen rope, silk rope has 2 hit points and can be burst with a DC 17 Strength check."
-        },
-        "torch": {
-          "name": "Torch",
-          "category": "misc",
-          "value": 0.01,
-          "weight": 1,
-          "description": "A torch burns for 1 hour, providing bright light in a 20-foot radius and dim light for an additional 20 feet."
-        },
-        "waterskin": {
-          "name": "Waterskin",
-          "category": "misc",
-          "value": 0.2,
-          "weight": 5,
-          "description": "A waterskin can hold up to 4 pints of liquid."
-        },
-        "rations": {
-          "name": "Rations (1 day)",
-          "category": "misc",
-          "value": 0.5,
-          "weight": 2,
-          "description": "Rations consist of dry foods suitable for extended travel, including jerky, dried fruit, hardtack, and nuts."
-        },
-        "lantern_hooded": {
-          "name": "Hooded Lantern",
-          "category": "misc",
-          "value": 5,
-          "weight": 2,
-          "description": "A hooded lantern casts bright light in a 30-foot radius and dim light for an additional 30 feet. Once lit, it burns for 6 hours on a flask (1 pint) of oil."
-        },
-        "lantern_bullseye": {
-          "name": "Bullseye Lantern",
-          "category": "misc",
-          "value": 10,
-          "weight": 2,
-          "description": "A bullseye lantern casts bright light in a 60-foot cone and dim light for an additional 60 feet. Once lit, it burns for 6 hours on a flask (1 pint) of oil."
-        },
-        "oil_flask": {
-          "name": "Oil (flask)",
-          "category": "misc",
-          "value": 0.1,
-          "weight": 1,
-          "description": "Oil usually comes in a clay flask that holds 1 pint. As an action, you can splash the oil or throw it up to 20 feet, shattering it on impact."
-        },
-        "tinderbox": {
-          "name": "Tinderbox",
-          "category": "misc",
-          "value": 0.5,
-          "weight": 1,
-          "description": "This small container holds flint, fire steel, and tinder used to kindle a fire."
-        },
-        "grappling_hook": {
-          "name": "Grappling Hook",
-          "category": "misc",
-          "value": 2,
-          "weight": 4,
-          "description": "A metal hook attached to a rope, used for climbing or grabbing distant objects."
-        },
-        "hammer": {
-          "name": "Hammer",
-          "category": "misc",
-          "value": 1,
-          "weight": 3,
-          "description": "A simple tool used for pounding nails or breaking small objects."
-        },
-        "piton": {
-          "name": "Piton",
-          "category": "misc",
-          "value": 0.05,
-          "weight": 0.25,
-          "description": "A metal spike that can be driven into a wall or cliff to serve as an anchor point."
-        },
-        "crowbar": {
-          "name": "Crowbar",
-          "category": "misc",
-          "value": 2,
-          "weight": 5,
-          "description": "Using a crowbar grants advantage to Strength checks where the crowbar's leverage can be applied."
-        },
-        "mirror_steel": {
-          "name": "Mirror, Steel",
-          "category": "misc",
-          "value": 5,
-          "weight": 0.5,
-          "description": "A polished steel mirror useful for grooming, signaling, or looking around corners."
-        },
-        "spyglass": {
-          "name": "Spyglass",
-          "category": "misc",
-          "value": 1000,
-          "weight": 1,
-          "description": "Objects viewed through a spyglass are magnified to twice their size."
-        },
-        "lock": {
-          "name": "Lock",
-          "category": "misc",
-          "value": 10,
-          "weight": 1,
-          "description": "A key is provided with the lock. Without the key, a creature proficient with thieves' tools can pick this lock with a successful DC 15 Dexterity check."
-        },
-        "manacles": {
-          "name": "Manacles",
-          "category": "misc",
-          "value": 2,
-          "weight": 6,
-          "description": "These metal restraints can bind a Small or Medium creature. Escaping requires a DC 20 Dexterity check."
-        },
-        "component_pouch": {
-          "name": "Component Pouch",
-          "category": "misc",
-          "value": 25,
-          "weight": 2,
-          "description": "A small, watertight leather belt pouch that has compartments to hold all the material components and other special items you need to cast your spells."
-        },
-        "holy_symbol": {
-          "name": "Holy Symbol",
-          "category": "misc",
-          "value": 5,
-          "weight": 1,
-          "description": "A representation of a god or pantheon. A cleric or paladin can use a holy symbol as a spellcasting focus."
-        },
-        "holy_water": {
-          "name": "Holy Water (flask)",
-          "category": "misc",
-          "value": 25,
-          "weight": 1,
-          "description": "As an action, you can splash the contents of this flask onto a creature or throw it up to 20 feet, shattering it on impact. In either case, make a ranged attack against a target creature. If the target is a fiend or undead, it takes 2d6 radiant damage."
-        },
-        "acid_vial": {
-          "name": "Acid (vial)",
-          "category": "misc",
-          "value": 25,
-          "weight": 1,
-          "description": "As an action, you can splash the contents of this vial onto a creature within 5 feet of you or throw the vial up to 20 feet, shattering it on impact. Make a ranged attack against a creature or object, treating the acid as an improvised weapon. On a hit, the target takes 2d6 acid damage."
-        },
-        "alchemist_fire": {
-          "name": "Alchemist's Fire (flask)",
-          "category": "misc",
-          "value": 50,
-          "weight": 1,
-          "description": "This sticky, adhesive fluid ignites when exposed to air. As an action, you can throw this flask up to 20 feet, shattering it on impact. Make a ranged attack against a creature or object. On a hit, the target takes 1d4 fire damage at the start of each of its turns."
-        },
-        "ball_bearings": {
-          "name": "Ball Bearings (bag of 1,000)",
-          "category": "misc",
-          "value": 1,
-          "weight": 2,
-          "description": "As an action, you can spill these tiny metal balls to cover a 10-foot-square area. A creature moving across the covered area must succeed on a DC 10 Dexterity saving throw or fall prone."
-        },
-        "bell": {
-          "name": "Bell",
-          "category": "misc",
-          "value": 1,
-          "weight": 0,
-          "description": "A small bell that rings when shaken."
-        },
-        "blanket": {
-          "name": "Blanket",
-          "category": "misc",
-          "value": 0.5,
-          "weight": 3,
-          "description": "A cloth covering used for warmth or protection."
-        },
-        "book": {
-          "name": "Book",
-          "category": "misc",
-          "value": 25,
-          "weight": 5,
-          "description": "A book might contain poetry, historical accounts, information pertaining to a particular field of lore, diagrams and notes, or just about anything else that can be represented using text or pictures."
-        },
-        "caltrops": {
-          "name": "Caltrops (bag of 20)",
-          "category": "misc",
-          "value": 1,
-          "weight": 2,
-          "description": "As an action, you can spread a bag of caltrops to cover a 5-foot-square area. Any creature that enters the area must succeed on a DC 15 Dexterity saving throw or stop moving and take 1 piercing damage."
-        },
-        "candle": {
-          "name": "Candle",
-          "category": "misc",
-          "value": 0.01,
-          "weight": 0,
-          "description": "For 1 hour, a candle sheds bright light in a 5-foot radius and dim light for an additional 5 feet."
-        },
-        "chain": {
-          "name": "Chain (10 feet)",
-          "category": "misc",
-          "value": 5,
-          "weight": 10,
-          "description": "A chain has 10 hit points. It can be burst with a successful DC 20 Strength check."
-        },
-        "chalk": {
-          "name": "Chalk (1 piece)",
-          "category": "misc",
-          "value": 0.01,
-          "weight": 0,
-          "description": "A piece of chalk used for writing on hard surfaces."
-        },
-        "climbers_kit": {
-          "name": "Climber's Kit",
-          "category": "misc",
-          "value": 25,
-          "weight": 12,
-          "description": "A climber's kit includes special pitons, boot tips, gloves, and a harness. You can use the climber's kit as an action to anchor yourself; when you do, you can't fall more than 25 feet from the point where you anchored yourself."
-        },
-        "fishing_tackle": {
-          "name": "Fishing Tackle",
-          "category": "misc",
-          "value": 1,
-          "weight": 4,
-          "description": "This kit includes a wooden rod, silken line, corkwood bobbers, steel hooks, lead sinkers, velvet lures, and narrow netting."
-        },
-        "hourglass": {
-          "name": "Hourglass",
-          "category": "misc",
-          "value": 25,
-          "weight": 1,
-          "description": "A timepiece that measures the passage of time by the flow of sand."
-        },
-        "hunting_trap": {
-          "name": "Hunting Trap",
-          "category": "misc",
-          "value": 5,
-          "weight": 25,
-          "description": "When you use your action to set it, this trap forms a saw-toothed steel ring that snaps shut when a creature steps on a pressure plate in the center. A creature that steps on the plate must succeed on a DC 13 Dexterity saving throw or take 1d4 piercing damage and stop moving."
-        },
-        "ink": {
-          "name": "Ink (1 ounce bottle)",
-          "category": "misc",
-          "value": 10,
-          "weight": 0,
-          "description": "A bottle of ink used for writing."
-        },
-        "ink_pen": {
-          "name": "Ink Pen",
-          "category": "misc",
-          "value": 0.02,
-          "weight": 0,
-          "description": "A pen used for writing with ink."
-        },
-        "magnifying_glass": {
-          "name": "Magnifying Glass",
-          "category": "misc",
-          "value": 100,
-          "weight": 0,
-          "description": "This lens allows a closer look at small objects. It is also useful as a substitute for flint and steel when starting fires. Lighting a fire with a magnifying glass requires light as bright as sunlight to focus, tinder to ignite, and about 5 minutes for the fire to ignite."
-        },
-        "mess_kit": {
-          "name": "Mess Kit",
-          "category": "misc",
-          "value": 0.2,
-          "weight": 1,
-          "description": "This tin box contains a cup and simple cutlery. The box clamps together, and one side can be used as a cooking pan and the other as a plate or shallow bowl."
-        },
-        "paper": {
-          "name": "Paper (one sheet)",
-          "category": "misc",
-          "value": 0.2,
-          "weight": 0,
-          "description": "A sheet of paper used for writing."
-        },
-        "parchment": {
-          "name": "Parchment (one sheet)",
-          "category": "misc",
-          "value": 0.1,
-          "weight": 0,
-          "description": "A sheet of parchment used for writing."
-        },
-        "perfume": {
-          "name": "Perfume (vial)",
-          "category": "misc",
-          "value": 5,
-          "weight": 0,
-          "description": "A vial of perfume used for scenting."
-        },
-        "poison_basic": {
-          "name": "Poison, Basic (vial)",
-          "category": "misc",
-          "value": 100,
-          "weight": 0,
-          "description": "You can use the poison in this vial to coat one slashing or piercing weapon or up to three pieces of ammunition. Applying the poison takes an action. A creature hit by the poisoned weapon or ammunition must make a DC 10 Constitution saving throw or take 1d4 poison damage."
-        },
-        "sealing_wax": {
-          "name": "Sealing Wax",
-          "category": "misc",
-          "value": 0.5,
-          "weight": 0,
-          "description": "Wax used to seal letters and documents."
-        },
-        "shovel": {
-          "name": "Shovel",
-          "category": "misc",
-          "value": 2,
-          "weight": 5,
-          "description": "A tool used for digging."
-        },
-        "signal_whistle": {
-          "name": "Signal Whistle",
-          "category": "misc",
-          "value": 0.05,
-          "weight": 0,
-          "description": "A whistle used for signaling."
-        },
-        "signet_ring": {
-          "name": "Signet Ring",
-          "category": "misc",
-          "value": 5,
-          "weight": 0,
-          "description": "A ring with a unique symbol used to make a seal in wax."
-        },
-        "soap": {
-          "name": "Soap",
-          "category": "misc",
-          "value": 0.02,
-          "weight": 0,
-          "description": "A bar of soap used for cleaning."
-        },
-        "spellbook": {
-          "name": "Spellbook",
-          "category": "misc",
-          "value": 50,
-          "weight": 3,
-          "description": "Essential for wizards, a spellbook is a leather-bound tome with 100 blank vellum pages suitable for recording spells."
-        },
-        "tent": {
-          "name": "Tent, Two-person",
-          "category": "misc",
-          "value": 2,
-          "weight": 20,
-          "description": "A simple and portable canvas shelter, a tent sleeps two."
-        },
-        "whetstone": {
-          "name": "Whetstone",
-          "category": "misc",
-          "value": 0.01,
-          "weight": 1,
-          "description": "A stone used to sharpen blades."
-        }
-      }
     }
-  }
 }
