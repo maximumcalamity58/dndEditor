@@ -3,19 +3,23 @@ export function populateInventorySection(containerElement) {
 
     containerElement.innerHTML = `
         <style>
+            /* Inventory List Styling */
             .inventory-list {
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                 gap: 15px;
                 padding: 10px;
+                margin-top: 10px;
             }
             .inventory-item {
-                border: 1px solid #ccc;
+                border: 1px solid var(--border-color, #ccc);
                 border-radius: 5px;
-                padding: 10px;
-                background-color: #f9f9f9;
+                padding: 12px;
+                background-color: var(--bg-color-secondary, #f9f9f9);
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                transition: transform 0.2s;
+                transition: all 0.2s ease;
+                position: relative;
+                overflow: hidden;
             }
             .inventory-item:hover {
                 transform: translateY(-3px);
@@ -23,8 +27,12 @@ export function populateInventorySection(containerElement) {
             }
             .item-name {
                 margin-top: 0;
-                border-bottom: 1px solid #ddd;
+                margin-bottom: 8px;
+                border-bottom: 1px solid var(--border-color-light, #ddd);
                 padding-bottom: 5px;
+                font-size: 1.1em;
+                font-weight: 600;
+                color: var(--text-color-primary, #333);
             }
             .item-details {
                 font-size: 0.9em;
@@ -35,77 +43,387 @@ export function populateInventorySection(containerElement) {
                 flex-wrap: wrap;
                 margin: 8px 0;
                 font-size: 0.85em;
-                color: #555;
+                color: var(--text-color-secondary, #555);
+                background-color: rgba(0,0,0,0.03);
+                padding: 5px;
+                border-radius: 3px;
             }
             .item-description {
                 font-style: italic;
-                color: #666;
+                color: var(--text-color-secondary, #666);
                 margin: 5px 0;
+                line-height: 1.4;
             }
             .item-damage, .item-ac, .item-properties {
-                font-weight: bold;
-                color: #444;
+                font-weight: 600;
+                color: var(--text-color-primary, #444);
+                margin: 4px 0;
             }
             .item-effects {
                 font-size: 0.85em;
-                background-color: #f0f0f0;
-                padding: 5px;
+                background-color: rgba(0,0,0,0.05);
+                padding: 8px;
                 border-radius: 3px;
-                margin-top: 5px;
+                margin-top: 8px;
+                border-left: 3px solid var(--accent-color, #4a6fa5);
             }
             .item-effects h5 {
                 margin: 0 0 5px 0;
+                color: var(--accent-color, #4a6fa5);
             }
             .item-effects ul {
                 margin: 0;
                 padding-left: 20px;
             }
+            
+            /* Category Styling */
             .item-category-weapon {
-                border-left: 4px solid #c33;
+                border-left: 4px solid var(--weapon-color, #c33);
             }
             .item-category-armor {
-                border-left: 4px solid #33c;
+                border-left: 4px solid var(--armor-color, #33c);
             }
             .item-category-shield {
-                border-left: 4px solid #33c;
+                border-left: 4px solid var(--shield-color, #33c);
             }
             .item-category-potion {
-                border-left: 4px solid #3c3;
+                border-left: 4px solid var(--potion-color, #3c3);
             }
             .item-category-scroll {
-                border-left: 4px solid #c3c;
+                border-left: 4px solid var(--scroll-color, #c3c);
             }
             .item-category-misc {
-                border-left: 4px solid #cc3;
+                border-left: 4px solid var(--misc-color, #cc3);
             }
+            .item-category-wondrous {
+                border-left: 4px solid var(--wondrous-color, #f90);
+            }
+            .item-category-clothing {
+                border-left: 4px solid var(--clothing-color, #96c);
+            }
+            
+            /* Header Styling */
             .inventory-header {
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
                 margin-bottom: 15px;
                 padding: 0 10px;
             }
             #itemSearch {
                 flex-grow: 1;
-                margin-right: 10px;
-                padding: 8px;
+                margin-right: 15px;
+                padding: 8px 12px;
                 border-radius: 4px;
-                border: 1px solid #ccc;
+                border: 1px solid var(--border-color, #ccc);
+                font-size: 0.95em;
+                transition: border-color 0.2s;
+            }
+            #itemSearch:focus {
+                border-color: var(--accent-color, #4a6fa5);
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
             }
             .add-item-btn {
-                background-color: #4CAF50;
+                background-color: var(--accent-color, #4a6fa5);
                 color: white;
                 border: none;
                 padding: 8px 15px;
                 border-radius: 4px;
                 cursor: pointer;
+                font-weight: 600;
+                transition: background-color 0.2s;
             }
             .add-item-btn:hover {
-                background-color: #45a049;
+                background-color: var(--accent-color-hover, #3a5f95);
+            }
+            
+            /* Item Actions */
+            .item-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 8px;
+                margin-top: 10px;
+            }
+            .edit-item, .remove-item {
+                padding: 5px 10px;
+                border-radius: 3px;
+                border: 1px solid var(--border-color, #ccc);
+                background-color: var(--bg-color, #fff);
+                cursor: pointer;
+                font-size: 0.85em;
+                transition: all 0.2s;
+            }
+            .edit-item {
+                color: var(--accent-color, #4a6fa5);
+            }
+            .edit-item:hover {
+                background-color: var(--accent-color, #4a6fa5);
+                color: white;
+                border-color: var(--accent-color, #4a6fa5);
+            }
+            .remove-item {
+                color: var(--danger-color, #d33);
+            }
+            .remove-item:hover {
+                background-color: var(--danger-color, #d33);
+                color: white;
+                border-color: var(--danger-color, #d33);
+            }
+            
+            /* Form Layout */
+            .form-row {
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 10px;
+                gap: 15px;
+            }
+            .form-group {
+                flex: 1;
+                min-width: 200px;
+            }
+            .form-group.half {
+                flex: 0 0 calc(50% - 8px);
+                min-width: 150px;
+            }
+            .item-details-section {
+                background-color: var(--bg-color-secondary, #f9f9f9);
+                border: 1px solid var(--border-color-light, #eee);
+                border-radius: 6px;
+                padding: 15px;
+                margin: 15px 0;
+            }
+            .item-details-section h4 {
+                margin-top: 0;
+                margin-bottom: 12px;
+                color: var(--accent-color, #4a6fa5);
+                font-size: 1em;
+            }
+            
+            /* Modal Styling */
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+            .modal.hidden {
+                display: none;
+            }
+            .modal-content {
+                background-color: var(--bg-color, #fff);
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                width: 90%;
+                max-width: 600px;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+            .modal-content h3 {
+                margin-top: 0;
+                color: var(--accent-color, #4a6fa5);
+                border-bottom: 1px solid var(--border-color-light, #eee);
+                padding-bottom: 10px;
+            }
+            .modal-content label {
+                display: block;
+                margin: 12px 0 4px;
+                font-weight: 600;
+                color: var(--text-color-primary, #333);
+            }
+            .modal-content input[type="text"],
+            .modal-content input[type="number"],
+            .modal-content textarea,
+            .modal-content select {
+                width: 100%;
+                padding: 8px 10px;
+                border: 1px solid var(--border-color, #ccc);
+                border-radius: 4px;
+                font-size: 0.95em;
+                margin-bottom: 5px;
+            }
+            .modal-content textarea {
+                min-height: 80px;
+                resize: vertical;
+            }
+            .modal-content input:focus,
+            .modal-content textarea:focus,
+            .modal-content select:focus {
+                border-color: var(--accent-color, #4a6fa5);
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+            }
+            .modal-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                margin-top: 20px;
+                border-top: 1px solid var(--border-color-light, #eee);
+                padding-top: 15px;
+            }
+            .save-btn, .close-btn {
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.2s;
+            }
+            .save-btn {
+                background-color: var(--accent-color, #4a6fa5);
+                color: white;
+                border: none;
+            }
+            .save-btn:hover {
+                background-color: var(--accent-color-hover, #3a5f95);
+            }
+            .close-btn {
+                background-color: var(--bg-color, #fff);
+                color: var(--text-color-secondary, #666);
+                border: 1px solid var(--border-color, #ccc);
+            }
+            .close-btn:hover {
+                background-color: var(--bg-color-secondary, #f5f5f5);
+            }
+            
+            /* Predefined Items Section */
+            #predefinedContainer {
+                border: 1px solid var(--border-color-light, #eee);
+                border-radius: 6px;
+                padding: 15px;
+                margin: 15px 0;
+                background-color: var(--bg-color-secondary, #f9f9f9);
+            }
+            #predefinedSearch {
+                width: 100%;
+                padding: 8px 10px;
+                border: 1px solid var(--border-color, #ccc);
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+            #predefinedItemsSelect {
+                width: 100%;
+                border: 1px solid var(--border-color, #ccc);
+                border-radius: 4px;
+                padding: 5px;
+                background-color: var(--bg-color, #fff);
+            }
+            #predefinedItemsSelect optgroup {
+                font-weight: bold;
+                color: var(--accent-color, #4a6fa5);
+            }
+            #predefinedQuantity {
+                width: 80px;
+                padding: 6px 8px;
+                border: 1px solid var(--border-color, #ccc);
+                border-radius: 4px;
+            }
+            
+            /* Effects Section */
+            #itemEffectsContainer {
+                margin-top: 10px;
+                border: 1px solid var(--border-color-light, #eee);
+                border-radius: 4px;
+                padding: 10px;
+                background-color: var(--bg-color-secondary, #f9f9f9);
+            }
+            .effect-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 10px;
+                padding-bottom: 10px;
+                border-bottom: 1px dashed var(--border-color-light, #eee);
+                align-items: center;
+            }
+            .effect-row:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            .effect-row select, 
+            .effect-row input {
+                padding: 6px 8px;
+                border: 1px solid var(--border-color, #ccc);
+                border-radius: 4px;
+                font-size: 0.9em;
+            }
+            .remove-effect-btn {
+                background-color: var(--danger-color-light, #ffdddd);
+                color: var(--danger-color, #d33);
+                border: 1px solid var(--danger-color-light, #ffcccc);
+                border-radius: 50%;
+                width: 24px;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 12px;
+                padding: 0;
+                margin-left: auto;
+            }
+            .remove-effect-btn:hover {
+                background-color: var(--danger-color, #d33);
+                color: white;
+            }
+            .add-item-effect-btn {
+                background-color: var(--accent-color-light, #e6eef7);
+                color: var(--accent-color, #4a6fa5);
+                border: 1px solid var(--accent-color-light, #d6e4f7);
+                border-radius: 4px;
+                padding: 6px 12px;
+                cursor: pointer;
+                font-size: 0.9em;
+                margin-top: 10px;
+                transition: all 0.2s;
+            }
+            .add-item-effect-btn:hover {
+                background-color: var(--accent-color, #4a6fa5);
+                color: white;
+            }
+            
+            /* Category Filters */
+            .inventory-filters {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin: 10px;
+            }
+            .filter-btn {
+                background-color: var(--bg-color, #fff);
+                border: 1px solid var(--border-color, #ccc);
+                border-radius: 20px;
+                padding: 5px 12px;
+                font-size: 0.85em;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .filter-btn:hover, .filter-btn.active {
+                background-color: var(--accent-color, #4a6fa5);
+                color: white;
+                border-color: var(--accent-color, #4a6fa5);
             }
         </style>
         <div class="inventory-header">
             <input type="text" id="itemSearch" placeholder="Search items...">
             <button id="addItemBtn" class="add-item-btn">+ Add Item</button>
+        </div>
+        <div class="inventory-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="weapon">Weapons</button>
+            <button class="filter-btn" data-filter="armor">Armor</button>
+            <button class="filter-btn" data-filter="shield">Shields</button>
+            <button class="filter-btn" data-filter="clothing">Clothing</button>
+            <button class="filter-btn" data-filter="potion">Potions</button>
+            <button class="filter-btn" data-filter="scroll">Scrolls</button>
+            <button class="filter-btn" data-filter="misc">Misc</button>
         </div>
         <div id="inventoryList" class="inventory-list"></div>
         <div id="itemModal" class="modal hidden">
@@ -123,25 +441,117 @@ export function populateInventorySection(containerElement) {
                     </div>
                 </div>
                 <div id="customItemContainer">
-                    <label>Name:</label>
-                    <input type="text" id="itemName">
-                    <label>Description:</label>
-                    <textarea id="itemDescription"></textarea>
-                    <label>Value:</label>
-                    <input type="number" id="itemValue" placeholder="Value">
-                    <label>Weight:</label>
-                    <input type="number" id="itemWeight" placeholder="Weight">
-                    <label>Category:</label>
-                    <select id="itemCategory">
-                        <option value="weapon">Weapon</option>
-                        <option value="shield">Shield</option>
-                        <option value="armor">Armor</option>
-                        <option value="scroll">Scroll</option>
-                        <option value="potion">Potion</option>
-                        <option value="misc">Misc</option>
-                    </select>
-                    <label>Quantity:</label>
-                    <input type="number" id="itemQuantity" placeholder="Quantity" value="1">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" id="itemName">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea id="itemDescription"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label>Value (gp):</label>
+                            <input type="number" id="itemValue" placeholder="Value" step="0.1" min="0">
+                        </div>
+                        <div class="form-group half">
+                            <label>Weight (lb):</label>
+                            <input type="number" id="itemWeight" placeholder="Weight" step="0.1" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label>Category:</label>
+                            <select id="itemCategory">
+                                <option value="weapon">Weapon</option>
+                                <option value="armor">Armor</option>
+                                <option value="shield">Shield</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="scroll">Scroll</option>
+                                <option value="potion">Potion</option>
+                                <option value="wondrous">Wondrous Item</option>
+                                <option value="misc">Misc</option>
+                            </select>
+                        </div>
+                        <div class="form-group half">
+                            <label>Quantity:</label>
+                            <input type="number" id="itemQuantity" placeholder="Quantity" value="1" min="1">
+                        </div>
+                    </div>
+                    
+                    <div id="weaponDetails" class="item-details-section" style="display: none;">
+                        <h4>Weapon Details</h4>
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Damage:</label>
+                                <input type="text" id="itemDamage" placeholder="e.g. 1d6 slashing">
+                            </div>
+                            <div class="form-group half">
+                                <label>Properties:</label>
+                                <input type="text" id="itemProperties" placeholder="e.g. Finesse, Light">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="armorDetails" class="item-details-section" style="display: none;">
+                        <h4>Armor Details</h4>
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Armor Class:</label>
+                                <input type="text" id="itemArmorClass" placeholder="e.g. 12 + Dex modifier">
+                            </div>
+                            <div class="form-group half">
+                                <label>Type:</label>
+                                <select id="armorType">
+                                    <option value="light">Light Armor</option>
+                                    <option value="medium">Medium Armor</option>
+                                    <option value="heavy">Heavy Armor</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Strength Requirement:</label>
+                                <input type="text" id="itemStrRequirement" placeholder="e.g. 13">
+                            </div>
+                            <div class="form-group half">
+                                <label>Stealth:</label>
+                                <select id="itemStealth">
+                                    <option value="none">Normal</option>
+                                    <option value="disadvantage">Disadvantage</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="clothingDetails" class="item-details-section" style="display: none;">
+                        <h4>Clothing/Accessory Details</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Slot:</label>
+                                <select id="itemSlot">
+                                    <option value="head">Head</option>
+                                    <option value="neck">Neck</option>
+                                    <option value="shoulders">Shoulders</option>
+                                    <option value="chest">Chest</option>
+                                    <option value="back">Back</option>
+                                    <option value="wrists">Wrists</option>
+                                    <option value="hands">Hands</option>
+                                    <option value="waist">Waist</option>
+                                    <option value="legs">Legs</option>
+                                    <option value="feet">Feet</option>
+                                    <option value="finger">Finger</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <label>Effect (Optional):</label>
                     <div id="itemEffectsContainer"></div>
                     <button id="addItemEffectBtn" class="add-item-effect-btn">+ Add Effect</button>
@@ -162,6 +572,12 @@ export function populateInventorySection(containerElement) {
         document.getElementById("usePredefined").addEventListener("change", togglePredefined);
         document.getElementById("predefinedSearch").addEventListener("input", filterPredefinedItems);
         document.getElementById("itemSearch").addEventListener("input", filterInventoryItems);
+        document.getElementById("itemCategory").addEventListener("change", toggleItemDetails);
+        
+        // Add event listeners to filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', filterByCategory);
+        });
 
         loadInventory();
         loadPredefinedItems();
@@ -224,15 +640,52 @@ export function populateInventorySection(containerElement) {
 
     function filterInventoryItems() {
         const query = document.getElementById("itemSearch").value.toLowerCase();
+        const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
         const items = document.querySelectorAll(".inventory-item");
+        
         items.forEach(item => {
             const itemName = item.querySelector(".item-name").textContent.toLowerCase();
-            if (itemName.includes(query)) {
+            const itemCategory = item.className.split(' ')
+                .find(cls => cls.startsWith('item-category-'))?.replace('item-category-', '') || '';
+            
+            const matchesSearch = itemName.includes(query);
+            const matchesCategory = activeFilter === 'all' || itemCategory === activeFilter;
+            
+            if (matchesSearch && matchesCategory) {
                 item.style.display = "";
             } else {
                 item.style.display = "none";
             }
         });
+    }
+    
+    function filterByCategory(e) {
+        // Update active button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        e.target.classList.add('active');
+        
+        // Filter items
+        filterInventoryItems();
+    }
+    
+    function toggleItemDetails() {
+        const category = document.getElementById("itemCategory").value;
+        
+        // Hide all detail sections first
+        document.querySelectorAll('.item-details-section').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // Show the appropriate section based on category
+        if (category === 'weapon') {
+            document.getElementById('weaponDetails').style.display = 'block';
+        } else if (category === 'armor') {
+            document.getElementById('armorDetails').style.display = 'block';
+        } else if (category === 'clothing') {
+            document.getElementById('clothingDetails').style.display = 'block';
+        }
     }
 
     function loadPredefinedItems() {
@@ -378,14 +831,33 @@ export function populateInventorySection(containerElement) {
         } else {
             document.getElementById("usePredefined").checked = false;
             togglePredefined();
+            
+            // Basic item data
             document.getElementById("itemName").value = item.name;
             document.getElementById("itemDescription").value = item.description || "";
             document.getElementById("itemValue").value = item.value;
             document.getElementById("itemWeight").value = item.weight;
             document.getElementById("itemCategory").value = item.category || "misc";
             document.getElementById("itemQuantity").value = item.quantity || 1;
-            document.getElementById("itemEffectsContainer").innerHTML = "";
             
+            // Trigger category-specific fields
+            toggleItemDetails();
+            
+            // Fill in category-specific data
+            if (item.category === 'weapon') {
+                document.getElementById("itemDamage").value = item.damage || "";
+                document.getElementById("itemProperties").value = item.properties ? item.properties.join(', ') : "";
+            } else if (item.category === 'armor') {
+                document.getElementById("itemArmorClass").value = item.armor_class || "";
+                document.getElementById("armorType").value = item.armor_type || "light";
+                document.getElementById("itemStrRequirement").value = item.strength_requirement || "";
+                document.getElementById("itemStealth").value = item.stealth === "Disadvantage" ? "disadvantage" : "none";
+            } else if (item.category === 'clothing') {
+                document.getElementById("itemSlot").value = item.slot || "chest";
+            }
+            
+            // Effects
+            document.getElementById("itemEffectsContainer").innerHTML = "";
             if (item.effect && Array.isArray(item.effect)) {
                 item.effect.forEach(effect => addItemEffectRow(effect));
             }
@@ -436,7 +908,7 @@ export function populateInventorySection(containerElement) {
                     itemData = JSON.parse(JSON.stringify(itemTemplate));
                     itemData.predefined = true;
                     itemData.predefinedKey = predefinedKey;
-                    itemData.quantity = parseInt(document.getElementById("itemQuantity").value) || 1;
+                    itemData.quantity = parseInt(document.getElementById("predefinedQuantity").value) || 1;
                     
                     // Save the item
                     saveItemToServer(itemData);
@@ -451,12 +923,40 @@ export function populateInventorySection(containerElement) {
                 alert("Item must have a name.");
                 return;
             }
+            
+            // Basic item data
             itemData.name = name;
             itemData.description = document.getElementById("itemDescription").value.trim();
             itemData.value = parseFloat(document.getElementById("itemValue").value) || 0;
             itemData.weight = parseFloat(document.getElementById("itemWeight").value) || 0;
             itemData.category = document.getElementById("itemCategory").value;
             itemData.quantity = parseInt(document.getElementById("itemQuantity").value) || 1;
+            
+            // Category-specific data
+            if (itemData.category === 'weapon') {
+                itemData.damage = document.getElementById("itemDamage").value.trim();
+                const propertiesText = document.getElementById("itemProperties").value.trim();
+                if (propertiesText) {
+                    itemData.properties = propertiesText.split(',').map(p => p.trim());
+                }
+            } else if (itemData.category === 'armor') {
+                itemData.armor_class = document.getElementById("itemArmorClass").value.trim();
+                itemData.armor_type = document.getElementById("armorType").value;
+                
+                const strReq = document.getElementById("itemStrRequirement").value.trim();
+                if (strReq) {
+                    itemData.strength_requirement = strReq;
+                }
+                
+                const stealth = document.getElementById("itemStealth").value;
+                if (stealth === 'disadvantage') {
+                    itemData.stealth = "Disadvantage";
+                }
+            } else if (itemData.category === 'clothing') {
+                itemData.slot = document.getElementById("itemSlot").value;
+            }
+            
+            // Effects
             itemData.effect = [];
             document.querySelectorAll("#itemEffectsContainer .effect-row").forEach(row => {
                 const category = row.querySelector(".effect-category").value;

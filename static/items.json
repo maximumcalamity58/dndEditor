@@ -232,6 +232,33 @@
           "damage": "1d10 piercing",
           "properties": ["Ammunition (range 100/400)", "Heavy", "Loading", "Two-handed"],
           "description": "A large crossbow that fires bolts with great force."
+        },
+        "hand_crossbow": {
+          "name": "Hand Crossbow",
+          "category": "weapon",
+          "value": 75,
+          "weight": 3,
+          "damage": "1d6 piercing",
+          "properties": ["Ammunition (range 30/120)", "Light", "Loading"],
+          "description": "A small, one-handed crossbow that's easy to conceal."
+        },
+        "blowgun": {
+          "name": "Blowgun",
+          "category": "weapon",
+          "value": 10,
+          "weight": 1,
+          "damage": "1 piercing",
+          "properties": ["Ammunition (range 25/100)", "Loading"],
+          "description": "A simple tube for firing small darts."
+        },
+        "net": {
+          "name": "Net",
+          "category": "weapon",
+          "value": 1,
+          "weight": 3,
+          "damage": "—",
+          "properties": ["Special", "Thrown (range 5/15)"],
+          "description": "A net used to restrain creatures. A Large or smaller creature hit by a net is restrained until freed."
         }
       }
     },
@@ -356,6 +383,148 @@
           "weight": 6,
           "armor_class": "+2",
           "description": "A wooden or metal shield carried in one hand."
+        }
+      }
+    },
+    "clothing": {
+      "head": {
+        "helmet": {
+          "name": "Helmet",
+          "category": "clothing",
+          "slot": "head",
+          "value": 10,
+          "weight": 2,
+          "description": "A protective covering for the head."
+        },
+        "hat": {
+          "name": "Hat",
+          "category": "clothing",
+          "slot": "head",
+          "value": 5,
+          "weight": 0.5,
+          "description": "A fashionable or practical head covering."
+        },
+        "circlet": {
+          "name": "Circlet",
+          "category": "clothing",
+          "slot": "head",
+          "value": 25,
+          "weight": 0.5,
+          "description": "A decorative band worn around the head."
+        }
+      },
+      "neck": {
+        "amulet": {
+          "name": "Amulet",
+          "category": "clothing",
+          "slot": "neck",
+          "value": 15,
+          "weight": 0.5,
+          "description": "A pendant worn around the neck, often for decoration or as a symbol."
+        },
+        "necklace": {
+          "name": "Necklace",
+          "category": "clothing",
+          "slot": "neck",
+          "value": 25,
+          "weight": 0.5,
+          "description": "A decorative chain or string of beads worn around the neck."
+        },
+        "scarf": {
+          "name": "Scarf",
+          "category": "clothing",
+          "slot": "neck",
+          "value": 3,
+          "weight": 0.5,
+          "description": "A length of fabric worn around the neck for warmth or decoration."
+        }
+      },
+      "shoulders": {
+        "cloak": {
+          "name": "Cloak",
+          "category": "clothing",
+          "slot": "shoulders",
+          "value": 5,
+          "weight": 3,
+          "description": "A loose outer garment worn over the shoulders."
+        },
+        "mantle": {
+          "name": "Mantle",
+          "category": "clothing",
+          "slot": "shoulders",
+          "value": 10,
+          "weight": 2,
+          "description": "A loose sleeveless cloak or shawl."
+        }
+      },
+      "hands": {
+        "gloves": {
+          "name": "Gloves",
+          "category": "clothing",
+          "slot": "hands",
+          "value": 2,
+          "weight": 0.5,
+          "description": "Coverings for the hands with separate parts for each finger."
+        },
+        "gauntlets": {
+          "name": "Gauntlets",
+          "category": "clothing",
+          "slot": "hands",
+          "value": 5,
+          "weight": 1,
+          "description": "Armored gloves that protect the hands and wrists."
+        },
+        "bracers": {
+          "name": "Bracers",
+          "category": "clothing",
+          "slot": "wrists",
+          "value": 10,
+          "weight": 1,
+          "description": "Armor pieces that protect the forearms."
+        }
+      },
+      "waist": {
+        "belt": {
+          "name": "Belt",
+          "category": "clothing",
+          "slot": "waist",
+          "value": 1,
+          "weight": 0.5,
+          "description": "A strip of leather or cloth worn around the waist."
+        },
+        "sash": {
+          "name": "Sash",
+          "category": "clothing",
+          "slot": "waist",
+          "value": 2,
+          "weight": 0.5,
+          "description": "A long strip of cloth worn around the waist or over the shoulder."
+        }
+      },
+      "feet": {
+        "boots": {
+          "name": "Boots",
+          "category": "clothing",
+          "slot": "feet",
+          "value": 5,
+          "weight": 2,
+          "description": "Sturdy footwear that covers the foot and ankle."
+        },
+        "shoes": {
+          "name": "Shoes",
+          "category": "clothing",
+          "slot": "feet",
+          "value": 2,
+          "weight": 1,
+          "description": "Lightweight footwear."
+        },
+        "sandals": {
+          "name": "Sandals",
+          "category": "clothing",
+          "slot": "feet",
+          "value": 1,
+          "weight": 0.5,
+          "description": "Open footwear consisting of a sole held to the foot by straps."
         }
       }
     },
@@ -486,6 +655,111 @@
           "value": 0.5,
           "weight": 2,
           "description": "Rations consist of dry foods suitable for extended travel, including jerky, dried fruit, hardtack, and nuts."
+        },
+        "lantern_hooded": {
+          "name": "Hooded Lantern",
+          "category": "misc",
+          "value": 5,
+          "weight": 2,
+          "description": "A hooded lantern casts bright light in a 30-foot radius and dim light for an additional 30 feet. Once lit, it burns for 6 hours on a flask (1 pint) of oil."
+        },
+        "lantern_bullseye": {
+          "name": "Bullseye Lantern",
+          "category": "misc",
+          "value": 10,
+          "weight": 2,
+          "description": "A bullseye lantern casts bright light in a 60-foot cone and dim light for an additional 60 feet. Once lit, it burns for 6 hours on a flask (1 pint) of oil."
+        },
+        "oil_flask": {
+          "name": "Oil (flask)",
+          "category": "misc",
+          "value": 0.1,
+          "weight": 1,
+          "description": "Oil usually comes in a clay flask that holds 1 pint. As an action, you can splash the oil or throw it up to 20 feet, shattering it on impact."
+        },
+        "tinderbox": {
+          "name": "Tinderbox",
+          "category": "misc",
+          "value": 0.5,
+          "weight": 1,
+          "description": "This small container holds flint, fire steel, and tinder used to kindle a fire."
+        },
+        "grappling_hook": {
+          "name": "Grappling Hook",
+          "category": "misc",
+          "value": 2,
+          "weight": 4,
+          "description": "A metal hook attached to a rope, used for climbing or grabbing distant objects."
+        },
+        "hammer": {
+          "name": "Hammer",
+          "category": "misc",
+          "value": 1,
+          "weight": 3,
+          "description": "A simple tool used for pounding nails or breaking small objects."
+        },
+        "piton": {
+          "name": "Piton",
+          "category": "misc",
+          "value": 0.05,
+          "weight": 0.25,
+          "description": "A metal spike that can be driven into a wall or cliff to serve as an anchor point."
+        },
+        "crowbar": {
+          "name": "Crowbar",
+          "category": "misc",
+          "value": 2,
+          "weight": 5,
+          "description": "Using a crowbar grants advantage to Strength checks where the crowbar's leverage can be applied."
+        },
+        "mirror_steel": {
+          "name": "Mirror, Steel",
+          "category": "misc",
+          "value": 5,
+          "weight": 0.5,
+          "description": "A polished steel mirror useful for grooming, signaling, or looking around corners."
+        },
+        "spyglass": {
+          "name": "Spyglass",
+          "category": "misc",
+          "value": 1000,
+          "weight": 1,
+          "description": "Objects viewed through a spyglass are magnified to twice their size."
+        },
+        "lock": {
+          "name": "Lock",
+          "category": "misc",
+          "value": 10,
+          "weight": 1,
+          "description": "A key is provided with the lock. Without the key, a creature proficient with thieves' tools can pick this lock with a successful DC 15 Dexterity check."
+        },
+        "manacles": {
+          "name": "Manacles",
+          "category": "misc",
+          "value": 2,
+          "weight": 6,
+          "description": "These metal restraints can bind a Small or Medium creature. Escaping requires a DC 20 Dexterity check."
+        },
+        "component_pouch": {
+          "name": "Component Pouch",
+          "category": "misc",
+          "value": 25,
+          "weight": 2,
+          "description": "A small, watertight leather belt pouch that has compartments to hold all the material components and other special items you need to cast your spells."
+        },
+        "holy_symbol": {
+          "name": "Holy Symbol",
+          "category": "misc",
+          "value": 5,
+          "weight": 1,
+          "description": "A representation of a god or pantheon. A cleric or paladin can use a holy symbol as a spellcasting focus."
+        },
+        "holy_water": {
+          "name": "Holy Water (flask)",
+          "category": "misc",
+          "value": 25,
+          "weight": 1,
+          "description": "As an action, you can splash the contents of this flask onto a creature or throw it up to 20 feet, shattering it on impact. In either case, make a ranged attack against a target creature. If the target is a fiend or undead, it takes 2d6 radiant damage."
         }
       }
     }
