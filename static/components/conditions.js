@@ -10,12 +10,19 @@ export function populateConditionsSection(containerElement, characterData) {
                 padding: 10px;
             }
             .condition-item {
-                display: flex;
-                align-items: center;
                 background: #222;
-                padding: 8px 12px;
+                padding: 0;
                 border-radius: 5px;
                 border: 1px solid #444;
+                margin-bottom: 8px;
+                overflow: hidden;
+            }
+            .condition-header {
+                display: flex;
+                align-items: center;
+                padding: 8px 12px;
+                cursor: pointer;
+                user-select: none;
             }
             .condition-item.active {
                 border-color: #e74c3c;
@@ -45,23 +52,20 @@ export function populateConditionsSection(containerElement, characterData) {
             .condition-description {
                 font-size: 0.9em;
                 color: #aaa;
-                margin-top: 5px;
                 max-height: 0;
                 overflow: hidden;
                 background: #333;
-                border: 1px solid #555;
-                border-top: none;
-                border-radius: 0 0 4px 4px;
                 width: 100%;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
                 transition: all 0.3s ease-in-out;
                 opacity: 0;
-                padding: 0;
+                padding: 0 12px;
+                box-sizing: border-box;
             }
             .condition-description.expanded {
-                padding: 8px;
+                padding: 12px;
                 max-height: 300px;
                 opacity: 1;
+                border-top: 1px solid #444;
             }
             .condition-item {
                 position: relative;
@@ -185,11 +189,13 @@ export function populateConditionsSection(containerElement, characterData) {
         const conditionItem = document.createElement("div");
         conditionItem.className = `condition-item ${isActive ? 'active' : ''}`;
         conditionItem.innerHTML = `
-            <input type="checkbox" class="condition-checkbox" data-condition="${condition.name}" 
-                   data-type="active" ${isActive ? 'checked' : ''}>
-            <span class="condition-name">${condition.name}</span>
-            <span class="expand-arrow">▶</span>
-            ${isActive ? '<span class="condition-type active">Active</span>' : ''}
+            <div class="condition-header">
+                <input type="checkbox" class="condition-checkbox" data-condition="${condition.name}" 
+                       data-type="active" ${isActive ? 'checked' : ''}>
+                <span class="condition-name">${condition.name}</span>
+                <span class="expand-arrow">▶</span>
+                ${isActive ? '<span class="condition-type active">Active</span>' : ''}
+            </div>
             <div class="condition-description">${condition.description}</div>
         `;
         conditionsSection.appendChild(conditionItem);
@@ -201,11 +207,15 @@ export function populateConditionsSection(containerElement, characterData) {
         });
         
         // Add event listener for expand arrow
-        const expandArrow = conditionItem.querySelector('.expand-arrow');
-        expandArrow.addEventListener('click', function() {
+        const header = conditionItem.querySelector('.condition-header');
+        header.addEventListener('click', function(e) {
+            // Don't toggle if clicking the checkbox
+            if (e.target.classList.contains('condition-checkbox')) return;
+            
             const description = conditionItem.querySelector('.condition-description');
             description.classList.toggle('expanded');
-            this.classList.toggle('expanded');
+            const arrow = this.querySelector('.expand-arrow');
+            arrow.classList.toggle('expanded');
         });
     });
     
@@ -249,15 +259,29 @@ export function populateConditionsSection(containerElement, characterData) {
         const damageTypeItem = document.createElement("div");
         damageTypeItem.className = `condition-item ${primaryClass}`;
         damageTypeItem.innerHTML = `
-            <span class="condition-name">${damageType.name}</span>
-            <span class="damage-status" data-condition="${damageType.name}" data-status="${statusType || 'none'}">
-                ${statusLabel !== 'None' ? `<span class="condition-type ${primaryClass}">${statusLabel}</span>` : ''}
-            </span>
+            <div class="condition-header">
+                <span class="condition-name">${damageType.name}</span>
+                <span class="damage-status" data-condition="${damageType.name}" data-status="${statusType || 'none'}">
+                    ${statusLabel !== 'None' ? `<span class="condition-type ${primaryClass}">${statusLabel}</span>` : ''}
+                </span>
+                <span class="expand-arrow">▶</span>
+            </div>
+            <div class="condition-description">${damageType.description}</div>
         `;
         damageTypesSection.appendChild(damageTypeItem);
         
-        // Add event listener for clicking on the damage type item
-        damageTypeItem.addEventListener('click', function() {
+        // Add event listener for clicking on the damage type header
+        const header = damageTypeItem.querySelector('.condition-header');
+        header.addEventListener('click', function(e) {
+            // Toggle description when clicking the header
+            const description = damageTypeItem.querySelector('.condition-description');
+            description.classList.toggle('expanded');
+            const arrow = this.querySelector('.expand-arrow');
+            arrow.classList.toggle('expanded');
+            
+            // Don't cycle status if clicking the expand arrow
+            if (e.target.classList.contains('expand-arrow')) return;
+            
             const statusSpan = this.querySelector('.damage-status');
             const condition = statusSpan.dataset.condition;
             const currentStatus = statusSpan.dataset.status;
