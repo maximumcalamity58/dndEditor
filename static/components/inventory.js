@@ -1480,6 +1480,12 @@ export function populateInventorySection(containerElement) {
                 <select class="effect-category">
                     <option value="stat" ${effect.category === "stat" ? "selected" : ""}>Stat</option>
                     <option value="proficiency" ${effect.category === "proficiency" ? "selected" : ""}>Proficiency</option>
+                    <option value="advantage" ${effect.category === "advantage" ? "selected" : ""}>Advantage</option>
+                    <option value="disadvantage" ${effect.category === "disadvantage" ? "selected" : ""}>Disadvantage</option>
+                    <option value="condition" ${effect.category === "condition" ? "selected" : ""}>Condition</option>
+                    <option value="resistance" ${effect.category === "resistance" ? "selected" : ""}>Resistance</option>
+                    <option value="immunity" ${effect.category === "immunity" ? "selected" : ""}>Immunity</option>
+                    <option value="vulnerability" ${effect.category === "vulnerability" ? "selected" : ""}>Vulnerability</option>
                 </select>
                 <select class="effect-target"></select>
                 <input type="number" class="effect-amount" placeholder="Bonus" style="width: 80px;">
