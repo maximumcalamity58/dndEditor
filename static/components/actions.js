@@ -454,18 +454,35 @@ export function populateActionsSection(containerElement, characterData) {
     const usableItems = inventory.filter(item => 
         item.category === "potion" || 
         item.category === "scroll" || 
+        (item.actions && item.actions.length > 0) ||
         (item.effect && item.effect.length > 0) ||
         (item.name && equipmentData[item.name]?.effect)
     );
     
-    if (usableItems.length === 0) {
+    // Filter out weapons that are already shown in weapon actions
+    const nonWeaponUsableItems = usableItems.filter(item => {
+        // Skip if it's a weapon and already equipped (shown in weapon actions)
+        if ((item.category === "weapon" || 
+            (item.damage && item.damage.includes("d"))) && 
+            (equipped.weapon === item.name || equipped.offhand === item.name)) {
+            return false;
+        }
+        return true;
+    });
+    
+    if (nonWeaponUsableItems.length === 0) {
         itemActionsContainer.innerHTML = '<div class="no-actions">No usable items in inventory</div>';
     } else {
-        usableItems.forEach(item => {
+        itemActionsContainer.innerHTML = '';
+        nonWeaponUsableItems.forEach(item => {
             const itemAction = document.createElement("div");
             itemAction.className = "action-item";
+            
             // Get effects from either the item or equipment_data
             const itemEffects = item.effect || equipmentData[item.name]?.effect || [];
+            
+            // Get custom actions if any
+            const itemActions = item.actions || [];
             
             itemAction.innerHTML = `
                 <div class="action-header">
@@ -480,13 +497,71 @@ export function populateActionsSection(containerElement, characterData) {
                 </div>
                 <div class="action-stats">
                     <span class="action-stat">Quantity: ${item.quantity || 1}</span>
+                    ${item.damage ? `<span class="action-stat">Damage: ${item.damage}</span>` : ''}
+                    ${item.properties ? `<span class="action-stat">Properties: ${item.properties.join(', ')}</span>` : ''}
                 </div>
                 <div class="action-buttons">
-                    <button class="action-button use-item-button" data-item="${item.name}">Use</button>
+                    ${itemActions.length > 0 ? 
+                        itemActions.map(action => 
+                            `<button class="action-button custom-action-button" 
+                                data-item="${item.name}" 
+                                data-action-type="${action.actionType}" 
+                                data-effect-type="${action.effectType}"
+                                data-target="${action.target || ''}"
+                                data-dice="${action.dice || ''}"
+                                data-modifier="${action.modifier || 0}"
+                                data-description="${action.description || ''}">
+                                ${action.name || (action.actionType === 'action' ? 'Action' : 'Bonus Action')}
+                            </button>`
+                        ).join('') :
+                        `<button class="action-button use-item-button" data-item="${item.name}">Use</button>`
+                    }
                 </div>
             `;
             
             itemActionsContainer.appendChild(itemAction);
+        });
+        
+        // Add event listeners for custom action buttons
+        containerElement.querySelectorAll(".custom-action-button").forEach(button => {
+            button.addEventListener("click", () => {
+                const itemName = button.dataset.item;
+                const actionType = button.dataset.actionType;
+                const effectType = button.dataset.effectType;
+                const target = button.dataset.target;
+                const dice = button.dataset.dice;
+                const modifier = parseInt(button.dataset.modifier) || 0;
+                const description = button.dataset.description;
+                
+                // Handle different action types
+                if (effectType === 'damage' || effectType === 'heal') {
+                    // Roll damage/healing dice
+                    if (dice) {
+                        const [count, sides] = dice.split('d').map(Number);
+                        const roll = rollDice(count, sides, modifier);
+                        
+                        let message = '';
+                        if (effectType === 'damage') {
+                            message = `${itemName} deals ${roll.total} damage`;
+                            if (target) message += ` (${target})`;
+                        } else {
+                            message = `${itemName} heals for ${roll.total} hit points`;
+                        }
+                        
+                        if (description) {
+                            message += `\n${description}`;
+                        }
+                        
+                        alert(message);
+                    }
+                } else if (effectType === 'status') {
+                    alert(`${itemName} applies ${target} status effect.\n${description || ''}`);
+                } else if (effectType === 'spell') {
+                    alert(`${itemName} casts ${target || 'a spell'}.\n${description || ''}`);
+                } else {
+                    alert(`Used ${itemName}: ${description || 'No description available'}`);
+                }
+            });
         });
     }
     

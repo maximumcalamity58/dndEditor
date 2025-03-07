@@ -614,7 +614,7 @@ export function populateInventorySection(containerElement) {
                 background-color: var(--danger-color, #d33);
                 color: white;
             }
-            .add-item-effect-btn {
+            .add-item-effect-btn, .add-item-action-btn {
                 background-color: rgba(74, 111, 165, 0.2);
                 color: var(--accent-color, #6a8fc5);
                 border: 1px solid rgba(74, 111, 165, 0.3);
@@ -625,8 +625,92 @@ export function populateInventorySection(containerElement) {
                 margin-top: 10px;
                 transition: all 0.2s;
             }
-            .add-item-effect-btn:hover {
+            .add-item-effect-btn:hover, .add-item-action-btn:hover {
                 background-color: var(--accent-color, #4a6fa5);
+                color: white;
+            }
+            
+            /* Action Row Styling */
+            #itemActionsContainer {
+                margin-top: 10px;
+                border: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
+                border-radius: 4px;
+                padding: 10px;
+                background-color: var(--bg-color-secondary, rgba(40, 40, 40, 0.6));
+            }
+            .action-row {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 1px dashed var(--border-color-light, rgba(255, 255, 255, 0.1));
+            }
+            .action-row:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            .action-main-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: center;
+                margin-bottom: 8px;
+            }
+            .action-details-row, .action-description-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-left: 20px;
+                margin-bottom: 8px;
+            }
+            .action-target-container, .action-dice-container {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                background-color: rgba(30, 30, 30, 0.4);
+                padding: 8px;
+                border-radius: 4px;
+                margin-right: 10px;
+            }
+            .action-name {
+                min-width: 120px;
+            }
+            .action-type, .effect-type {
+                min-width: 100px;
+            }
+            .action-target {
+                min-width: 120px;
+            }
+            .action-dice {
+                min-width: 80px;
+            }
+            .action-modifier {
+                width: 60px;
+                text-align: center;
+            }
+            .action-description {
+                width: 100%;
+                min-height: 60px;
+                resize: vertical;
+            }
+            .remove-action-btn {
+                background-color: rgba(221, 51, 51, 0.2);
+                color: var(--danger-color, #f55);
+                border: 1px solid rgba(221, 51, 51, 0.3);
+                border-radius: 50%;
+                width: 24px;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 12px;
+                padding: 0;
+                margin-left: auto;
+            }
+            .remove-action-btn:hover {
+                background-color: var(--danger-color, #d33);
                 color: white;
             }
             
@@ -860,6 +944,10 @@ export function populateInventorySection(containerElement) {
                     <label>Effect (Optional):</label>
                     <div id="itemEffectsContainer"></div>
                     <button id="addItemEffectBtn" class="add-item-effect-btn">+ Add Effect</button>
+            
+                    <label>Item Actions (Optional):</label>
+                    <div id="itemActionsContainer"></div>
+                    <button id="addItemActionBtn" class="add-item-action-btn">+ Add Action</button>
                 </div>
                 <div class="modal-actions">
                     <button id="saveItemBtn" class="save-btn">Add to Inventory</button>
@@ -874,6 +962,7 @@ export function populateInventorySection(containerElement) {
         document.getElementById("closeItemBtn").addEventListener("click", closeItemModal);
         document.getElementById("saveItemBtn").addEventListener("click", saveItem);
         document.getElementById("addItemEffectBtn").addEventListener("click", () => addItemEffectRow());
+        document.getElementById("addItemActionBtn").addEventListener("click", () => addItemActionRow());
         // Modal tab switching
         document.getElementById("predefinedTabBtn").addEventListener("click", () => toggleItemTabs('predefined'));
         document.getElementById("customTabBtn").addEventListener("click", () => toggleItemTabs('custom'));
@@ -1780,6 +1869,12 @@ export function populateInventorySection(containerElement) {
             if (item.effect && Array.isArray(item.effect)) {
                 item.effect.forEach(effect => addItemEffectRow(effect));
             }
+            
+            // Actions
+            document.getElementById("itemActionsContainer").innerHTML = "";
+            if (item.actions && Array.isArray(item.actions)) {
+                item.actions.forEach(action => addItemActionRow(action));
+            }
         }
         
         document.getElementById("itemModal").classList.remove("hidden");
@@ -1919,6 +2014,31 @@ export function populateInventorySection(containerElement) {
                     }
                 }
                 itemData.effect.push(effectData);
+            });
+            
+            // Actions
+            itemData.actions = [];
+            document.querySelectorAll("#itemActionsContainer .action-row").forEach(row => {
+                const name = row.querySelector(".action-name").value;
+                const actionType = row.querySelector(".action-type").value;
+                const effectType = row.querySelector(".effect-type").value;
+                const target = row.querySelector(".action-target").value;
+                const dice = row.querySelector(".action-dice").value;
+                const modifier = parseInt(row.querySelector(".action-modifier").value) || 0;
+                const description = row.querySelector(".action-description").value;
+                
+                const actionData = { 
+                    name, 
+                    actionType, 
+                    effectType,
+                    description
+                };
+                
+                if (target) actionData.target = target;
+                if (dice) actionData.dice = dice;
+                if (modifier !== 0) actionData.modifier = modifier;
+                
+                itemData.actions.push(actionData);
             });
             
             // Save the custom item
@@ -2105,5 +2225,150 @@ export function populateInventorySection(containerElement) {
             addEffectBtn.addEventListener("click", () => addItemEffectRow());
         }
         container.appendChild(addEffectBtn);
+    }
+    
+    function addItemActionRow(action = {}) {
+        const container = document.getElementById("itemActionsContainer");
+        const actionRow = document.createElement("div");
+        actionRow.classList.add("action-row");
+        
+        // Create a more structured layout with flex containers
+        actionRow.innerHTML = `
+            <div class="action-main-row">
+                <input type="text" class="action-name" placeholder="Action Name" value="${action.name || ''}">
+                <select class="action-type">
+                    <option value="action" ${action.actionType === "action" ? "selected" : ""}>Action</option>
+                    <option value="bonus" ${action.actionType === "bonus" ? "selected" : ""}>Bonus Action</option>
+                    <option value="reaction" ${action.actionType === "reaction" ? "selected" : ""}>Reaction</option>
+                    <option value="free" ${action.actionType === "free" ? "selected" : ""}>Free Action</option>
+                </select>
+                <select class="effect-type">
+                    <option value="damage" ${action.effectType === "damage" ? "selected" : ""}>Damage</option>
+                    <option value="heal" ${action.effectType === "heal" ? "selected" : ""}>Heal</option>
+                    <option value="status" ${action.effectType === "status" ? "selected" : ""}>Status Effect</option>
+                    <option value="spell" ${action.effectType === "spell" ? "selected" : ""}>Cast Spell</option>
+                    <option value="other" ${action.effectType === "other" ? "selected" : ""}>Other</option>
+                </select>
+                <button class="remove-action-btn">✖</button>
+            </div>
+            <div class="action-details-row">
+                <div class="action-target-container">
+                    <select class="action-target"></select>
+                </div>
+                <div class="action-dice-container">
+                    <select class="action-dice">
+                        <option value="">No Dice</option>
+                        <option value="1d4">1d4</option>
+                        <option value="1d6">1d6</option>
+                        <option value="1d8">1d8</option>
+                        <option value="1d10">1d10</option>
+                        <option value="1d12">1d12</option>
+                        <option value="2d4">2d4</option>
+                        <option value="2d6">2d6</option>
+                        <option value="2d8">2d8</option>
+                        <option value="2d10">2d10</option>
+                        <option value="2d12">2d12</option>
+                        <option value="3d6">3d6</option>
+                        <option value="4d6">4d6</option>
+                    </select>
+                    <span>+</span>
+                    <input type="number" class="action-modifier" value="${action.modifier || 0}" min="-10" max="20">
+                </div>
+            </div>
+            <div class="action-description-row">
+                <textarea class="action-description" placeholder="Description of what this action does">${action.description || ''}</textarea>
+            </div>
+        `;
+
+        const effectTypeSelect = actionRow.querySelector(".effect-type");
+        const targetSelect = actionRow.querySelector(".action-target");
+        const diceContainer = actionRow.querySelector(".action-dice-container");
+        const targetContainer = actionRow.querySelector(".action-target-container");
+
+        // Define options for different effect types
+        const targetOptions = {
+            'damage': [
+                'Slashing', 'Piercing', 'Bludgeoning', 'Fire', 'Cold', 'Lightning', 
+                'Acid', 'Poison', 'Psychic', 'Necrotic', 'Radiant', 'Force', 'Thunder'
+            ],
+            'status': [
+                'Blinded', 'Charmed', 'Deafened', 'Exhaustion', 'Frightened', 
+                'Grappled', 'Incapacitated', 'Invisible', 'Paralyzed', 'Petrified', 
+                'Poisoned', 'Prone', 'Restrained', 'Stunned', 'Unconscious'
+            ],
+            'spell': [
+                'Magic Missile', 'Cure Wounds', 'Shield', 'Burning Hands', 'Sleep',
+                'Detect Magic', 'Identify', 'Mage Armor', 'Charm Person', 'Disguise Self',
+                'Custom Spell'
+            ]
+        };
+
+        function updateFields() {
+            const effectType = effectTypeSelect.value;
+            
+            // Show/hide dice container based on effect type
+            diceContainer.style.display = (effectType === 'damage' || effectType === 'heal') ? 'flex' : 'none';
+            
+            // Show/hide target container based on effect type
+            targetContainer.style.display = (effectType === 'damage' || effectType === 'status' || effectType === 'spell') ? 'flex' : 'none';
+            
+            // Update target options based on effect type
+            targetSelect.innerHTML = '';
+            if (targetOptions[effectType]) {
+                targetOptions[effectType].forEach(option => {
+                    const optionEl = document.createElement('option');
+                    optionEl.value = option;
+                    optionEl.textContent = option;
+                    targetSelect.appendChild(optionEl);
+                });
+            }
+            
+            // Set selected target if provided
+            if (action.target) {
+                for (let i = 0; i < targetSelect.options.length; i++) {
+                    if (targetSelect.options[i].value === action.target) {
+                        targetSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            // Set selected dice if provided
+            if (action.dice) {
+                const diceSelect = actionRow.querySelector('.action-dice');
+                for (let i = 0; i < diceSelect.options.length; i++) {
+                    if (diceSelect.options[i].value === action.dice) {
+                        diceSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        effectTypeSelect.addEventListener("change", updateFields);
+        
+        // Initialize fields
+        updateFields();
+
+        actionRow.querySelector(".remove-action-btn").addEventListener("click", () => {
+            actionRow.remove();
+            moveAddItemActionButton();
+        });
+
+        container.appendChild(actionRow);
+        moveAddItemActionButton();
+    }
+
+    function moveAddItemActionButton() {
+        let addActionBtn = document.getElementById("addItemActionBtn");
+        const container = document.getElementById("itemActionsContainer");
+        if (!addActionBtn) {
+            addActionBtn = document.createElement("button");
+            addActionBtn.id = "addItemActionBtn";
+            addActionBtn.classList.add("add-item-action-btn");
+            addActionBtn.textContent = "+ Add Action";
+            addActionBtn.addEventListener("click", () => addItemActionRow());
+        }
+        container.appendChild(addActionBtn);
     }
 }

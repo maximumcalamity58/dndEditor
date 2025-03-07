@@ -322,7 +322,8 @@ def toggle_equipped():
             'properties': item_data.get('properties', []),
             'armor_class': item_data.get('armor_class', ''),
             'subcategory': item_data.get('subcategory', ''),
-            'effect': item_data.get('effect', [])  # Store effects in equipment_data
+            'effect': item_data.get('effect', []),  # Store effects in equipment_data
+            'actions': item_data.get('actions', [])  # Store actions in equipment_data
         }
     else:
         # Handle unequipping
