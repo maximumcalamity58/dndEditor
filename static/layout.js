@@ -238,6 +238,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const existingBtn = document.querySelector('.lm_add_tab_btn');
         if (existingBtn) {
             existingBtn.remove();
+        }
         
         // Always show the add tab button, even if there are no closed tabs
         document.querySelectorAll('.lm_header').forEach(header => {
@@ -294,7 +295,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                             dropdown.appendChild(message);
                         }
                         
-                        // Add dropdown to DOM
+                        // Add dropdown to DOM - position it relative to the add button
+                        dropdown.style.top = '35px';
+                        dropdown.style.right = '5px';
                         header.appendChild(dropdown);
                         
                         // Close dropdown when clicking outside

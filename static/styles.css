@@ -101,7 +101,7 @@ h3 {
     width: 16px;
     height: 16px;
     margin-left: 6px;
-    border-radius: 50%;
+    border-radius: 3px;
     background: rgba(255, 255, 255, 0.1);
     color: #ccc;
     font-size: 14px;
@@ -128,18 +128,21 @@ h3 {
 
 /* Add tab button */
 .lm_add_tab_btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 24px;
     height: 24px;
-    margin: 8px 5px 0;
+    margin: 5px 5px 0;
     background: rgba(255, 255, 255, 0.1);
     color: #ccc;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 24px;
+    border-radius: 3px;
     font-size: 16px;
     cursor: pointer;
     transition: all 0.2s;
+    position: absolute;
+    right: 5px;
+    top: 0;
 }
 
 .lm_add_tab_btn:hover {
