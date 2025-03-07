@@ -47,22 +47,23 @@ export function populateConditionsSection(containerElement, characterData) {
                 color: #aaa;
                 margin-top: 5px;
                 display: none;
-                position: absolute;
                 background: #333;
                 border: 1px solid #555;
                 padding: 8px;
                 border-radius: 4px;
-                width: 250px;
-                z-index: 10;
+                width: 100%;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-                left: 100%;
-                top: 0;
             }
             .condition-item {
                 position: relative;
             }
-            .condition-item:hover .condition-description {
-                display: block;
+            .expand-arrow {
+                margin-left: 5px;
+                cursor: pointer;
+                transition: transform 0.3s;
+            }
+            .expand-arrow.expanded {
+                transform: rotate(90deg);
             }
             .conditions-header {
                 display: flex;
@@ -206,47 +207,64 @@ export function populateConditionsSection(containerElement, characterData) {
                                 characterData.conditions.vulnerabilities && 
                                 characterData.conditions.vulnerabilities.includes(damageType.name);
         
-        // Determine the primary class for styling
+        // Determine the primary class for styling and status
         let primaryClass = '';
         let statusLabel = '';
+        let statusType = '';
         
         if (hasImmunity) {
             primaryClass = 'immunity';
-            statusLabel = '<span class="condition-type immunity">Immune</span>';
+            statusLabel = 'Immune';
+            statusType = 'immunity';
         } else if (hasResistance) {
             primaryClass = 'resistance';
-            statusLabel = '<span class="condition-type resistance">Resistant</span>';
+            statusLabel = 'Resistant';
+            statusType = 'resistance';
         } else if (hasVulnerability) {
             primaryClass = 'vulnerability';
-            statusLabel = '<span class="condition-type vulnerability">Vulnerable</span>';
+            statusLabel = 'Vulnerable';
+            statusType = 'vulnerability';
+        } else {
+            statusLabel = 'None';
         }
         
         const damageTypeItem = document.createElement("div");
         damageTypeItem.className = `condition-item ${primaryClass}`;
         damageTypeItem.innerHTML = `
             <span class="condition-name">${damageType.name}</span>
-            ${statusLabel}
-            <div class="damage-type-controls">
-                <label title="Resistance"><input type="checkbox" class="condition-checkbox" 
-                       data-condition="${damageType.name}" data-type="resistance" 
-                       ${hasResistance ? 'checked' : ''}> R</label>
-                <label title="Immunity"><input type="checkbox" class="condition-checkbox" 
-                       data-condition="${damageType.name}" data-type="immunity" 
-                       ${hasImmunity ? 'checked' : ''}> I</label>
-                <label title="Vulnerability"><input type="checkbox" class="condition-checkbox" 
-                       data-condition="${damageType.name}" data-type="vulnerability" 
-                       ${hasVulnerability ? 'checked' : ''}> V</label>
-            </div>
-            <div class="condition-description">${damageType.description}</div>
+            <span class="damage-status" data-condition="${damageType.name}" data-status="${statusType || 'none'}">
+                ${statusLabel !== 'None' ? `<span class="condition-type ${primaryClass}">${statusLabel}</span>` : ''}
+            </span>
         `;
         damageTypesSection.appendChild(damageTypeItem);
         
-        // Add event listeners to toggle checkboxes
-        const checkboxes = damageTypeItem.querySelectorAll('.condition-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                toggleCondition(this.dataset.condition, this.dataset.type, this.checked);
-            });
+        // Add event listener for clicking on the damage type item
+        damageTypeItem.addEventListener('click', function() {
+            const statusSpan = this.querySelector('.damage-status');
+            const condition = statusSpan.dataset.condition;
+            const currentStatus = statusSpan.dataset.status;
+            
+            // Cycle through states: none -> resistance -> immunity -> vulnerability -> none
+            let newStatus;
+            if (currentStatus === 'none') {
+                newStatus = 'resistance';
+            } else if (currentStatus === 'resistance') {
+                newStatus = 'immunity';
+            } else if (currentStatus === 'immunity') {
+                newStatus = 'vulnerability';
+            } else {
+                newStatus = 'none';
+            }
+            
+            // Remove current status if any
+            if (currentStatus !== 'none') {
+                toggleCondition(condition, currentStatus, false);
+            }
+            
+            // Add new status if not none
+            if (newStatus !== 'none') {
+                toggleCondition(condition, newStatus, true);
+            }
         });
     });
     

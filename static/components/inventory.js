@@ -95,6 +95,37 @@ export function populateInventorySection(containerElement) {
                 color: #e67e22; /* Dark orange for vulnerabilities */
             }
             
+            /* Structured Inputs */
+            .structured-input {
+                display: flex;
+                gap: 5px;
+                align-items: center;
+                width: 100%;
+            }
+            .structured-input select,
+            .structured-input input {
+                flex: 1;
+                min-width: 0;
+            }
+            .property-checkboxes {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 5px;
+                max-height: 150px;
+                overflow-y: auto;
+                padding: 5px;
+                background-color: rgba(30, 30, 30, 0.6);
+                border-radius: 4px;
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
+            }
+            .property-checkboxes label {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                font-size: 0.9em;
+                margin: 0;
+            }
+            
             /* Category Styling */
             .item-category-weapon {
                 border-left: 4px solid var(--weapon-color, #e55);
@@ -668,11 +699,47 @@ export function populateInventorySection(containerElement) {
                         <div class="form-row">
                             <div class="form-group half">
                                 <label>Damage:</label>
-                                <input type="text" id="itemDamage" placeholder="e.g. 1d6 slashing">
+                                <div class="structured-input">
+                                    <select id="itemDamageDice">
+                                        <option value="1d4">1d4</option>
+                                        <option value="1d6">1d6</option>
+                                        <option value="1d8">1d8</option>
+                                        <option value="1d10">1d10</option>
+                                        <option value="1d12">1d12</option>
+                                        <option value="2d4">2d4</option>
+                                        <option value="2d6">2d6</option>
+                                        <option value="2d8">2d8</option>
+                                    </select>
+                                    <select id="itemDamageType">
+                                        <option value="slashing">Slashing</option>
+                                        <option value="piercing">Piercing</option>
+                                        <option value="bludgeoning">Bludgeoning</option>
+                                        <option value="fire">Fire</option>
+                                        <option value="cold">Cold</option>
+                                        <option value="lightning">Lightning</option>
+                                        <option value="acid">Acid</option>
+                                        <option value="poison">Poison</option>
+                                        <option value="psychic">Psychic</option>
+                                        <option value="necrotic">Necrotic</option>
+                                        <option value="radiant">Radiant</option>
+                                        <option value="force">Force</option>
+                                        <option value="thunder">Thunder</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group half">
                                 <label>Properties:</label>
-                                <input type="text" id="itemProperties" placeholder="e.g. Finesse, Light">
+                                <div class="property-checkboxes">
+                                    <label><input type="checkbox" class="property-checkbox" value="Finesse"> Finesse</label>
+                                    <label><input type="checkbox" class="property-checkbox" value="Heavy"> Heavy</label>
+                                    <label><input type="checkbox" class="property-checkbox" value="Light"> Light</label>
+                                    <label><input type="checkbox" class="property-checkbox" value="Loading"> Loading</label>
+                                    <label><input type="checkbox" class="property-checkbox" value="Reach"> Reach</label>
+                                    <label><input type="checkbox" class="property-checkbox" value="Special"> Special</label>
+                                    <label><input type="checkbox" class="property-checkbox" value="Thrown"> Thrown</label>
+                                    <label><input type="checkbox" class="property-checkbox" value="Two-Handed"> Two-Handed</label>
+                                    <label><input type="checkbox" class="property-checkbox" value="Versatile"> Versatile</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -682,21 +749,15 @@ export function populateInventorySection(containerElement) {
                         <div class="form-row">
                             <div class="form-group half">
                                 <label>Armor Class:</label>
-                                <input type="text" id="itemArmorClass" placeholder="e.g. 12 + Dex modifier">
-                            </div>
-                            <div class="form-group half">
-                                <label>Type:</label>
-                                <select id="armorType">
-                                    <option value="light">Light Armor</option>
-                                    <option value="medium">Medium Armor</option>
-                                    <option value="heavy">Heavy Armor</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group half">
-                                <label>Strength Requirement:</label>
-                                <input type="text" id="itemStrRequirement" placeholder="e.g. 13">
+                                <div class="structured-input">
+                                    <input type="number" id="itemArmorClassBase" placeholder="Base AC" min="0" max="30">
+                                    <select id="itemArmorClassMod">
+                                        <option value="none">No Modifier</option>
+                                        <option value="dex">+ Dex Modifier</option>
+                                        <option value="dex_max_2">+ Dex Modifier (Max 2)</option>
+                                        <option value="dex_max_3">+ Dex Modifier (Max 3)</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group half">
                                 <label>Stealth:</label>
@@ -704,6 +765,12 @@ export function populateInventorySection(containerElement) {
                                     <option value="none">Normal</option>
                                     <option value="disadvantage">Disadvantage</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Strength Requirement:</label>
+                                <input type="number" id="itemStrRequirement" placeholder="Minimum STR" min="0" max="30">
                             </div>
                         </div>
                     </div>
@@ -946,7 +1013,10 @@ export function populateInventorySection(containerElement) {
             section.style.display = 'none';
         });
         
-        // Always populate subcategories
+        // Reset subcategory select
+        subcategorySelect.innerHTML = '';
+        
+        // Populate subcategories based on category
         populateSubcategories(category, subcategorySelect);
         
         // Show the appropriate section based on category
@@ -960,80 +1030,63 @@ export function populateInventorySection(containerElement) {
     function populateSubcategories(category, selectElement) {
         selectElement.innerHTML = '<option value="">Loading subcategories...</option>';
         
-        fetch("/static/items.json")
-            .then(response => response.json())
-            .then(data => {
-                const predefinedItems = data.predefined_items || {};
-                selectElement.innerHTML = '';
-                
-                // Define subcategory mappings
-                const subcategories = {
-                    'weapon': {
-                        'simple_melee': 'Simple Melee Weapons',
-                        'simple_ranged': 'Simple Ranged Weapons',
-                        'martial_melee': 'Martial Melee Weapons',
-                        'martial_ranged': 'Martial Ranged Weapons'
-                    },
-                    'armor': {
-                        'light_armor': 'Light Armor',
-                        'medium_armor': 'Medium Armor',
-                        'heavy_armor': 'Heavy Armor'
-                    },
-                    'shield': {
-                        'shields': 'Shields'
-                    },
-                    'clothing': {
-                        'head': 'Head',
-                        'neck': 'Neck',
-                        'shoulders': 'Shoulders',
-                        'chest': 'Chest',
-                        'back': 'Back',
-                        'wrists': 'Wrists',
-                        'hands': 'Hands',
-                        'waist': 'Waist',
-                        'legs': 'Legs',
-                        'feet': 'Feet',
-                        'finger': 'Finger'
-                    },
-                    'scroll': {
-                        'scrolls': 'Scrolls'
-                    },
-                    'potion': {
-                        'potions': 'Potions'
-                    },
-                    'misc': {
-                        'equipment_packs': 'Equipment Packs',
-                        'tools': 'Tools',
-                        'artisan_tools': 'Artisan Tools',
-                        'musical_instruments': 'Musical Instruments',
-                        'gaming_sets': 'Gaming Sets',
-                        'misc': 'Miscellaneous'
-                    },
-                    'wondrous': {
-                        'wondrous': 'Wondrous Items'
-                    }
-                };
-                
-                // Add subcategories based on the selected category
-                if (subcategories[category]) {
-                    Object.entries(subcategories[category]).forEach(([value, label]) => {
-                        const option = document.createElement('option');
-                        option.value = value;
-                        option.textContent = label;
-                        selectElement.appendChild(option);
-                    });
-                } else {
-                    // Default option if no subcategories found
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = 'General';
-                    selectElement.appendChild(option);
-                }
-            })
-            .catch(error => {
-                console.error("Error loading subcategories:", error);
-                selectElement.innerHTML = '<option value="">Failed to load subcategories</option>';
+        // Define subcategory mappings
+        const subcategories = {
+            'weapon': {
+                'simple_melee': 'Simple Melee Weapons',
+                'simple_ranged': 'Simple Ranged Weapons',
+                'martial_melee': 'Martial Melee Weapons',
+                'martial_ranged': 'Martial Ranged Weapons'
+            },
+            'armor': {
+                'light_armor': 'Light Armor',
+                'medium_armor': 'Medium Armor',
+                'heavy_armor': 'Heavy Armor'
+            },
+            'clothing': {
+                'head': 'Head',
+                'neck': 'Neck',
+                'shoulders': 'Shoulders',
+                'chest': 'Chest',
+                'back': 'Back',
+                'wrists': 'Wrists',
+                'hands': 'Hands',
+                'waist': 'Waist',
+                'legs': 'Legs',
+                'feet': 'Feet',
+                'finger': 'Finger'
+            },
+            'potion': {
+                'healing': 'Healing Potion',
+                'status': 'Status Effect Potion'
+            },
+            'misc': {
+                'equipment_packs': 'Equipment Packs',
+                'tools': 'Tools',
+                'artisan_tools': 'Artisan Tools',
+                'musical_instruments': 'Musical Instruments',
+                'gaming_sets': 'Gaming Sets',
+                'misc': 'Miscellaneous'
+            }
+        };
+        
+        selectElement.innerHTML = '';
+        
+        // Add subcategories based on the selected category
+        if (subcategories[category]) {
+            Object.entries(subcategories[category]).forEach(([value, label]) => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = label;
+                selectElement.appendChild(option);
             });
+        } else {
+            // For categories without subcategories (shield, scroll, wondrous)
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = 'General';
+            selectElement.appendChild(option);
+        }
     }
 
     function loadPredefinedItems() {
@@ -1405,11 +1458,60 @@ export function populateInventorySection(containerElement) {
             
             // Fill in category-specific data
             if (item.category === 'weapon') {
-                document.getElementById("itemDamage").value = item.damage || "";
-                document.getElementById("itemProperties").value = item.properties ? item.properties.join(', ') : "";
+                // Parse damage string into dice and type
+                if (item.damage) {
+                    const damageParts = item.damage.split(' ');
+                    if (damageParts.length >= 2) {
+                        const damageDice = damageParts[0];
+                        const damageType = damageParts[1];
+                        
+                        // Set the damage dice if it's a valid option
+                        const diceSelect = document.getElementById("itemDamageDice");
+                        for (let i = 0; i < diceSelect.options.length; i++) {
+                            if (diceSelect.options[i].value === damageDice) {
+                                diceSelect.selectedIndex = i;
+                                break;
+                            }
+                        }
+                        
+                        // Set the damage type if it's a valid option
+                        const typeSelect = document.getElementById("itemDamageType");
+                        for (let i = 0; i < typeSelect.options.length; i++) {
+                            if (typeSelect.options[i].value === damageType) {
+                                typeSelect.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // Set properties checkboxes
+                if (item.properties && Array.isArray(item.properties)) {
+                    document.querySelectorAll('.property-checkbox').forEach(checkbox => {
+                        checkbox.checked = item.properties.includes(checkbox.value);
+                    });
+                }
             } else if (item.category === 'armor') {
-                document.getElementById("itemArmorClass").value = item.armor_class || "";
-                document.getElementById("armorType").value = item.armor_type || "light";
+                // Parse armor class string
+                if (item.armor_class) {
+                    let baseAC = item.armor_class;
+                    let acMod = 'none';
+                    
+                    if (item.armor_class.includes('+ Dex modifier (max 2)')) {
+                        baseAC = item.armor_class.split('+')[0].trim();
+                        acMod = 'dex_max_2';
+                    } else if (item.armor_class.includes('+ Dex modifier (max 3)')) {
+                        baseAC = item.armor_class.split('+')[0].trim();
+                        acMod = 'dex_max_3';
+                    } else if (item.armor_class.includes('+ Dex modifier')) {
+                        baseAC = item.armor_class.split('+')[0].trim();
+                        acMod = 'dex';
+                    }
+                    
+                    document.getElementById("itemArmorClassBase").value = baseAC;
+                    document.getElementById("itemArmorClassMod").value = acMod;
+                }
+                
                 document.getElementById("itemStrRequirement").value = item.strength_requirement || "";
                 document.getElementById("itemStealth").value = item.stealth === "Disadvantage" ? "disadvantage" : "none";
             }
@@ -1493,14 +1595,30 @@ export function populateInventorySection(containerElement) {
             
             // Category-specific data
             if (itemData.category === 'weapon') {
-                itemData.damage = document.getElementById("itemDamage").value.trim();
-                const propertiesText = document.getElementById("itemProperties").value.trim();
-                if (propertiesText) {
-                    itemData.properties = propertiesText.split(',').map(p => p.trim());
-                }
+                const damageDice = document.getElementById("itemDamageDice").value;
+                const damageType = document.getElementById("itemDamageType").value;
+                itemData.damage = `${damageDice} ${damageType}`;
+                
+                // Get selected properties
+                itemData.properties = [];
+                document.querySelectorAll('.property-checkbox:checked').forEach(checkbox => {
+                    itemData.properties.push(checkbox.value);
+                });
             } else if (itemData.category === 'armor') {
-                itemData.armor_class = document.getElementById("itemArmorClass").value.trim();
-                itemData.armor_type = document.getElementById("armorType").value;
+                const baseAC = document.getElementById("itemArmorClassBase").value.trim();
+                const acMod = document.getElementById("itemArmorClassMod").value;
+                
+                if (baseAC) {
+                    if (acMod === 'none') {
+                        itemData.armor_class = baseAC;
+                    } else if (acMod === 'dex') {
+                        itemData.armor_class = `${baseAC} + Dex modifier`;
+                    } else if (acMod === 'dex_max_2') {
+                        itemData.armor_class = `${baseAC} + Dex modifier (max 2)`;
+                    } else if (acMod === 'dex_max_3') {
+                        itemData.armor_class = `${baseAC} + Dex modifier (max 3)`;
+                    }
+                }
                 
                 const strReq = document.getElementById("itemStrRequirement").value.trim();
                 if (strReq) {
