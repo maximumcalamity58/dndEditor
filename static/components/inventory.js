@@ -274,7 +274,6 @@ export function populateInventorySection(containerElement) {
             .modal-content input[type="number"],
             .modal-content textarea,
             .modal-content select {
-                width: 100%;
                 padding: 8px 10px;
                 border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
@@ -337,7 +336,6 @@ export function populateInventorySection(containerElement) {
                 margin-bottom: 15px;
             }
             #predefinedSearch {
-                width: 100%;
                 padding: 10px 12px;
                 border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
