@@ -121,19 +121,6 @@ export function populateEquipmentSection(containerElement, characterData) {
             }
         </style>
         <div class="equipment-container">
-            <div class="equipment-section">
-                <h3>Equipped Items</h3>
-                <div class="equipment-stats">
-                    <div class="stat-box">
-                        <strong>Armor Class</strong>
-                        <div class="stat-value" id="equipped-ac">${getFinalStat("armor_class", characterData)}</div>
-                    </div>
-                    <div class="stat-box">
-                        <strong>Weapon Damage</strong>
-                        <div class="stat-value" id="equipped-damage">-</div>
-                    </div>
-                </div>
-            </div>
             
             <div class="equipment-section">
                 <h3>Weapons</h3>
@@ -280,8 +267,6 @@ export function populateEquipmentSection(containerElement, characterData) {
         });
     }
     
-    // Update equipped weapon damage display
-    updateEquippedWeaponDisplay(characterData);
     
     // Helper function to get subcategory label
     function getSubcategoryLabel(category, subcategory) {
@@ -330,20 +315,4 @@ export function populateEquipmentSection(containerElement, characterData) {
         // });
     }
     
-    // Function to update the equipped weapon display
-    function updateEquippedWeaponDisplay(characterData) {
-        const equippedDamageElement = containerElement.querySelector("#equipped-damage");
-        const equipped = characterData.equipped || {};
-        
-        if (equipped.weapon) {
-            const weapon = inventory.find(item => item.name === equipped.weapon);
-            if (weapon && weapon.damage) {
-                equippedDamageElement.textContent = weapon.damage;
-            } else {
-                equippedDamageElement.textContent = "-";
-            }
-        } else {
-            equippedDamageElement.textContent = "-";
-        }
-    }
 }

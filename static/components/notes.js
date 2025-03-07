@@ -22,50 +22,45 @@ export function populateNotesSection(containerElement, characterData) {
                 resize: none;
                 margin-bottom: 10px;
             }
-            .notes-actions {
-                display: flex;
-                justify-content: flex-end;
-            }
-            .save-notes-btn {
-                background-color: #4a6fa5;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-weight: 600;
-            }
-            .save-notes-btn:hover {
-                background-color: #3a5f95;
+            .autosave-indicator {
+                font-size: 0.8em;
+                color: #aaa;
+                text-align: right;
+                margin-top: 5px;
+                font-style: italic;
             }
         </style>
         <div class="notes-container">
             <textarea id="character-notes" class="notes-textarea" placeholder="Enter your notes here...">${characterData.notes || ''}</textarea>
-            <div class="notes-actions">
-                <button id="save-notes-btn" class="save-notes-btn">Save Notes</button>
-            </div>
+            <div class="autosave-indicator">Auto-saving...</div>
         </div>
     `;
 
-    // Add event listener for saving notes
+    // Add auto-save functionality
     setTimeout(() => {
-        document.getElementById("save-notes-btn").addEventListener("click", saveNotes);
+        const notesTextarea = document.getElementById("character-notes");
+        if (notesTextarea) {
+            let saveTimeout;
+            
+            // Function to save notes
+            const saveNotes = () => {
+                const notes = notesTextarea.value;
+                
+                fetch("/save_notes", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ notes }),
+                });
+            };
+            
+            // Save on input with debounce (5 seconds)
+            notesTextarea.addEventListener("input", () => {
+                clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(saveNotes, 5000);
+            });
+            
+            // Save on blur (when clicking away)
+            notesTextarea.addEventListener("blur", saveNotes);
+        }
     }, 100);
-
-    function saveNotes() {
-        const notes = document.getElementById("character-notes").value;
-        
-        fetch("/save_notes", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ notes }),
-        }).then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("Notes saved successfully!");
-            } else {
-                alert("Failed to save notes.");
-            }
-        });
-    }
 }

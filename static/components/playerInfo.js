@@ -16,9 +16,9 @@ export function populatePlayerInfo(containerElement, characterData) {
                 position: relative;
                 width: 150px;
                 height: 150px;
-                border-radius: 50%;
+                border-radius: 0;
                 overflow: hidden;
-                border: 3px solid #444;
+                border: 3px solid #000;
                 background-color: #222;
             }
             #character-img {
@@ -59,22 +59,19 @@ export function populatePlayerInfo(containerElement, characterData) {
                 resize: vertical;
                 margin-bottom: 10px;
             }
-            #save-backstory-btn {
-                background-color: #4a6fa5;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 0.9em;
-            }
-            #save-backstory-btn:hover {
-                background-color: #3a5f95;
+            /* Auto-save indicator */
+            .autosave-indicator {
+                font-size: 0.8em;
+                color: #aaa;
+                text-align: right;
+                margin-top: 5px;
+                font-style: italic;
             }
         </style>
         <div class="character-image-container">
             <div id="character-image">
                 <img src="${details.image_url || '/static/default-character.png'}" alt="Character Image" id="character-img">
+                <input type="file" id="image-upload" accept="image/*" style="display: none;">
                 <button id="change-image-btn">Change Image</button>
             </div>
         </div>
@@ -93,7 +90,7 @@ export function populatePlayerInfo(containerElement, characterData) {
         <div class="backstory-section">
             <h3>Backstory</h3>
             <textarea id="character-backstory" placeholder="Enter your character's backstory here...">${details.backstory || ''}</textarea>
-            <button id="save-backstory-btn">Save Backstory</button>
+            <div class="autosave-indicator">Auto-saving...</div>
         </div>
         
         <script>
@@ -101,42 +98,58 @@ export function populatePlayerInfo(containerElement, characterData) {
             setTimeout(() => {
                 // Image change button
                 const changeImageBtn = document.getElementById("change-image-btn");
-                if (changeImageBtn) {
+                const imageUpload = document.getElementById("image-upload");
+                
+                if (changeImageBtn && imageUpload) {
                     changeImageBtn.addEventListener("click", () => {
-                        const imageUrl = prompt("Enter the URL for your character image:", "${details.image_url || ''}");
-                        if (imageUrl !== null) {
-                            // Update the image immediately
-                            document.getElementById("character-img").src = imageUrl || '/static/default-character.png';
+                        imageUpload.click();
+                    });
+                    
+                    imageUpload.addEventListener("change", function() {
+                        if (this.files && this.files[0]) {
+                            const reader = new FileReader();
                             
-                            // Save to server
-                            fetch("/save_character_image", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ image_url: imageUrl }),
-                            });
+                            reader.onload = function(e) {
+                                // Update the image immediately
+                                document.getElementById("character-img").src = e.target.result;
+                                
+                                // Save to server
+                                fetch("/save_character_image", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ image_url: e.target.result }),
+                                });
+                            };
+                            
+                            reader.readAsDataURL(this.files[0]);
                         }
                     });
                 }
                 
-                // Save backstory button
-                const saveBackstoryBtn = document.getElementById("save-backstory-btn");
-                if (saveBackstoryBtn) {
-                    saveBackstoryBtn.addEventListener("click", () => {
-                        const backstory = document.getElementById("character-backstory").value;
+                // Auto-save backstory
+                const backstoryTextarea = document.getElementById("character-backstory");
+                if (backstoryTextarea) {
+                    let saveTimeout;
+                    
+                    // Function to save backstory
+                    const saveBackstory = () => {
+                        const backstory = backstoryTextarea.value;
                         
                         fetch("/save_backstory", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ backstory }),
-                        }).then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("Backstory saved successfully!");
-                            } else {
-                                alert("Failed to save backstory.");
-                            }
                         });
+                    };
+                    
+                    // Save on input with debounce (5 seconds)
+                    backstoryTextarea.addEventListener("input", () => {
+                        clearTimeout(saveTimeout);
+                        saveTimeout = setTimeout(saveBackstory, 5000);
                     });
+                    
+                    // Save on blur (when clicking away)
+                    backstoryTextarea.addEventListener("blur", saveBackstory);
                 }
             }, 100);
         </script>

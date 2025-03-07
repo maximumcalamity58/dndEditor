@@ -29,6 +29,11 @@ export function getFinalStat(statName, characterData) {
         return obj && obj[key] !== undefined ? obj[key] : 0;
     }
 
+    // Special case for armor class calculation
+    if (statName === "armor_class") {
+        return calculateArmorClass(characterData);
+    }
+
     // Determine base value directly from characterData
     let baseValue = getProperty(characterData, statName) ||
                     getProperty(characterData.combat_stats, statName) ||
@@ -51,6 +56,84 @@ export function getFinalStat(statName, characterData) {
     });
 
     return baseValue;
+}
+
+/**
+ * Calculates armor class based on equipped armor and dexterity
+ * @param {Object} characterData - The full character data
+ * @returns {number} - The calculated armor class
+ */
+function calculateArmorClass(characterData) {
+    const equipped = characterData.equipped || {};
+    const dexModifier = calculateModifier(getFinalStat("dexterity", characterData), false);
+    
+    // Check if armor is equipped
+    if (equipped.armor) {
+        // Find the armor in inventory
+        const armor = characterData.inventory.find(item => 
+            item.name === equipped.armor && item.category === "armor"
+        );
+        
+        if (armor && armor.armor_class) {
+            // Parse the armor class string
+            let baseAC = 10;
+            let maxDexMod = null;
+            
+            if (typeof armor.armor_class === "string") {
+                // Extract base AC value
+                const acMatch = armor.armor_class.match(/^(\d+)/);
+                if (acMatch) {
+                    baseAC = parseInt(acMatch[1]);
+                }
+                
+                // Check for dex modifier limitations
+                if (armor.armor_class.includes("max 2")) {
+                    maxDexMod = 2;
+                } else if (armor.armor_class.includes("max 3")) {
+                    maxDexMod = 3;
+                } else if (!armor.armor_class.includes("Dex modifier")) {
+                    // Heavy armor doesn't add dex
+                    maxDexMod = 0;
+                }
+            } else if (typeof armor.armor_class === "number") {
+                baseAC = armor.armor_class;
+            }
+            
+            // Calculate final AC with dex modifier (if applicable)
+            let finalAC = baseAC;
+            if (maxDexMod !== 0) {
+                if (maxDexMod !== null) {
+                    // Limited dex bonus
+                    finalAC += Math.min(dexModifier, maxDexMod);
+                } else {
+                    // Full dex bonus
+                    finalAC += dexModifier;
+                }
+            }
+            
+            // Add shield bonus if equipped
+            if (equipped.shield) {
+                const shield = characterData.inventory.find(item => 
+                    item.name === equipped.shield && item.category === "shield"
+                );
+                
+                if (shield && shield.armor_class) {
+                    // Extract shield AC bonus
+                    const shieldACMatch = shield.armor_class.match(/\+(\d+)/);
+                    if (shieldACMatch) {
+                        finalAC += parseInt(shieldACMatch[1]);
+                    } else if (typeof shield.armor_class === "number") {
+                        finalAC += shield.armor_class;
+                    }
+                }
+            }
+            
+            return finalAC;
+        }
+    }
+    
+    // No armor equipped, use unarmored defense (10 + DEX modifier)
+    return 10 + dexModifier;
 }
 
 /**
