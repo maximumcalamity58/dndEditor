@@ -171,3 +171,127 @@ def remove_bonus():
 
 if __name__ == "__main__":
     app.run(debug=True)
+@app.route('/toggle_condition', methods=['POST'])
+def toggle_condition():
+    data = request.json
+    condition_name = data.get('condition')
+    condition_type = data.get('type')
+    is_active = data.get('active')
+    
+    character_data = load_data()
+    
+    # Initialize conditions structure if it doesn't exist
+    if 'conditions' not in character_data:
+        character_data['conditions'] = {
+            'active': [],
+            'resistances': [],
+            'immunities': [],
+            'vulnerabilities': []
+        }
+    
+    # Ensure all condition lists exist
+    for key in ['active', 'resistances', 'immunities', 'vulnerabilities']:
+        if key not in character_data['conditions']:
+            character_data['conditions'][key] = []
+    
+    # Update the condition
+    condition_list = character_data['conditions'][condition_type]
+    
+    if is_active and condition_name not in condition_list:
+        condition_list.append(condition_name)
+    elif not is_active and condition_name in condition_list:
+        condition_list.remove(condition_name)
+    
+    # Handle special cases for damage types
+    # If something is immune, it can't be resistant or vulnerable
+    if condition_type == 'immunity' and is_active:
+        if condition_name in character_data['conditions']['resistances']:
+            character_data['conditions']['resistances'].remove(condition_name)
+        if condition_name in character_data['conditions']['vulnerabilities']:
+            character_data['conditions']['vulnerabilities'].remove(condition_name)
+    
+    # If something is resistant, it can't be vulnerable
+    if condition_type == 'resistance' and is_active:
+        if condition_name in character_data['conditions']['vulnerabilities']:
+            character_data['conditions']['vulnerabilities'].remove(condition_name)
+    
+    # If something is vulnerable, it can't be resistant
+    if condition_type == 'vulnerability' and is_active:
+        if condition_name in character_data['conditions']['resistances']:
+            character_data['conditions']['resistances'].remove(condition_name)
+    
+    save_data(character_data)
+    
+    # Return the updated conditions for UI updates
+    return jsonify({
+        'updated': True,
+        'conditions': character_data['conditions']
+    })
+@app.route('/save_item', methods=['POST'])
+def save_item():
+    data = request.json
+    index = data.get('index')
+    item = data.get('item')
+    
+    character_data = load_data()
+    
+    # Initialize inventory if it doesn't exist
+    if 'inventory' not in character_data:
+        character_data['inventory'] = []
+    
+    # Update existing item or add new one
+    if index is not None:
+        if 0 <= index < len(character_data['inventory']):
+            character_data['inventory'][index] = item
+    else:
+        character_data['inventory'].append(item)
+    
+    save_data(character_data)
+    return jsonify({'success': True})
+
+@app.route('/remove_item', methods=['POST'])
+def remove_item():
+    data = request.json
+    index = data.get('index')
+    
+    character_data = load_data()
+    
+    if 'inventory' in character_data and 0 <= index < len(character_data['inventory']):
+        character_data['inventory'].pop(index)
+        save_data(character_data)
+    
+    return jsonify({'success': True})
+@app.route('/save_bonus', methods=['POST'])
+def save_bonus():
+    data = request.json
+    index = data.get('index')
+    bonus = data.get('bonus')
+    
+    character_data = load_data()
+    
+    # Initialize bonuses if it doesn't exist
+    if 'bonuses' not in character_data:
+        character_data['bonuses'] = []
+    
+    # Update existing bonus or add new one
+    if index is not None:
+        if 0 <= index < len(character_data['bonuses']):
+            character_data['bonuses'][index] = bonus
+    else:
+        character_data['bonuses'].append(bonus)
+    
+    save_data(character_data)
+    return jsonify({'success': True})
+
+@app.route('/remove_bonus', methods=['POST'])
+def remove_bonus():
+    data = request.json
+    index = data.get('index')
+    
+    character_data = load_data()
+    
+    if 'bonuses' in character_data and 0 <= index < len(character_data['bonuses']):
+        character_data['bonuses'].pop(index)
+        save_data(character_data)
+    
+    return jsonify({'success': True})

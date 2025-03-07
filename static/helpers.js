@@ -85,23 +85,45 @@ export function getFinalProficiencyBonus(characterData) {
  * @returns {boolean} - True if the character has proficiency, false otherwise.
  */
 export function hasProficiency(proficiencyName, characterData) {
+    // Normalize the proficiency name for case-insensitive comparison
+    const normalizedName = proficiencyName.toLowerCase();
+    
     // Check saving throws
-    if (characterData.saving_throws[proficiencyName.toLowerCase()] === true) {
+    if (characterData.saving_throws[normalizedName] === true) {
         return true;
     }
 
     // Check skill proficiencies
     for (let skill of characterData.skills) {
-        if (skill.name.toLowerCase() === proficiencyName.toLowerCase() && skill.proficient) {
+        if (skill.name.toLowerCase() === normalizedName && skill.proficient) {
             return true;
         }
     }
 
     // Check bonuses that grant proficiency
-    for (let bonus of characterData.bonuses) {
-        for (let effect of bonus.effects) {
-            if (effect.category === "proficiency" && effect.target.toLowerCase() === proficiencyName.toLowerCase()) {
-                return true;
+    if (characterData.bonuses) {
+        for (let bonus of characterData.bonuses) {
+            if (!bonus.effects) continue;
+            
+            for (let effect of bonus.effects) {
+                if (effect.category === "proficiency" && 
+                    effect.target.toLowerCase() === normalizedName) {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    // Check inventory items that grant proficiency
+    if (characterData.inventory) {
+        for (let item of characterData.inventory) {
+            if (item.effect) {
+                for (let effect of item.effect) {
+                    if (effect.category === "proficiency" && 
+                        effect.target.toLowerCase() === normalizedName) {
+                        return true;
+                    }
+                }
             }
         }
     }
@@ -122,10 +144,22 @@ export function getRollAdvantage(rollName, characterData) {
     // Normalize the roll name
     const normalizedRollName = rollName.toLowerCase();
     
+    // Check for general roll categories that might match
+    const isAttackRoll = normalizedRollName.includes("attack");
+    const isAbilityCheck = !normalizedRollName.includes("save") && 
+                          ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"].some(
+                              ability => normalizedRollName.includes(ability)
+                          );
+    const isMeleeAttack = normalizedRollName.includes("melee") || normalizedRollName.includes("strength");
+    const isRangedAttack = normalizedRollName.includes("ranged") || normalizedRollName.includes("dexterity");
+    
     // Check bonuses for advantage/disadvantage effects
     if (characterData.bonuses) {
         for (let bonus of characterData.bonuses) {
+            if (!bonus.effects) continue;
+            
             for (let effect of bonus.effects) {
+                // Check for direct matches
                 if (effect.category === "advantage" && 
                     effect.target.toLowerCase() === normalizedRollName) {
                     hasAdvantage = true;
@@ -133,6 +167,24 @@ export function getRollAdvantage(rollName, characterData) {
                 if (effect.category === "disadvantage" && 
                     effect.target.toLowerCase() === normalizedRollName) {
                     hasDisadvantage = true;
+                }
+                
+                // Check for category matches (Attack Rolls, etc)
+                if (effect.category === "advantage") {
+                    const effectTarget = effect.target.toLowerCase();
+                    if ((effectTarget === "attack rolls" && isAttackRoll) ||
+                        (effectTarget === "melee attack rolls" && isMeleeAttack && isAttackRoll) ||
+                        (effectTarget === "ranged attack rolls" && isRangedAttack && isAttackRoll)) {
+                        hasAdvantage = true;
+                    }
+                }
+                if (effect.category === "disadvantage") {
+                    const effectTarget = effect.target.toLowerCase();
+                    if ((effectTarget === "attack rolls" && isAttackRoll) ||
+                        (effectTarget === "melee attack rolls" && isMeleeAttack && isAttackRoll) ||
+                        (effectTarget === "ranged attack rolls" && isRangedAttack && isAttackRoll)) {
+                        hasDisadvantage = true;
+                    }
                 }
             }
         }
@@ -143,6 +195,7 @@ export function getRollAdvantage(rollName, characterData) {
         for (let item of characterData.inventory) {
             if (item.effect) {
                 for (let effect of item.effect) {
+                    // Check for direct matches
                     if (effect.category === "advantage" && 
                         effect.target.toLowerCase() === normalizedRollName) {
                         hasAdvantage = true;
@@ -150,6 +203,24 @@ export function getRollAdvantage(rollName, characterData) {
                     if (effect.category === "disadvantage" && 
                         effect.target.toLowerCase() === normalizedRollName) {
                         hasDisadvantage = true;
+                    }
+                    
+                    // Check for category matches (Attack Rolls, etc)
+                    if (effect.category === "advantage") {
+                        const effectTarget = effect.target.toLowerCase();
+                        if ((effectTarget === "attack rolls" && isAttackRoll) ||
+                            (effectTarget === "melee attack rolls" && isMeleeAttack && isAttackRoll) ||
+                            (effectTarget === "ranged attack rolls" && isRangedAttack && isAttackRoll)) {
+                            hasAdvantage = true;
+                        }
+                    }
+                    if (effect.category === "disadvantage") {
+                        const effectTarget = effect.target.toLowerCase();
+                        if ((effectTarget === "attack rolls" && isAttackRoll) ||
+                            (effectTarget === "melee attack rolls" && isMeleeAttack && isAttackRoll) ||
+                            (effectTarget === "ranged attack rolls" && isRangedAttack && isAttackRoll)) {
+                            hasDisadvantage = true;
+                        }
                     }
                 }
             }
@@ -160,44 +231,46 @@ export function getRollAdvantage(rollName, characterData) {
     if (characterData.conditions && characterData.conditions.active) {
         // Poisoned condition gives disadvantage on attack rolls and ability checks
         if (characterData.conditions.active.includes("Poisoned")) {
-            if (normalizedRollName.includes("attack") || 
-                !normalizedRollName.includes("save")) {
+            if (isAttackRoll || isAbilityCheck) {
                 hasDisadvantage = true;
             }
         }
         
         // Frightened condition gives disadvantage on ability checks and attack rolls
         if (characterData.conditions.active.includes("Frightened")) {
-            if (normalizedRollName.includes("attack") || 
-                !normalizedRollName.includes("save")) {
+            if (isAttackRoll || isAbilityCheck) {
                 hasDisadvantage = true;
             }
         }
         
         // Blinded condition
         if (characterData.conditions.active.includes("Blinded")) {
-            if (normalizedRollName.includes("attack")) {
+            if (isAttackRoll) {
                 hasDisadvantage = true;
             }
         }
         
         // Invisible condition
         if (characterData.conditions.active.includes("Invisible")) {
-            if (normalizedRollName.includes("attack")) {
+            if (isAttackRoll) {
                 hasAdvantage = true;
             }
         }
         
         // Prone condition
         if (characterData.conditions.active.includes("Prone")) {
-            if (normalizedRollName.includes("attack")) {
-                hasDisadvantage = true;
+            if (isAttackRoll) {
+                // Disadvantage on ranged attacks when prone
+                if (isRangedAttack) {
+                    hasDisadvantage = true;
+                }
+                // Melee attacks are more complex - handled elsewhere
             }
         }
         
         // Restrained condition
         if (characterData.conditions.active.includes("Restrained")) {
-            if (normalizedRollName.includes("attack")) {
+            if (isAttackRoll) {
                 hasDisadvantage = true;
             }
             if (normalizedRollName === "dexterity save") {
@@ -229,6 +302,7 @@ export function getDamageModifier(damageType, characterData) {
     
     const normalizedDamageType = damageType.toLowerCase();
     
+    // Check character's base resistances/immunities/vulnerabilities
     if (characterData.conditions.resistances && 
         characterData.conditions.resistances.some(r => r.toLowerCase() === normalizedDamageType)) {
         return "resistance";
@@ -244,5 +318,93 @@ export function getDamageModifier(damageType, characterData) {
         return "vulnerability";
     }
     
+    // Check bonuses for resistances/immunities/vulnerabilities
+    if (characterData.bonuses) {
+        for (let bonus of characterData.bonuses) {
+            if (!bonus.effects) continue;
+            
+            for (let effect of bonus.effects) {
+                if (effect.category === "resistance" && 
+                    effect.target.toLowerCase() === normalizedDamageType) {
+                    return "resistance";
+                }
+                if (effect.category === "immunity" && 
+                    effect.target.toLowerCase() === normalizedDamageType) {
+                    return "immunity";
+                }
+                if (effect.category === "vulnerability" && 
+                    effect.target.toLowerCase() === normalizedDamageType) {
+                    return "vulnerability";
+                }
+            }
+        }
+    }
+    
+    // Check inventory items for resistances/immunities/vulnerabilities
+    if (characterData.inventory) {
+        for (let item of characterData.inventory) {
+            if (item.effect) {
+                for (let effect of item.effect) {
+                    if (effect.category === "resistance" && 
+                        effect.target.toLowerCase() === normalizedDamageType) {
+                        return "resistance";
+                    }
+                    if (effect.category === "immunity" && 
+                        effect.target.toLowerCase() === normalizedDamageType) {
+                        return "immunity";
+                    }
+                    if (effect.category === "vulnerability" && 
+                        effect.target.toLowerCase() === normalizedDamageType) {
+                        return "vulnerability";
+                    }
+                }
+            }
+        }
+    }
+    
     return "normal";
+}
+/**
+ * Checks if the character has a specific condition.
+ * @param {string} conditionName - The condition to check.
+ * @param {Object} characterData - The full JSON character data.
+ * @returns {boolean} - True if the character has the condition, false otherwise.
+ */
+export function hasCondition(conditionName, characterData) {
+    // Check if the condition is directly in the active conditions list
+    if (characterData.conditions && 
+        characterData.conditions.active && 
+        characterData.conditions.active.includes(conditionName)) {
+        return true;
+    }
+    
+    // Check bonuses for condition effects
+    if (characterData.bonuses) {
+        for (let bonus of characterData.bonuses) {
+            if (!bonus.effects) continue;
+            
+            for (let effect of bonus.effects) {
+                if (effect.category === "condition" && 
+                    effect.target === conditionName) {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    // Check inventory items for condition effects
+    if (characterData.inventory) {
+        for (let item of characterData.inventory) {
+            if (item.effect) {
+                for (let effect of item.effect) {
+                    if (effect.category === "condition" && 
+                        effect.target === conditionName) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    
+    return false;
 }

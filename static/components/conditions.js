@@ -248,7 +248,77 @@ export function populateConditionsSection(containerElement, characterData) {
                 type: conditionType,
                 active: isActive
             }),
-        }).then(() => {
+        }).then(response => response.json())
+        .then(data => {
+            // Check if we need to update any related conditions
+            if (data.updated) {
+                // Update the UI to reflect the changes
+                const checkboxes = document.querySelectorAll('.condition-checkbox');
+                checkboxes.forEach(checkbox => {
+                    const condition = checkbox.dataset.condition;
+                    const type = checkbox.dataset.type;
+                    
+                    // Find the condition in the updated data
+                    if (type === 'active' && data.conditions.active.includes(condition)) {
+                        checkbox.checked = true;
+                        checkbox.closest('.condition-item').classList.add('active');
+                        if (!checkbox.closest('.condition-item').querySelector('.condition-type')) {
+                            const typeSpan = document.createElement('span');
+                            typeSpan.className = 'condition-type active';
+                            typeSpan.textContent = 'Active';
+                            checkbox.closest('.condition-item').querySelector('.condition-name').after(typeSpan);
+                        }
+                    } else if (type === 'resistance' && data.conditions.resistances.includes(condition)) {
+                        checkbox.checked = true;
+                        checkbox.closest('.condition-item').classList.add('resistance');
+                        if (!checkbox.closest('.condition-item').querySelector('.condition-type')) {
+                            const typeSpan = document.createElement('span');
+                            typeSpan.className = 'condition-type resistance';
+                            typeSpan.textContent = 'Resistant';
+                            checkbox.closest('.condition-item').querySelector('.condition-name').after(typeSpan);
+                        }
+                    } else if (type === 'immunity' && data.conditions.immunities.includes(condition)) {
+                        checkbox.checked = true;
+                        checkbox.closest('.condition-item').classList.add('immunity');
+                        if (!checkbox.closest('.condition-item').querySelector('.condition-type')) {
+                            const typeSpan = document.createElement('span');
+                            typeSpan.className = 'condition-type immunity';
+                            typeSpan.textContent = 'Immune';
+                            checkbox.closest('.condition-item').querySelector('.condition-name').after(typeSpan);
+                        }
+                    } else if (type === 'vulnerability' && data.conditions.vulnerabilities.includes(condition)) {
+                        checkbox.checked = true;
+                        checkbox.closest('.condition-item').classList.add('vulnerability');
+                        if (!checkbox.closest('.condition-item').querySelector('.condition-type')) {
+                            const typeSpan = document.createElement('span');
+                            typeSpan.className = 'condition-type vulnerability';
+                            typeSpan.textContent = 'Vulnerable';
+                            checkbox.closest('.condition-item').querySelector('.condition-name').after(typeSpan);
+                        }
+                    } else if (type === conditionType && condition === conditionName) {
+                        // This is the checkbox we just clicked, update its state
+                        checkbox.checked = isActive;
+                        if (isActive) {
+                            checkbox.closest('.condition-item').classList.add(type);
+                            if (!checkbox.closest('.condition-item').querySelector('.condition-type')) {
+                                const typeSpan = document.createElement('span');
+                                typeSpan.className = `condition-type ${type}`;
+                                typeSpan.textContent = type === 'active' ? 'Active' : 
+                                                      type === 'resistance' ? 'Resistant' :
+                                                      type === 'immunity' ? 'Immune' : 'Vulnerable';
+                                checkbox.closest('.condition-item').querySelector('.condition-name').after(typeSpan);
+                            }
+                        } else {
+                            checkbox.closest('.condition-item').classList.remove(type);
+                            const typeSpan = checkbox.closest('.condition-item').querySelector('.condition-type');
+                            if (typeSpan) {
+                                typeSpan.remove();
+                            }
+                        }
+                    }
+                });
+            }
+            
             window.updateCharacterStats(); // Refresh all calculated stats
         });
     }

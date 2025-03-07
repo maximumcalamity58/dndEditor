@@ -76,6 +76,24 @@ export function populateInventorySection(containerElement) {
                 margin: 0;
                 padding-left: 20px;
             }
+            .effect-advantage {
+                color: #2ecc71; /* Green for advantage */
+            }
+            .effect-disadvantage {
+                color: #e74c3c; /* Red for disadvantage */
+            }
+            .effect-condition {
+                color: #f39c12; /* Orange for conditions */
+            }
+            .effect-resistance {
+                color: #3498db; /* Blue for resistances */
+            }
+            .effect-immunity {
+                color: #9b59b6; /* Purple for immunities */
+            }
+            .effect-vulnerability {
+                color: #e67e22; /* Dark orange for vulnerabilities */
+            }
             
             /* Category Styling */
             .item-category-weapon {
@@ -1199,14 +1217,38 @@ export function populateInventorySection(containerElement) {
         if (item.effect && item.effect.length > 0) {
             detailsHtml += `<div class="item-effects"><h5>Effects:</h5><ul>`;
             item.effect.forEach(effect => {
-                let effectText = `${effect.target}`;
-                if (effect.category === "stat") {
-                    effectText += `: ${effect.amount > 0 ? '+' : ''}${effect.amount}`;
+                let effectClass = "";
+                let effectText = "";
+                
+                // Set appropriate styling based on effect category
+                if (effect.category === "advantage") {
+                    effectClass = "effect-advantage";
+                    effectText = `Advantage on ${effect.target}`;
+                } else if (effect.category === "disadvantage") {
+                    effectClass = "effect-disadvantage";
+                    effectText = `Disadvantage on ${effect.target}`;
+                } else if (effect.category === "condition") {
+                    effectClass = "effect-condition";
+                    effectText = `Grants condition: ${effect.target}`;
+                } else if (effect.category === "resistance") {
+                    effectClass = "effect-resistance";
+                    effectText = `Resistance to ${effect.target} damage`;
+                } else if (effect.category === "immunity") {
+                    effectClass = "effect-immunity";
+                    effectText = `Immunity to ${effect.target} damage`;
+                } else if (effect.category === "vulnerability") {
+                    effectClass = "effect-vulnerability";
+                    effectText = `Vulnerability to ${effect.target} damage`;
+                } else if (effect.category === "proficiency") {
+                    effectText = `Proficiency in ${effect.target}`;
+                } else if (effect.category === "stat") {
+                    effectText = `${effect.target}: ${effect.amount > 0 ? '+' : ''}${effect.amount}`;
                     if (effect.modifier === "per") {
                         effectText += ` per ${effect.perAmount} ${effect.perTarget}`;
                     }
                 }
-                detailsHtml += `<li>${effectText}</li>`;
+                
+                detailsHtml += `<li class="${effectClass}">${effectText}</li>`;
             });
             detailsHtml += `</ul></div>`;
         }
@@ -1473,10 +1515,42 @@ export function populateInventorySection(containerElement) {
             "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion",
             "Sleight of Hand", "Stealth", "Survival"
         ];
+        const ALL_CONDITIONS = [
+            "Blinded", "Charmed", "Deafened", "Exhaustion", "Frightened", 
+            "Grappled", "Incapacitated", "Invisible", "Paralyzed", "Petrified", 
+            "Poisoned", "Prone", "Restrained", "Stunned", "Unconscious"
+        ];
+        const ALL_DAMAGE_TYPES = [
+            "Acid", "Bludgeoning", "Cold", "Fire", "Force", "Lightning", 
+            "Necrotic", "Piercing", "Poison", "Psychic", "Radiant", "Slashing", "Thunder"
+        ];
+        const ALL_ROLLS = [
+            "Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma",
+            "Strength Save", "Dexterity Save", "Constitution Save", "Intelligence Save", "Wisdom Save", "Charisma Save",
+            "Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", 
+            "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", 
+            "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival",
+            "Attack Rolls", "Melee Attack Rolls", "Ranged Attack Rolls", "Spell Attack Rolls"
+        ];
 
         function updateFields() {
             if (categorySelect.value === "proficiency") {
                 targetSelect.innerHTML = ALL_PROFICIENCIES.map(prof => `<option value="${prof}">${prof}</option>`).join("");
+                amountField.style.display = "none";
+                modifierSelect.style.display = "none";
+                perContainer.style.display = "none";
+            } else if (categorySelect.value === "advantage" || categorySelect.value === "disadvantage") {
+                targetSelect.innerHTML = ALL_ROLLS.map(roll => `<option value="${roll}">${roll}</option>`).join("");
+                amountField.style.display = "none";
+                modifierSelect.style.display = "none";
+                perContainer.style.display = "none";
+            } else if (categorySelect.value === "condition") {
+                targetSelect.innerHTML = ALL_CONDITIONS.map(cond => `<option value="${cond}">${cond}</option>`).join("");
+                amountField.style.display = "none";
+                modifierSelect.style.display = "none";
+                perContainer.style.display = "none";
+            } else if (["resistance", "immunity", "vulnerability"].includes(categorySelect.value)) {
+                targetSelect.innerHTML = ALL_DAMAGE_TYPES.map(type => `<option value="${type}">${type}</option>`).join("");
                 amountField.style.display = "none";
                 modifierSelect.style.display = "none";
                 perContainer.style.display = "none";
