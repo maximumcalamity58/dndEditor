@@ -313,7 +313,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             });
         }
-    }
+    });
+}
 
     // 🔹 Ensure GoldenLayout updates dynamically on window resize
     function adjustLayoutSize() {
