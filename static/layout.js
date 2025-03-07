@@ -317,8 +317,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 🔹 Ensure GoldenLayout updates dynamically on window resize
     function adjustLayoutSize() {
-        layout.updateSize(); // Forces layout to resize properly
-        removeForcedWidth(); // Apply width fix again
+        if (layout && typeof layout.updateSize === 'function') {
+            layout.updateSize(); // Forces layout to resize properly
+            removeForcedWidth(); // Apply width fix again
+        }
     }
 
     function adjustLayoutHeight() {
