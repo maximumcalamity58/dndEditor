@@ -10,13 +10,14 @@ export function populateInventorySection(containerElement) {
                 gap: 15px;
                 padding: 10px;
                 margin-top: 10px;
+                max-width: 100%;
             }
             .inventory-item {
-                border: 1px solid var(--border-color, #ccc);
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
                 border-radius: 5px;
                 padding: 12px;
-                background-color: var(--bg-color-secondary, #f9f9f9);
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                background-color: var(--bg-color-secondary, rgba(30, 30, 30, 0.6));
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
                 transition: all 0.2s ease;
                 position: relative;
                 overflow: hidden;
@@ -28,11 +29,11 @@ export function populateInventorySection(containerElement) {
             .item-name {
                 margin-top: 0;
                 margin-bottom: 8px;
-                border-bottom: 1px solid var(--border-color-light, #ddd);
+                border-bottom: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
                 padding-bottom: 5px;
                 font-size: 1.1em;
                 font-weight: 600;
-                color: var(--text-color-primary, #333);
+                color: var(--text-color-primary, rgba(255, 255, 255, 0.9));
             }
             .item-details {
                 font-size: 0.9em;
@@ -43,25 +44,25 @@ export function populateInventorySection(containerElement) {
                 flex-wrap: wrap;
                 margin: 8px 0;
                 font-size: 0.85em;
-                color: var(--text-color-secondary, #555);
-                background-color: rgba(0,0,0,0.03);
+                color: var(--text-color-secondary, rgba(255, 255, 255, 0.7));
+                background-color: rgba(0,0,0,0.2);
                 padding: 5px;
                 border-radius: 3px;
             }
             .item-description {
                 font-style: italic;
-                color: var(--text-color-secondary, #666);
+                color: var(--text-color-secondary, rgba(255, 255, 255, 0.7));
                 margin: 5px 0;
                 line-height: 1.4;
             }
             .item-damage, .item-ac, .item-properties {
                 font-weight: 600;
-                color: var(--text-color-primary, #444);
+                color: var(--text-color-primary, rgba(255, 255, 255, 0.9));
                 margin: 4px 0;
             }
             .item-effects {
                 font-size: 0.85em;
-                background-color: rgba(0,0,0,0.05);
+                background-color: rgba(0,0,0,0.2);
                 padding: 8px;
                 border-radius: 3px;
                 margin-top: 8px;
@@ -69,7 +70,7 @@ export function populateInventorySection(containerElement) {
             }
             .item-effects h5 {
                 margin: 0 0 5px 0;
-                color: var(--accent-color, #4a6fa5);
+                color: var(--accent-color, #6a8fc5);
             }
             .item-effects ul {
                 margin: 0;
@@ -78,28 +79,28 @@ export function populateInventorySection(containerElement) {
             
             /* Category Styling */
             .item-category-weapon {
-                border-left: 4px solid var(--weapon-color, #c33);
+                border-left: 4px solid var(--weapon-color, #e55);
             }
             .item-category-armor {
-                border-left: 4px solid var(--armor-color, #33c);
+                border-left: 4px solid var(--armor-color, #55e);
             }
             .item-category-shield {
-                border-left: 4px solid var(--shield-color, #33c);
+                border-left: 4px solid var(--shield-color, #55e);
             }
             .item-category-potion {
-                border-left: 4px solid var(--potion-color, #3c3);
+                border-left: 4px solid var(--potion-color, #5e5);
             }
             .item-category-scroll {
-                border-left: 4px solid var(--scroll-color, #c3c);
+                border-left: 4px solid var(--scroll-color, #e5e);
             }
             .item-category-misc {
-                border-left: 4px solid var(--misc-color, #cc3);
+                border-left: 4px solid var(--misc-color, #ee5);
             }
             .item-category-wondrous {
-                border-left: 4px solid var(--wondrous-color, #f90);
+                border-left: 4px solid var(--wondrous-color, #fa0);
             }
             .item-category-clothing {
-                border-left: 4px solid var(--clothing-color, #96c);
+                border-left: 4px solid var(--clothing-color, #a7e);
             }
             
             /* Header Styling */
@@ -109,20 +110,23 @@ export function populateInventorySection(containerElement) {
                 align-items: center;
                 margin-bottom: 15px;
                 padding: 0 10px;
+                max-width: 100%;
             }
             #itemSearch {
                 flex-grow: 1;
                 margin-right: 15px;
                 padding: 8px 12px;
                 border-radius: 4px;
-                border: 1px solid var(--border-color, #ccc);
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
+                background-color: rgba(30, 30, 30, 0.6);
+                color: rgba(255, 255, 255, 0.9);
                 font-size: 0.95em;
                 transition: border-color 0.2s;
             }
             #itemSearch:focus {
                 border-color: var(--accent-color, #4a6fa5);
                 outline: none;
-                box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+                box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.3);
             }
             .add-item-btn {
                 background-color: var(--accent-color, #4a6fa5);
@@ -177,18 +181,20 @@ export function populateInventorySection(containerElement) {
                 flex-wrap: wrap;
                 margin-bottom: 10px;
                 gap: 15px;
+                max-width: 100%;
             }
             .form-group {
                 flex: 1;
                 min-width: 200px;
+                max-width: 100%;
             }
             .form-group.half {
                 flex: 0 0 calc(50% - 8px);
                 min-width: 150px;
             }
             .item-details-section {
-                background-color: var(--bg-color-secondary, #f9f9f9);
-                border: 1px solid var(--border-color-light, #eee);
+                background-color: var(--bg-color-secondary, rgba(40, 40, 40, 0.6));
+                border: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
                 border-radius: 6px;
                 padding: 15px;
                 margin: 15px 0;
@@ -196,7 +202,7 @@ export function populateInventorySection(containerElement) {
             .item-details-section h4 {
                 margin-top: 0;
                 margin-bottom: 12px;
-                color: var(--accent-color, #4a6fa5);
+                color: var(--accent-color, #6a8fc5);
                 font-size: 1em;
             }
             
@@ -207,7 +213,7 @@ export function populateInventorySection(containerElement) {
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
+                background-color: rgba(0, 0, 0, 0.7);
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -217,10 +223,10 @@ export function populateInventorySection(containerElement) {
                 display: none;
             }
             .modal-content {
-                background-color: var(--bg-color, #fff);
+                background-color: var(--bg-color, #222);
                 padding: 20px;
                 border-radius: 8px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
                 width: 90%;
                 max-width: 600px;
                 max-height: 85vh;
@@ -228,15 +234,15 @@ export function populateInventorySection(containerElement) {
             }
             .modal-content h3 {
                 margin-top: 0;
-                color: var(--accent-color, #4a6fa5);
-                border-bottom: 1px solid var(--border-color-light, #eee);
+                color: var(--accent-color, #6a8fc5);
+                border-bottom: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
                 padding-bottom: 10px;
             }
             .modal-content label {
                 display: block;
                 margin: 12px 0 4px;
                 font-weight: 600;
-                color: var(--text-color-primary, #333);
+                color: var(--text-color-primary, rgba(255, 255, 255, 0.9));
             }
             .modal-content input[type="text"],
             .modal-content input[type="number"],
@@ -244,10 +250,12 @@ export function populateInventorySection(containerElement) {
             .modal-content select {
                 width: 100%;
                 padding: 8px 10px;
-                border: 1px solid var(--border-color, #ccc);
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
                 font-size: 0.95em;
                 margin-bottom: 5px;
+                background-color: rgba(30, 30, 30, 0.6);
+                color: rgba(255, 255, 255, 0.9);
             }
             .modal-content textarea {
                 min-height: 80px;
@@ -258,14 +266,14 @@ export function populateInventorySection(containerElement) {
             .modal-content select:focus {
                 border-color: var(--accent-color, #4a6fa5);
                 outline: none;
-                box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+                box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.3);
             }
             .modal-actions {
                 display: flex;
                 justify-content: flex-end;
                 gap: 10px;
                 margin-top: 20px;
-                border-top: 1px solid var(--border-color-light, #eee);
+                border-top: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
                 padding-top: 15px;
             }
             .save-btn, .close-btn {
@@ -284,54 +292,64 @@ export function populateInventorySection(containerElement) {
                 background-color: var(--accent-color-hover, #3a5f95);
             }
             .close-btn {
-                background-color: var(--bg-color, #fff);
-                color: var(--text-color-secondary, #666);
-                border: 1px solid var(--border-color, #ccc);
+                background-color: rgba(60, 60, 60, 0.6);
+                color: var(--text-color-secondary, rgba(255, 255, 255, 0.8));
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
             }
             .close-btn:hover {
-                background-color: var(--bg-color-secondary, #f5f5f5);
+                background-color: rgba(80, 80, 80, 0.8);
             }
             
             /* Predefined Items Section */
             #predefinedContainer {
-                border: 1px solid var(--border-color-light, #eee);
+                border: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
                 border-radius: 6px;
                 padding: 15px;
                 margin: 15px 0;
-                background-color: var(--bg-color-secondary, #f9f9f9);
+                background-color: var(--bg-color-secondary, rgba(40, 40, 40, 0.6));
             }
             #predefinedSearch {
                 width: 100%;
                 padding: 8px 10px;
-                border: 1px solid var(--border-color, #ccc);
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
                 margin-bottom: 10px;
+                background-color: rgba(30, 30, 30, 0.6);
+                color: rgba(255, 255, 255, 0.9);
             }
             #predefinedItemsSelect {
                 width: 100%;
-                border: 1px solid var(--border-color, #ccc);
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
                 padding: 5px;
-                background-color: var(--bg-color, #fff);
+                background-color: rgba(30, 30, 30, 0.6);
+                color: rgba(255, 255, 255, 0.9);
             }
             #predefinedItemsSelect optgroup {
                 font-weight: bold;
-                color: var(--accent-color, #4a6fa5);
+                color: var(--accent-color, #6a8fc5);
+                background-color: rgba(20, 20, 20, 0.8);
+            }
+            #predefinedItemsSelect option {
+                background-color: rgba(30, 30, 30, 0.6);
+                color: rgba(255, 255, 255, 0.9);
             }
             #predefinedQuantity {
                 width: 80px;
                 padding: 6px 8px;
-                border: 1px solid var(--border-color, #ccc);
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
+                background-color: rgba(30, 30, 30, 0.6);
+                color: rgba(255, 255, 255, 0.9);
             }
             
             /* Effects Section */
             #itemEffectsContainer {
                 margin-top: 10px;
-                border: 1px solid var(--border-color-light, #eee);
+                border: 1px solid var(--border-color-light, rgba(255, 255, 255, 0.1));
                 border-radius: 4px;
                 padding: 10px;
-                background-color: var(--bg-color-secondary, #f9f9f9);
+                background-color: var(--bg-color-secondary, rgba(40, 40, 40, 0.6));
             }
             .effect-row {
                 display: flex;
@@ -339,7 +357,7 @@ export function populateInventorySection(containerElement) {
                 gap: 8px;
                 margin-bottom: 10px;
                 padding-bottom: 10px;
-                border-bottom: 1px dashed var(--border-color-light, #eee);
+                border-bottom: 1px dashed var(--border-color-light, rgba(255, 255, 255, 0.1));
                 align-items: center;
             }
             .effect-row:last-child {
@@ -350,14 +368,16 @@ export function populateInventorySection(containerElement) {
             .effect-row select, 
             .effect-row input {
                 padding: 6px 8px;
-                border: 1px solid var(--border-color, #ccc);
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
                 border-radius: 4px;
                 font-size: 0.9em;
+                background-color: rgba(30, 30, 30, 0.6);
+                color: rgba(255, 255, 255, 0.9);
             }
             .remove-effect-btn {
-                background-color: var(--danger-color-light, #ffdddd);
-                color: var(--danger-color, #d33);
-                border: 1px solid var(--danger-color-light, #ffcccc);
+                background-color: rgba(221, 51, 51, 0.2);
+                color: var(--danger-color, #f55);
+                border: 1px solid rgba(221, 51, 51, 0.3);
                 border-radius: 50%;
                 width: 24px;
                 height: 24px;
@@ -374,9 +394,9 @@ export function populateInventorySection(containerElement) {
                 color: white;
             }
             .add-item-effect-btn {
-                background-color: var(--accent-color-light, #e6eef7);
-                color: var(--accent-color, #4a6fa5);
-                border: 1px solid var(--accent-color-light, #d6e4f7);
+                background-color: rgba(74, 111, 165, 0.2);
+                color: var(--accent-color, #6a8fc5);
+                border: 1px solid rgba(74, 111, 165, 0.3);
                 border-radius: 4px;
                 padding: 6px 12px;
                 cursor: pointer;
@@ -395,10 +415,12 @@ export function populateInventorySection(containerElement) {
                 flex-wrap: wrap;
                 gap: 8px;
                 margin: 10px;
+                max-width: 100%;
             }
             .filter-btn {
-                background-color: var(--bg-color, #fff);
-                border: 1px solid var(--border-color, #ccc);
+                background-color: var(--bg-color, rgba(30, 30, 30, 0.6));
+                border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
+                color: rgba(255, 255, 255, 0.8);
                 border-radius: 20px;
                 padding: 5px 12px;
                 font-size: 0.85em;
@@ -411,21 +433,23 @@ export function populateInventorySection(containerElement) {
                 border-color: var(--accent-color, #4a6fa5);
             }
         </style>
-        <div class="inventory-header">
-            <input type="text" id="itemSearch" placeholder="Search items...">
-            <button id="addItemBtn" class="add-item-btn">+ Add Item</button>
+        <div style="max-width: 100%;">
+            <div class="inventory-header">
+                <input type="text" id="itemSearch" placeholder="Search items...">
+                <button id="addItemBtn" class="add-item-btn">+ Add Item</button>
+            </div>
+            <div class="inventory-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="weapon">Weapons</button>
+                <button class="filter-btn" data-filter="armor">Armor</button>
+                <button class="filter-btn" data-filter="shield">Shields</button>
+                <button class="filter-btn" data-filter="clothing">Clothing</button>
+                <button class="filter-btn" data-filter="potion">Potions</button>
+                <button class="filter-btn" data-filter="scroll">Scrolls</button>
+                <button class="filter-btn" data-filter="misc">Misc</button>
+            </div>
+            <div id="inventoryList" class="inventory-list"></div>
         </div>
-        <div class="inventory-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="weapon">Weapons</button>
-            <button class="filter-btn" data-filter="armor">Armor</button>
-            <button class="filter-btn" data-filter="shield">Shields</button>
-            <button class="filter-btn" data-filter="clothing">Clothing</button>
-            <button class="filter-btn" data-filter="potion">Potions</button>
-            <button class="filter-btn" data-filter="scroll">Scrolls</button>
-            <button class="filter-btn" data-filter="misc">Misc</button>
-        </div>
-        <div id="inventoryList" class="inventory-list"></div>
         <div id="itemModal" class="modal hidden">
             <div class="modal-content">
                 <h3 id="itemModalTitle">Add Item</h3>
