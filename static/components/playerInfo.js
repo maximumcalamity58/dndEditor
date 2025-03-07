@@ -45,9 +45,12 @@ export function populatePlayerInfo(containerElement, characterData) {
             }
             .backstory-section {
                 margin-top: 15px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
             #character-backstory {
-                width: 100%;
+                width: 90%;
                 min-height: 100px;
                 padding: 10px;
                 background-color: #333;
@@ -59,14 +62,7 @@ export function populatePlayerInfo(containerElement, characterData) {
                 resize: vertical;
                 margin-bottom: 10px;
             }
-            /* Auto-save indicator */
-            .autosave-indicator {
-                font-size: 0.8em;
-                color: #aaa;
-                text-align: right;
-                margin-top: 5px;
-                font-style: italic;
-            }
+
         </style>
         <div class="character-image-container">
             <div id="character-image">
@@ -90,7 +86,6 @@ export function populatePlayerInfo(containerElement, characterData) {
         <div class="backstory-section">
             <h3>Backstory</h3>
             <textarea id="character-backstory" placeholder="Enter your character's backstory here...">${details.backstory || ''}</textarea>
-            <div class="autosave-indicator">Auto-saving...</div>
         </div>
         
         <script>
