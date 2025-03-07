@@ -10,6 +10,16 @@ html, body {
     color: #e0e0e0; /* Light text */
 }
 
+h3 {
+    text-align: center;
+    margin: 0;
+    padding-bottom: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    border-bottom: 2px solid #444;
+}
+
 /* === LAYOUT CONTAINER === */
 #layout-container {
     position: absolute;
@@ -24,7 +34,9 @@ html, body {
 .goldenlayout-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: unset; !important;
+    max-width: 100%;
+    flex-grow: 1;
     height: 100%;
     padding: 10px;
     font-size: 18px;
@@ -52,13 +64,34 @@ html, body {
     background: #333; /* Dark mode */
     color: #e0e0e0;
     border-bottom: 2px solid #444;
-    height: 35px; /* Ensure tab has enough height */
+    height: 30px; /* Ensure tab has enough height */
+}
+
+.lm_header {
+    position: unset;
+}
+
+.lm_tabs {
+    position: unset;
+}
+
+.lm_header .lm_tab {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-top: 5px;
+    position: unset;
 }
 
 .lm_tab.lm_active {
     background: #444; /* Highlight active tab */
+    align-items: center;
+    justify-content: center;
     color: #ffffff;
     border-bottom: 2px solid #0a84ff; /* Accent color */
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-top: 5px;
+    position: unset;
 }
 
 /* === MAXIMIZE BUTTON === */
@@ -109,7 +142,7 @@ html, body {
 .experience-box {
     background: #292929;
     border: 1px solid #555;
-    padding: 10px;
+    padding: 0 10px 10px;
     border-radius: 5px;
     text-align: center;
 }
@@ -128,7 +161,6 @@ html, body {
 /* Proficiency Bonus Box */
 .proficiency-box {
     background: #333;
-    border: 1px solid #555;
     padding: 10px;
     border-radius: 5px;
     text-align: center;
@@ -157,88 +189,163 @@ html, body {
     width: 100px;
 }
 
-/* === DEATH SAVES === */
-.death-saves {
+.info-box {
+    border-radius: 5px;
+    background: #222;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* === DEATH SAVES (Updated to Boxed UI) === */
+.death-saves-container {
     display: flex;
     justify-content: center;
     gap: 10px;
+    padding: 10px;
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+
+/* ✅ Box for Each Death Save Section */
+.death-save-box {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    background: #333;
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 110px;
+    text-align: center;
 }
 
-.death-saves input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
+/* ✅ Label Styling (Successes & Failures) */
+.death-save-box strong {
+    font-size: 18px;
+    color: #ffffff;
 }
 
-/* === ABILITY SCORES & SAVING THROWS === */
+/* ✅ Death Save Checkboxes */
+.death-save-checkboxes {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.death-save-checkboxes input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #0a84ff;
+}
+
+/* ✅ Stack if Too Narrow */
+@media (max-width: 300px) {
+    .death-saves-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* === ABILITY SCORES & SAVING THROWS WRAPPER === */
 .abilities-wrapper {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* ✅ Allows side-by-side if enough space, stacks if not */
     justify-content: space-between;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 20px;
     width: 100%;
 }
 
-/* Ability Scores */
-.ability-scores {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 60%;
-    padding: 10px;
-}
-
-/* Saving Throws */
+/* ✅ Ability Scores & Saving Throws Sections */
+.ability-scores,
 .saving-throws {
     display: flex;
     flex-direction: column;
-    width: 35%;
+    gap: 10px;
+    flex: 1 1 150px; /* ✅ Tries to be side-by-side when there's enough room */
+    min-width: 250px; /* ✅ Ensures minimum width before stacking */
+    max-width: 600px; /* ✅ Keeps a balanced size */
     padding: 10px;
     background: #222;
     border-radius: 5px;
-    min-width: 150px;
 }
 
-/* Proficiency Bonus */
-.proficiency-bonus {
-    text-align: center;
-    background: #333;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    color: #0a84ff;
+/* ✅ Stack when below 600px total width */
+@media (max-width: 300px) {
+    .abilities-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ability-scores,
+    .saving-throws {
+        flex: 1 1 100%; /* ✅ Full width when stacked */
+        max-width: 100%;
+    }
 }
 
-/* Individual Ability Row */
-.ability-row {
+/* ✅ Ability & Saving Throw Rows */
+.ability-row,
+.save-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background: #222;
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #444;
 }
 
-/* Ability Value & Modifier */
-.ability-value {
+/* ✅ Ability & Saving Throw Labels (Left-Aligned) */
+.ability-row label,
+.save-row label {
     flex: 1;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* ✅ Ability Score & Modifier Alignment */
+.ability-value {
     text-align: right;
-    padding-right: 15px;
+    font-weight: bold;
     color: #ffffff;
+    min-width: 40px; /* ✅ Ensures alignment */
+    display: inline-block;
 }
 
 .modifier-value {
     text-align: right;
     font-weight: bold;
-    min-width: 20px;
     color: #0a84ff;
+    min-width: 40px; /* ✅ Keeps space between score & modifier */
+    padding-left: 10px;
+    display: inline-block;
+}
+
+/* ✅ Saving Throws Checkbox Styling */
+.save-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+}
+
+/* ✅ Ability Scores & Saving Throws - Responsive Handling */
+@media (max-width: 500px) {
+    .abilities-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ability-scores,
+    .saving-throws {
+        width: 100%; /* ✅ Full width when stacked */
+    }
 }
 
 /* === SKILLS === */
 #skills-container {
     display: flex;
     flex-direction: column;
+    padding: 10px;
     gap: 10px;
 }
 
@@ -248,9 +355,10 @@ html, body {
     align-items: center;
     justify-content: space-between;
     background: #222;
-    padding: 8px;
+    padding: 6px;
     border-radius: 5px;
     border: 1px solid #444;
+    margin: 4px;
 }
 
 /* Skill Modifier Display */
@@ -258,6 +366,203 @@ html, body {
     font-weight: bold;
     font-size: 18px;
     color: #0a84ff;
+}
+
+/* === Bonuses Section === */
+.bonuses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0 10px;
+}
+
+.bonus-item {
+    background: #222;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+}
+
+/* === Centered Add Bonus Button === */
+.bonuses-header {
+    display: flex;
+    justify-content: center; /* ✅ Centers the button */
+    margin-bottom: 10px;
+}
+
+/* === Dark Square Buttons === */
+button {
+    background: #222; /* ✅ Dark background */
+    color: #e0e0e0; /* ✅ Light text */
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #444;
+    border-radius: 5px; /* ✅ Slight rounding for modern look */
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* 🔹 Add Bonus Button (Centered & Styled) */
+.add-bonus-btn {
+    width: 160px;
+    height: 40px;
+    text-align: center;
+}
+
+/* 🔹 Edit & Remove Buttons */
+.bonus-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.edit-bonus, .remove-bonus {
+    height: auto;
+    text-align: center;
+}
+
+/* ✅ Hover Effects */
+button:hover {
+    background: #181818; /* Change color on hover */
+    color: #fff;
+    border-color: #363636;
+}
+
+/* === Modal Styling === */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #222;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.modal-content input, .modal-content textarea {
+    width: 90%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #444;
+    background: #333;
+    color: white;
+    border-radius: 5px;
+}
+
+.modal-actions {
+    margin-top: 10px;
+}
+
+.modal-save-btn {
+    background: #0a84ff;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.modal-save-btn:hover {
+    background: #005ecb;
+}
+
+.modal-close-btn {
+    background: #777;
+    border: none;
+    padding: 10px;
+    margin-top: 5px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.modal-close-btn:hover {
+    background: #555;
+}
+
+.effect-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+}
+
+.effect-row select,
+.effect-row input {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #222;
+    color: white;
+}
+
+.effect-row .effect-category,
+.effect-row .effect-target {
+    min-width: 120px;
+}
+
+.effect-row .effect-amount {
+    width: 80px;
+    text-align: left;
+}
+
+.effect-row .effect-modifier {
+    min-width: 60px;
+}
+
+.per-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.effect-row .remove-effect-btn {
+    background: #ff4d4d;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.effect-row .remove-effect-btn:hover {
+    background: #ff0000;
 }
 
 /* === DRAG AND DROP PREVIEW === */
@@ -271,3 +576,12 @@ html, body {
     border: 3px dashed #ff0a0a !important;
     background: rgba(255, 10, 10, 0.2) !important;
 }
+
+.lm_content {
+    position: unset;
+}
+
+.modal-content label {
+    text-align: center;
+}
+
