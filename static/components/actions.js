@@ -338,7 +338,7 @@ export function populateActionsSection(containerElement, characterData) {
         const weaponData = equipmentData[equipped.weapon] || {};
         const weaponItem = inventory.find(item => item.name === equipped.weapon);
         
-        if (weaponItem) {
+        if (weaponItem && (weaponItem.category === "weapon" || weaponData.category === "weapon")) {
             // Determine if weapon uses Strength or Dexterity
             const isFinesse = weaponItem.properties && weaponItem.properties.includes("Finesse");
             const isThrowing = weaponItem.properties && weaponItem.properties.includes("Thrown");
@@ -394,7 +394,7 @@ export function populateActionsSection(containerElement, characterData) {
         const offhandData = equipmentData[equipped.offhand] || {};
         const offhandItem = inventory.find(item => item.name === equipped.offhand);
         
-        if (offhandItem && offhandItem.category === "weapon") {
+        if (offhandItem && (offhandItem.category === "weapon" || equipmentData[equipped.offhand]?.category === "weapon")) {
             // Determine if weapon uses Strength or Dexterity
             const isFinesse = offhandItem.properties && offhandItem.properties.includes("Finesse");
             const isThrowing = offhandItem.properties && offhandItem.properties.includes("Thrown");
@@ -454,7 +454,8 @@ export function populateActionsSection(containerElement, characterData) {
     const usableItems = inventory.filter(item => 
         item.category === "potion" || 
         item.category === "scroll" || 
-        (item.effect && item.effect.length > 0)
+        (item.effect && item.effect.length > 0) ||
+        (item.name && equipmentData[item.name]?.effect)
     );
     
     if (usableItems.length === 0) {
@@ -463,6 +464,9 @@ export function populateActionsSection(containerElement, characterData) {
         usableItems.forEach(item => {
             const itemAction = document.createElement("div");
             itemAction.className = "action-item";
+            // Get effects from either the item or equipment_data
+            const itemEffects = item.effect || equipmentData[item.name]?.effect || [];
+            
             itemAction.innerHTML = `
                 <div class="action-header">
                     <span class="action-name">${item.name}</span>
@@ -470,6 +474,9 @@ export function populateActionsSection(containerElement, characterData) {
                 </div>
                 <div class="action-details">
                     ${item.description || ""}
+                    ${itemEffects.length > 0 ? '<div class="item-effects"><strong>Effects:</strong> ' + 
+                        itemEffects.map(e => `${e.category}: ${e.target} ${e.amount ? (e.amount > 0 ? '+' + e.amount : e.amount) : ''}`).join(', ') + 
+                        '</div>' : ''}
                 </div>
                 <div class="action-stats">
                     <span class="action-stat">Quantity: ${item.quantity || 1}</span>

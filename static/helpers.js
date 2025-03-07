@@ -62,6 +62,7 @@ export function getFinalStat(statName, characterData) {
     // Apply bonuses from equipped items
     if (characterData.equipped && characterData.inventory) {
         const equipped = characterData.equipped;
+        const equipmentData = characterData.equipment_data || {};
         
         // Check each equipped slot
         for (const slot in equipped) {
@@ -69,22 +70,26 @@ export function getFinalStat(statName, characterData) {
             
             // Find the equipped item in inventory
             const item = characterData.inventory.find(item => item.name === equipped[slot]);
+            const itemData = equipmentData[equipped[slot]] || {};
             
-            if (item && item.effect) {
-                // Apply each effect from the item
-                item.effect.forEach(effect => {
-                    let effectTarget = effect.target.toLowerCase();
-                    
-                    if (effect.category === "stat" && effectTarget === statName) {
-                        if (effect.modifier === "none" || !effect.modifier) {
-                            baseValue += effect.amount || 0;
-                        } else if (effect.modifier === "per") {
-                            let perStat = getFinalStat(effect.perTarget, characterData);
-                            baseValue += Math.floor(perStat / effect.perAmount) * effect.amount;
-                        }
+            // Get effects from both inventory item and equipment_data
+            const inventoryEffects = item && item.effect ? item.effect : [];
+            const equipmentEffects = itemData.effect || [];
+            const allEffects = [...inventoryEffects, ...equipmentEffects];
+            
+            // Apply all effects
+            allEffects.forEach(effect => {
+                let effectTarget = effect.target.toLowerCase();
+                
+                if (effect.category === "stat" && effectTarget === statName) {
+                    if (effect.modifier === "none" || !effect.modifier) {
+                        baseValue += effect.amount || 0;
+                    } else if (effect.modifier === "per") {
+                        let perStat = getFinalStat(effect.perTarget, characterData);
+                        baseValue += Math.floor(perStat / effect.perAmount) * effect.amount;
                     }
-                });
-            }
+                }
+            });
         }
     }
 
@@ -195,18 +200,54 @@ export function getFinalProficiencyBonus(characterData) {
     let finalBonus = getProficiencyBonus(characterData.player_info.level); // Base proficiency bonus
 
     // Apply bonuses that affect proficiency bonus
-    characterData.bonuses.forEach(bonus => {
-        bonus.effects.forEach(effect => {
-            if (effect.category === "stat" && effect.target.toLowerCase() === "proficiency bonus") {
-                if (effect.modifier === "none") {
-                    finalBonus += effect.amount; // Direct bonus
-                } else if (effect.modifier === "per") {
-                    let perStat = getFinalStat(effect.perTarget, characterData);
-                    finalBonus += Math.floor(perStat / effect.perAmount) * effect.amount; // Scaling bonus
+    if (characterData.bonuses) {
+        characterData.bonuses.forEach(bonus => {
+            if (!bonus.effects) return;
+            
+            bonus.effects.forEach(effect => {
+                if (effect.category === "stat" && effect.target.toLowerCase() === "proficiency bonus") {
+                    if (effect.modifier === "none") {
+                        finalBonus += effect.amount; // Direct bonus
+                    } else if (effect.modifier === "per") {
+                        let perStat = getFinalStat(effect.perTarget, characterData);
+                        finalBonus += Math.floor(perStat / effect.perAmount) * effect.amount; // Scaling bonus
+                    }
                 }
-            }
+            });
         });
-    });
+    }
+    
+    // Apply bonuses from equipped items
+    if (characterData.equipped && characterData.inventory) {
+        const equipped = characterData.equipped;
+        const equipmentData = characterData.equipment_data || {};
+        
+        // Check each equipped slot
+        for (const slot in equipped) {
+            if (!equipped[slot]) continue; // Skip empty slots
+            
+            // Find the equipped item in inventory
+            const item = characterData.inventory.find(item => item.name === equipped[slot]);
+            const itemData = equipmentData[equipped[slot]] || {};
+            
+            // Get effects from both inventory item and equipment_data
+            const inventoryEffects = item && item.effect ? item.effect : [];
+            const equipmentEffects = itemData.effect || [];
+            const allEffects = [...inventoryEffects, ...equipmentEffects];
+            
+            // Apply all effects
+            allEffects.forEach(effect => {
+                if (effect.category === "stat" && effect.target.toLowerCase() === "proficiency bonus") {
+                    if (effect.modifier === "none" || !effect.modifier) {
+                        finalBonus += effect.amount || 0;
+                    } else if (effect.modifier === "per") {
+                        let perStat = getFinalStat(effect.perTarget, characterData);
+                        finalBonus += Math.floor(perStat / effect.perAmount) * effect.amount;
+                    }
+                }
+            });
+        }
+    }
 
     return finalBonus;
 }

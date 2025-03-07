@@ -150,7 +150,10 @@ export function populateEquipmentSection(containerElement, characterData) {
 
     // Populate weapon list
     const weaponsList = containerElement.querySelector("#weapons-list");
-    const weapons = inventory.filter(item => item.category === "weapon");
+    const weapons = inventory.filter(item => 
+        item.category === "weapon" || 
+        (item.damage && item.damage.includes("d")) // Include items with damage dice as weapons
+    );
     
     if (weapons.length === 0) {
         weaponsList.innerHTML = '<div class="no-items">No weapons in inventory</div>';
