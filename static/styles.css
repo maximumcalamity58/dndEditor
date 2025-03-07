@@ -65,33 +65,119 @@ h3 {
     color: #e0e0e0;
     border-bottom: 2px solid #444;
     height: 30px; /* Ensure tab has enough height */
+    position: relative;
+    padding-right: 25px; /* Space for close button */
 }
 
 .lm_header {
-    position: unset;
+    position: relative;
+    height: 40px;
 }
 
 .lm_tabs {
-    position: unset;
+    position: relative;
+    height: 100%;
 }
 
 .lm_header .lm_tab {
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 4px 8px;
     margin-top: 5px;
-    position: unset;
+    position: relative;
 }
 
 .lm_tab.lm_active {
     background: #444; /* Highlight active tab */
-    align-items: center;
-    justify-content: center;
     color: #ffffff;
     border-bottom: 2px solid #0a84ff; /* Accent color */
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 4px 8px;
     margin-top: 5px;
-    position: unset;
+    position: relative;
+}
+
+/* Tab close button */
+.lm_close_tab {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s;
+}
+
+.lm_close_tab:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    opacity: 1;
+}
+
+/* Tab overflow arrow */
+.lm_controls .lm_tabdropdown_list {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    z-index: 5;
+    overflow: auto;
+}
+
+/* Add tab button */
+.lm_add_tab_btn {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin: 8px 5px 0;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lm_add_tab_btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* Tab dropdown menu */
+.lm_tab_dropdown {
+    position: absolute;
+    top: 40px;
+    right: 5px;
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    min-width: 150px;
+    display: none;
+}
+
+.lm_tab_dropdown.active {
+    display: block;
+}
+
+.lm_tab_dropdown_item {
+    padding: 8px 12px;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lm_tab_dropdown_item:hover {
+    background: #444;
 }
 
 /* === MAXIMIZE BUTTON === */

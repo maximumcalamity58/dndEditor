@@ -17,10 +17,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         settings: {
             showPopoutIcon: false,
             reorderEnabled: true,
-            selectionEnabled: true
+            selectionEnabled: true,
+            showCloseIcon: true,
+            showMaximiseIcon: false
         },
         dimensions: {
-            headerHeight: 30,
+            headerHeight: 40,
         },
         content: [{
             type: 'row',
@@ -174,11 +176,128 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     layout.on('initialised', () => {
         removeForcedWidth();
+        setupTabControls();
     });
 
     layout.on('stateChanged', () => {
         removeForcedWidth();
+        setupTabControls();
     });
+    
+    // Track closed tabs for reopening
+    const closedTabs = {};
+    
+    // Setup tab controls (close buttons and add tab button)
+    function setupTabControls() {
+        // Add custom close buttons to tabs
+        document.querySelectorAll('.lm_tab').forEach(tab => {
+            // Only add if not already present
+            if (!tab.querySelector('.lm_close_tab')) {
+                const closeBtn = document.createElement('span');
+                closeBtn.className = 'lm_close_tab';
+                closeBtn.innerHTML = '×';
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    // Get the tab's content component
+                    const tabTitle = tab.querySelector('.lm_title').textContent;
+                    const contentItem = layout.root.getItemsByFilter(item => {
+                        return item.config.title === tabTitle;
+                    })[0];
+                    
+                    if (contentItem) {
+                        // Store the closed tab info
+                        closedTabs[tabTitle] = {
+                            componentName: contentItem.config.componentName,
+                            title: contentItem.config.title
+                        };
+                        
+                        // Close the tab
+                        contentItem.remove();
+                        
+                        // Update the add tab button visibility
+                        updateAddTabButton();
+                    }
+                });
+                tab.appendChild(closeBtn);
+            }
+        });
+        
+        // Add the + button for reopening tabs if not already present
+        updateAddTabButton();
+    }
+    
+    // Update the add tab button based on closed tabs
+    function updateAddTabButton() {
+        // Remove existing add tab button
+        const existingBtn = document.querySelector('.lm_add_tab_btn');
+        if (existingBtn) {
+            existingBtn.remove();
+        }
+        
+        // Only show if there are closed tabs
+        if (Object.keys(closedTabs).length > 0) {
+            document.querySelectorAll('.lm_header').forEach(header => {
+                if (!header.querySelector('.lm_add_tab_btn')) {
+                    const addBtn = document.createElement('div');
+                    addBtn.className = 'lm_add_tab_btn';
+                    addBtn.innerHTML = '+';
+                    addBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        
+                        // Toggle dropdown
+                        let dropdown = document.querySelector('.lm_tab_dropdown');
+                        
+                        // Remove existing dropdown if it exists
+                        if (dropdown) {
+                            dropdown.remove();
+                        }
+                        
+                        // Create new dropdown
+                        dropdown = document.createElement('div');
+                        dropdown.className = 'lm_tab_dropdown active';
+                        
+                        // Add closed tabs to dropdown
+                        Object.entries(closedTabs).forEach(([title, config]) => {
+                            const item = document.createElement('div');
+                            item.className = 'lm_tab_dropdown_item';
+                            item.textContent = title;
+                            item.addEventListener('click', () => {
+                                // Find the stack to add to
+                                const stack = header.closest('.lm_item').layoutManager._dragSources[0]._element.layoutManager;
+                                
+                                // Add the tab back
+                                stack.addComponent(config.componentName, config.title);
+                                
+                                // Remove from closed tabs
+                                delete closedTabs[title];
+                                
+                                // Close dropdown
+                                dropdown.remove();
+                                
+                                // Update add tab button
+                                updateAddTabButton();
+                            });
+                            dropdown.appendChild(item);
+                        });
+                        
+                        // Add dropdown to DOM
+                        header.appendChild(dropdown);
+                        
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', function closeDropdown(e) {
+                            if (!dropdown.contains(e.target) && e.target !== addBtn) {
+                                dropdown.remove();
+                                document.removeEventListener('click', closeDropdown);
+                            }
+                        });
+                    });
+                    
+                    header.appendChild(addBtn);
+                }
+            });
+        }
+    }
 
     // 🔹 Ensure GoldenLayout updates dynamically on window resize
     function adjustLayoutSize() {
