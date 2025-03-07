@@ -307,6 +307,44 @@ document.addEventListener("DOMContentLoaded", async () => {
                             dropdown.appendChild(message);
                         }
                         
+                        // Then add all available components
+                        const allTabsHeader = document.createElement('div');
+                        allTabsHeader.className = 'lm_tab_dropdown_header';
+                        allTabsHeader.textContent = 'All Components';
+                        dropdown.appendChild(allTabsHeader);
+                        
+                        // Get current tabs in this stack
+                        const currentStack = header.closest('.lm_item');
+                        const currentTabs = Array.from(currentStack.querySelectorAll('.lm_tab'))
+                            .map(tab => tab.querySelector('.lm_title').textContent);
+                        
+                        componentNames.forEach(componentName => {
+                            // Format the component name for display
+                            const displayName = componentName.split('-')
+                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                .join(' ');
+                            
+                            // Skip if this component is already in the current stack
+                            if (currentTabs.includes(displayName)) {
+                                return;
+                            }
+                            
+                            const item = document.createElement('div');
+                            item.className = 'lm_tab_dropdown_item';
+                            item.textContent = displayName;
+                            item.addEventListener('click', () => {
+                                // Find the stack to add to
+                                const stack = header.closest('.lm_item').layoutManager._dragSources[0]._element.layoutManager;
+                                
+                                // Add the component
+                                stack.addComponent(componentName, displayName);
+                                
+                                // Close dropdown
+                                dropdown.remove();
+                            });
+                            dropdown.appendChild(item);
+                        });
+                        
                         // Add dropdown to DOM - position it relative to the add button
                         dropdown.style.top = '35px';
                         dropdown.style.right = '5px';
