@@ -34,7 +34,7 @@ h3 {
 .goldenlayout-container {
     display: flex;
     flex-direction: column;
-    width: unset; !important;
+    width: unset !important;
     max-width: 100%;
     flex-grow: 1;
     height: 100%;
