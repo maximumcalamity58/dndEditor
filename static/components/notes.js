@@ -50,6 +50,17 @@ export function populateNotesSection(containerElement, characterData) {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ notes }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Notes saved successfully");
+                    } else {
+                        console.error("Failed to save notes");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error saving notes:", error);
                 });
             };
             

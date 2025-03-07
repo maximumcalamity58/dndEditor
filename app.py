@@ -312,12 +312,33 @@ def toggle_equipped():
     
     # Initialize equipped if it doesn't exist
     if 'equipped' not in character_data:
-        character_data['equipped'] = {}
+        character_data['equipped'] = {
+            "weapon": "",
+            "armor": "",
+            "shield": "",
+            "head": "",
+            "neck": "",
+            "shoulders": "",
+            "chest": "",
+            "back": "",
+            "wrists": "",
+            "hands": "",
+            "waist": "",
+            "legs": "",
+            "feet": "",
+            "finger": ""
+        }
     
     # Handle equipping/unequipping
     if is_equipped:
-        character_data['equipped'][item_type] = item_name
+        # If equipping armor or shield, unequip any existing item of that type
+        if item_type in ['armor', 'shield']:
+            character_data['equipped'][item_type] = item_name
+        # For weapons and clothing, just equip the item
+        else:
+            character_data['equipped'][item_type] = item_name
     else:
+        # Only clear if this specific item is equipped
         if item_type in character_data['equipped'] and character_data['equipped'][item_type] == item_name:
             character_data['equipped'][item_type] = ""
     
@@ -335,7 +356,10 @@ def save_backstory():
     if 'player_info' not in character_data:
         character_data['player_info'] = {}
     
+    # Save backstory to player_info
     character_data['player_info']['backstory'] = backstory
+    
+    # Save the updated character data
     save_data(character_data)
     
     return jsonify({'success': True})

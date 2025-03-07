@@ -134,6 +134,17 @@ export function populatePlayerInfo(containerElement, characterData) {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ backstory }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log("Backstory saved successfully");
+                            } else {
+                                console.error("Failed to save backstory");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error saving backstory:", error);
                         });
                     };
                     

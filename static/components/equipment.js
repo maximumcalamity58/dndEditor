@@ -280,6 +280,18 @@ export function populateEquipmentSection(containerElement, characterData) {
     
     // Function to toggle equipped status
     function toggleEquipped(type, name, isEquipped) {
+        // If equipping an item, unequip any other items of the same type
+        if (isEquipped) {
+            // For weapons, armor, and shields, only one can be equipped at a time
+            if (type === 'weapon' || type === 'armor' || type === 'shield') {
+                document.querySelectorAll(`.equipment-checkbox[data-type="${type}"]`).forEach(checkbox => {
+                    if (checkbox.dataset.name !== name && checkbox.checked) {
+                        checkbox.checked = false;
+                    }
+                });
+            }
+        }
+        
         fetch("/toggle_equipped", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -294,6 +306,9 @@ export function populateEquipmentSection(containerElement, characterData) {
                 // Update UI to reflect changes
                 window.updateCharacterStats();
             }
+        })
+        .catch(error => {
+            console.error("Error toggling equipped status:", error);
         });
     }
     

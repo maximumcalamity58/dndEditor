@@ -264,7 +264,6 @@ export function populateConditionsSection(containerElement, characterData) {
                 <span class="damage-status" data-condition="${damageType.name}" data-status="${statusType || 'none'}">
                     ${statusLabel !== 'None' ? `<span class="condition-type ${primaryClass}">${statusLabel}</span>` : ''}
                 </span>
-                <span class="expand-arrow">▶</span>
             </div>
             <div class="condition-description">${damageType.description}</div>
         `;
@@ -278,9 +277,6 @@ export function populateConditionsSection(containerElement, characterData) {
             description.classList.toggle('expanded');
             const arrow = this.querySelector('.expand-arrow');
             arrow.classList.toggle('expanded');
-            
-            // Only toggle description, no status cycling
-            return;
         });
     });
     
