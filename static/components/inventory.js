@@ -633,15 +633,15 @@ export function populateInventorySection(containerElement) {
                             </select>
                         </div>
                         <div class="form-group half">
-                            <label>Quantity:</label>
-                            <input type="number" id="itemQuantity" placeholder="Quantity" value="1" min="1">
+                            <label>Subcategory:</label>
+                            <select id="itemSubcategory"></select>
                         </div>
                     </div>
                     
-                    <div id="itemSubcategoryContainer" class="form-row" style="display: none;">
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>Subcategory:</label>
-                            <select id="itemSubcategory"></select>
+                            <label>Quantity:</label>
+                            <input type="number" id="itemQuantity" placeholder="Quantity" value="1" min="1">
                         </div>
                     </div>
                     
@@ -690,27 +690,6 @@ export function populateInventorySection(containerElement) {
                         </div>
                     </div>
                     
-                    <div id="clothingDetails" class="item-details-section" style="display: none;">
-                        <h4>Clothing/Accessory Details</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Slot:</label>
-                                <select id="itemSlot">
-                                    <option value="head">Head</option>
-                                    <option value="neck">Neck</option>
-                                    <option value="shoulders">Shoulders</option>
-                                    <option value="chest">Chest</option>
-                                    <option value="back">Back</option>
-                                    <option value="wrists">Wrists</option>
-                                    <option value="hands">Hands</option>
-                                    <option value="waist">Waist</option>
-                                    <option value="legs">Legs</option>
-                                    <option value="feet">Feet</option>
-                                    <option value="finger">Finger</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                     <label>Effect (Optional):</label>
                     <div id="itemEffectsContainer"></div>
                     <button id="addItemEffectBtn" class="add-item-effect-btn">+ Add Effect</button>
@@ -736,15 +715,6 @@ export function populateInventorySection(containerElement) {
         document.getElementById("predefinedSearch").addEventListener("input", filterPredefinedItems);
         document.getElementById("itemSearch").addEventListener("input", filterInventoryItems);
         document.getElementById("itemCategory").addEventListener("change", toggleItemDetails);
-        document.getElementById("itemSubcategory").addEventListener("change", function() {
-            // Update item slot options if clothing subcategory changes
-            const category = document.getElementById("itemCategory").value;
-            const subcategory = this.value;
-            
-            if (category === 'clothing' && document.getElementById('itemSlot')) {
-                document.getElementById('itemSlot').value = subcategory;
-            }
-        });
         
         // Add event listeners to filter buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -951,7 +921,6 @@ export function populateInventorySection(containerElement) {
     
     function toggleItemDetails() {
         const category = document.getElementById("itemCategory").value;
-        const subcategoryContainer = document.getElementById("itemSubcategoryContainer");
         const subcategorySelect = document.getElementById("itemSubcategory");
         
         // Hide all detail sections first
@@ -959,24 +928,14 @@ export function populateInventorySection(containerElement) {
             section.style.display = 'none';
         });
         
+        // Always populate subcategories
+        populateSubcategories(category, subcategorySelect);
+        
         // Show the appropriate section based on category
         if (category === 'weapon') {
             document.getElementById('weaponDetails').style.display = 'block';
-            subcategoryContainer.style.display = 'flex';
-            populateSubcategories(category, subcategorySelect);
         } else if (category === 'armor') {
             document.getElementById('armorDetails').style.display = 'block';
-            subcategoryContainer.style.display = 'flex';
-            populateSubcategories(category, subcategorySelect);
-        } else if (category === 'clothing') {
-            document.getElementById('clothingDetails').style.display = 'block';
-            subcategoryContainer.style.display = 'flex';
-            populateSubcategories(category, subcategorySelect);
-        } else if (['scroll', 'potion', 'wondrous', 'misc'].includes(category)) {
-            subcategoryContainer.style.display = 'flex';
-            populateSubcategories(category, subcategorySelect);
-        } else {
-            subcategoryContainer.style.display = 'none';
         }
     }
     
@@ -1330,8 +1289,6 @@ export function populateInventorySection(containerElement) {
                 document.getElementById("armorType").value = item.armor_type || "light";
                 document.getElementById("itemStrRequirement").value = item.strength_requirement || "";
                 document.getElementById("itemStealth").value = item.stealth === "Disadvantage" ? "disadvantage" : "none";
-            } else if (item.category === 'clothing') {
-                document.getElementById("itemSlot").value = item.slot || "chest";
             }
             
             // Effects
@@ -1431,8 +1388,6 @@ export function populateInventorySection(containerElement) {
                 if (stealth === 'disadvantage') {
                     itemData.stealth = "Disadvantage";
                 }
-            } else if (itemData.category === 'clothing') {
-                itemData.slot = document.getElementById("itemSlot").value;
             }
             
             // Effects
