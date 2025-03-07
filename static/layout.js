@@ -8,6 +8,7 @@ import { populateInventorySection } from "./components/inventory.js";
 import { populateConditionsSection } from "./components/conditions.js";
 import { populateEquipmentSection } from "./components/equipment.js";
 import { populateNotesSection } from "./components/notes.js";
+import { populateActionsSection } from "./components/actions.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const layoutContainer = document.getElementById("layout-container");
@@ -133,6 +134,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 populateEquipmentSection(panel.querySelector(".panel-content"), characterData);
             } else if (section === "notes") {
                 populateNotesSection(panel.querySelector(".panel-content"), characterData);
+            } else if (section === "actions") {
+                populateActionsSection(panel.querySelector(".panel-content"), characterData);
             }
         });
     });
@@ -166,6 +169,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 populateEquipmentSection(contentContainer, characterData);
             } else if (section === "notes") {
                 populateNotesSection(contentContainer, characterData);
+            } else if (section === "actions") {
+                populateActionsSection(contentContainer, characterData);
             }
         });
     };
