@@ -1,3 +1,4 @@
+// playerInfo.js
 import { getProficiencyBonus } from "../helpers.js";
 
 export function populatePlayerInfo(containerElement, characterData) {
@@ -12,7 +13,6 @@ export function populatePlayerInfo(containerElement, characterData) {
 
         <div class="info-box experience-box">
             <h3>Experience</h3>
-            <hr>
             <div class="experience-details">
                 <span>Level ${details.level} | ${details.experience} XP</span>
             </div>

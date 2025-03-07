@@ -9,7 +9,10 @@
     },
     "conditions": {
         "active": [],
-        "resistances": ["Fire", "Cold"],
+        "resistances": [
+            "Fire",
+            "Cold"
+        ],
         "immunities": [],
         "vulnerabilities": []
     },
@@ -134,7 +137,17 @@
             "proficient": false
         }
     ],
-    "bonuses": [],
+    "bonuses": [
+        {
+            "title": "disadvantage :(",
+            "effects": [
+                {
+                    "category": "advantage",
+                    "target": "Strength"
+                }
+            ]
+        }
+    ],
     "inventory": [
         {
             "name": "Silk Rope (50 feet)",
@@ -145,6 +158,28 @@
             "predefined": true,
             "predefinedKey": "adventuring_gear.misc.rope_silk",
             "quantity": 1
+        },
+        {
+            "name": "sword 2",
+            "description": "",
+            "value": 10,
+            "weight": 10,
+            "category": "misc",
+            "subcategory": "equipment_packs",
+            "quantity": 1,
+            "effect": []
+        },
+        {
+            "name": "nj",
+            "description": "",
+            "value": 0,
+            "weight": 0,
+            "category": "weapon",
+            "subcategory": "simple_melee",
+            "quantity": 1,
+            "damage": "1d6 slashing",
+            "properties": [],
+            "effect": []
         }
     ]
 }
