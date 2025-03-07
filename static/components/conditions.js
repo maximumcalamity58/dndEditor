@@ -179,6 +179,7 @@ export function populateConditionsSection(containerElement, characterData) {
             <input type="checkbox" class="condition-checkbox" data-condition="${condition.name}" 
                    data-type="active" ${isActive ? 'checked' : ''}>
             <span class="condition-name">${condition.name}</span>
+            <span class="expand-arrow">▶</span>
             ${isActive ? '<span class="condition-type active">Active</span>' : ''}
             <div class="condition-description">${condition.description}</div>
         `;
@@ -188,6 +189,15 @@ export function populateConditionsSection(containerElement, characterData) {
         const checkbox = conditionItem.querySelector('.condition-checkbox');
         checkbox.addEventListener('change', function() {
             toggleCondition(this.dataset.condition, this.dataset.type, this.checked);
+        });
+        
+        // Add event listener for expand arrow
+        const expandArrow = conditionItem.querySelector('.expand-arrow');
+        expandArrow.addEventListener('click', function() {
+            const description = conditionItem.querySelector('.condition-description');
+            const isExpanded = description.style.display === 'block';
+            description.style.display = isExpanded ? 'none' : 'block';
+            this.classList.toggle('expanded');
         });
     });
     
