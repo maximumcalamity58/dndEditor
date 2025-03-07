@@ -173,6 +173,13 @@ export function populateEquipmentSection(containerElement, characterData) {
             const checkbox = weaponItem.querySelector('.equipment-checkbox');
             checkbox.addEventListener('change', function() {
                 toggleEquipped(this.dataset.type, this.dataset.name, this.checked);
+                
+                // Uncheck other weapon checkboxes if this one is checked
+                if (this.checked) {
+                    document.querySelectorAll('.equipment-checkbox[data-type="weapon"]').forEach(cb => {
+                        if (cb !== this) cb.checked = false;
+                    });
+                }
             });
         });
     }
@@ -202,6 +209,13 @@ export function populateEquipmentSection(containerElement, characterData) {
             const checkbox = armorItem.querySelector('.equipment-checkbox');
             checkbox.addEventListener('change', function() {
                 toggleEquipped(this.dataset.type, this.dataset.name, this.checked);
+                
+                // Uncheck other armor checkboxes of the same type if this one is checked
+                if (this.checked) {
+                    document.querySelectorAll(`.equipment-checkbox[data-type="${this.dataset.type}"]`).forEach(cb => {
+                        if (cb !== this) cb.checked = false;
+                    });
+                }
             });
         });
     }
@@ -280,18 +294,6 @@ export function populateEquipmentSection(containerElement, characterData) {
     
     // Function to toggle equipped status
     function toggleEquipped(type, name, isEquipped) {
-        // If equipping an item, unequip any other items of the same type
-        if (isEquipped) {
-            // For weapons, armor, and shields, only one can be equipped at a time
-            if (type === 'weapon' || type === 'armor' || type === 'shield') {
-                document.querySelectorAll(`.equipment-checkbox[data-type="${type}"]`).forEach(checkbox => {
-                    if (checkbox.dataset.name !== name && checkbox.checked) {
-                        checkbox.checked = false;
-                    }
-                });
-            }
-        }
-        
         fetch("/toggle_equipped", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

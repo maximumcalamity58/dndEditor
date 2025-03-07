@@ -39,21 +39,54 @@ export function getFinalStat(statName, characterData) {
                     getProperty(characterData.combat_stats, statName) ||
                     getProperty(characterData.ability_scores, statName);
 
-    // Apply bonuses that affect this stat
-    characterData.bonuses.forEach(bonus => {
-        bonus.effects.forEach(effect => {
-            let effectTarget = effect.target.toLowerCase();
+    // Apply bonuses from character bonuses
+    if (characterData.bonuses) {
+        characterData.bonuses.forEach(bonus => {
+            if (!bonus.effects) return;
+            
+            bonus.effects.forEach(effect => {
+                let effectTarget = effect.target.toLowerCase();
 
-            if (effect.category === "stat" && effectTarget === statName) {
-                if (effect.modifier === "none") {
-                    baseValue += effect.amount;
-                } else if (effect.modifier === "per") {
-                    let perStat = getFinalStat(effect.perTarget, characterData);
-                    baseValue += Math.floor(perStat / effect.perAmount) * effect.amount;
+                if (effect.category === "stat" && effectTarget === statName) {
+                    if (effect.modifier === "none" || !effect.modifier) {
+                        baseValue += effect.amount || 0;
+                    } else if (effect.modifier === "per") {
+                        let perStat = getFinalStat(effect.perTarget, characterData);
+                        baseValue += Math.floor(perStat / effect.perAmount) * effect.amount;
+                    }
                 }
-            }
+            });
         });
-    });
+    }
+    
+    // Apply bonuses from equipped items
+    if (characterData.equipped && characterData.inventory) {
+        const equipped = characterData.equipped;
+        
+        // Check each equipped slot
+        for (const slot in equipped) {
+            if (!equipped[slot]) continue; // Skip empty slots
+            
+            // Find the equipped item in inventory
+            const item = characterData.inventory.find(item => item.name === equipped[slot]);
+            
+            if (item && item.effect) {
+                // Apply each effect from the item
+                item.effect.forEach(effect => {
+                    let effectTarget = effect.target.toLowerCase();
+                    
+                    if (effect.category === "stat" && effectTarget === statName) {
+                        if (effect.modifier === "none" || !effect.modifier) {
+                            baseValue += effect.amount || 0;
+                        } else if (effect.modifier === "per") {
+                            let perStat = getFinalStat(effect.perTarget, characterData);
+                            baseValue += Math.floor(perStat / effect.perAmount) * effect.amount;
+                        }
+                    }
+                });
+            }
+        }
+    }
 
     return baseValue;
 }
@@ -66,6 +99,9 @@ export function getFinalStat(statName, characterData) {
 function calculateArmorClass(characterData) {
     const equipped = characterData.equipped || {};
     const dexModifier = calculateModifier(getFinalStat("dexterity", characterData), false);
+    
+    // Start with base AC (10 + DEX modifier)
+    let finalAC = 10 + dexModifier;
     
     // Check if armor is equipped
     if (equipped.armor) {
@@ -99,8 +135,8 @@ function calculateArmorClass(characterData) {
                 baseAC = armor.armor_class;
             }
             
-            // Calculate final AC with dex modifier (if applicable)
-            let finalAC = baseAC;
+            // Calculate armor AC with dex modifier (if applicable)
+            finalAC = baseAC;
             if (maxDexMod !== 0) {
                 if (maxDexMod !== null) {
                     // Limited dex bonus
@@ -110,30 +146,44 @@ function calculateArmorClass(characterData) {
                     finalAC += dexModifier;
                 }
             }
-            
-            // Add shield bonus if equipped
-            if (equipped.shield) {
-                const shield = characterData.inventory.find(item => 
-                    item.name === equipped.shield && item.category === "shield"
-                );
-                
-                if (shield && shield.armor_class) {
-                    // Extract shield AC bonus
-                    const shieldACMatch = shield.armor_class.match(/\+(\d+)/);
-                    if (shieldACMatch) {
-                        finalAC += parseInt(shieldACMatch[1]);
-                    } else if (typeof shield.armor_class === "number") {
-                        finalAC += shield.armor_class;
-                    }
-                }
-            }
-            
-            return finalAC;
         }
     }
     
-    // No armor equipped, use unarmored defense (10 + DEX modifier)
-    return 10 + dexModifier;
+    // Add shield bonus if equipped
+    if (equipped.shield) {
+        const shield = characterData.inventory.find(item => 
+            item.name === equipped.shield && item.category === "shield"
+        );
+        
+        if (shield && shield.armor_class) {
+            // Extract shield AC bonus
+            const shieldACMatch = shield.armor_class.match(/\+(\d+)/);
+            if (shieldACMatch) {
+                finalAC += parseInt(shieldACMatch[1]);
+            } else if (typeof shield.armor_class === "number") {
+                finalAC += shield.armor_class;
+            }
+        }
+    }
+    
+    // Add AC bonuses from other equipped items
+    for (const slot in equipped) {
+        if (equipped[slot] && slot !== 'armor' && slot !== 'shield') {
+            const item = characterData.inventory.find(item => 
+                item.name === equipped[slot]
+            );
+            
+            if (item && item.effect) {
+                item.effect.forEach(effect => {
+                    if (effect.category === "stat" && effect.target === "Armor Class") {
+                        finalAC += effect.amount || 0;
+                    }
+                });
+            }
+        }
+    }
+    
+    return finalAC;
 }
 
 /**

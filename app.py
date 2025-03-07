@@ -331,12 +331,8 @@ def toggle_equipped():
     
     # Handle equipping/unequipping
     if is_equipped:
-        # If equipping armor or shield, unequip any existing item of that type
-        if item_type in ['armor', 'shield']:
-            character_data['equipped'][item_type] = item_name
-        # For weapons and clothing, just equip the item
-        else:
-            character_data['equipped'][item_type] = item_name
+        # For all equipment types, only one item can be equipped per slot
+        character_data['equipped'][item_type] = item_name
     else:
         # Only clear if this specific item is equipped
         if item_type in character_data['equipped'] and character_data['equipped'][item_type] == item_name:
