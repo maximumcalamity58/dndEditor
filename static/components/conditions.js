@@ -45,7 +45,7 @@ export function populateConditionsSection(containerElement, characterData) {
             .condition-description {
                 font-size: 0.9em;
                 color: #aaa;
-                margin-top: 0;
+                margin-top: 5px;
                 max-height: 0;
                 overflow: hidden;
                 background: #333;
@@ -56,10 +56,10 @@ export function populateConditionsSection(containerElement, characterData) {
                 box-shadow: 0 2px 8px rgba(0,0,0,0.3);
                 transition: all 0.3s ease-in-out;
                 opacity: 0;
+                padding: 0;
             }
             .condition-description.expanded {
                 padding: 8px;
-                margin-top: 5px;
                 max-height: 300px;
                 opacity: 1;
             }

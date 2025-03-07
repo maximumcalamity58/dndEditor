@@ -281,10 +281,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 item.textContent = title;
                                 item.addEventListener('click', () => {
                                     // Find the stack to add to
-                                    const stack = header.closest('.lm_item').layoutManager._dragSources[0]._element.layoutManager;
-                                    
-                                    // Add the tab back
-                                    stack.addComponent(config.componentName, config.title);
+                                    const stack = header.closest('.lm_item');
+                                    if (stack && stack.layoutManager) {
+                                        // Add the tab back
+                                        stack.layoutManager.addComponent(config.componentName, config.title);
+                                    } else if (layout) {
+                                        // Fallback to main layout
+                                        const stacks = layout.root.getItemsByType('stack');
+                                        if (stacks.length > 0) {
+                                            stacks[0].addItem({
+                                                type: 'component',
+                                                componentName: config.componentName,
+                                                title: config.title
+                                            });
+                                        }
+                                    }
                                     
                                     // Remove from closed tabs
                                     delete closedTabs[title];
@@ -334,11 +345,38 @@ document.addEventListener("DOMContentLoaded", async () => {
                             item.textContent = displayName;
                             item.addEventListener('click', () => {
                                 // Find the stack to add to
-                                const stack = header.closest('.lm_item').layoutManager._dragSources[0]._element.layoutManager;
-                                
-                                // Add the component
-                                stack.addComponent(componentName, displayName);
-                                
+                                const stack = header.closest('.lm_item');
+                                if (stack && stack.layoutManager) {
+                                    // Add the component
+                                    stack.layoutManager.addComponent(componentName, displayName);
+                                } else if (layout) {
+                                    // Fallback to main layout
+                                    layout.registerComponent(componentName, function(container) {
+                                        const panel = document.createElement("div");
+                                        panel.classList.add("goldenlayout-container", "scrollable");
+                                        panel.style.width = "auto";
+                                        panel.style.maxWidth = "100%";
+                                        panel.style.height = "100%";
+                                        panel.innerHTML = `
+                                            <div class="panel-header">
+                                                <span>${displayName.toUpperCase()}</span>
+                                            </div>
+                                            <div class="panel-content"></div>
+                                        `;
+                                        container.getElement().append(panel);
+                                    });
+                                        
+                                    // Find a stack to add to
+                                    const stacks = layout.root.getItemsByType('stack');
+                                    if (stacks.length > 0) {
+                                        stacks[0].addItem({
+                                            type: 'component',
+                                            componentName: componentName,
+                                            title: displayName
+                                        });
+                                    }
+                                }
+                                    
                                 // Close dropdown
                                 dropdown.remove();
                             });
