@@ -638,6 +638,13 @@ export function populateInventorySection(containerElement) {
                         </div>
                     </div>
                     
+                    <div id="itemSubcategoryContainer" class="form-row" style="display: none;">
+                        <div class="form-group">
+                            <label>Subcategory:</label>
+                            <select id="itemSubcategory"></select>
+                        </div>
+                    </div>
+                    
                     <div id="weaponDetails" class="item-details-section" style="display: none;">
                         <h4>Weapon Details</h4>
                         <div class="form-row">
@@ -729,6 +736,15 @@ export function populateInventorySection(containerElement) {
         document.getElementById("predefinedSearch").addEventListener("input", filterPredefinedItems);
         document.getElementById("itemSearch").addEventListener("input", filterInventoryItems);
         document.getElementById("itemCategory").addEventListener("change", toggleItemDetails);
+        document.getElementById("itemSubcategory").addEventListener("change", function() {
+            // Update item slot options if clothing subcategory changes
+            const category = document.getElementById("itemCategory").value;
+            const subcategory = this.value;
+            
+            if (category === 'clothing' && document.getElementById('itemSlot')) {
+                document.getElementById('itemSlot').value = subcategory;
+            }
+        });
         
         // Add event listeners to filter buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -863,6 +879,65 @@ export function populateInventorySection(containerElement) {
         });
     }
     
+    function getSubcategoryLabel(category, subcategory) {
+        // Define subcategory mappings
+        const subcategories = {
+            'weapon': {
+                'simple_melee': 'Simple Melee',
+                'simple_ranged': 'Simple Ranged',
+                'martial_melee': 'Martial Melee',
+                'martial_ranged': 'Martial Ranged'
+            },
+            'armor': {
+                'light_armor': 'Light Armor',
+                'medium_armor': 'Medium Armor',
+                'heavy_armor': 'Heavy Armor'
+            },
+            'shield': {
+                'shields': 'Shield'
+            },
+            'clothing': {
+                'head': 'Head',
+                'neck': 'Neck',
+                'shoulders': 'Shoulders',
+                'chest': 'Chest',
+                'back': 'Back',
+                'wrists': 'Wrists',
+                'hands': 'Hands',
+                'waist': 'Waist',
+                'legs': 'Legs',
+                'feet': 'Feet',
+                'finger': 'Finger'
+            },
+            'scroll': {
+                'scrolls': 'Scroll'
+            },
+            'potion': {
+                'potions': 'Potion'
+            },
+            'misc': {
+                'equipment_packs': 'Equipment Pack',
+                'tools': 'Tool',
+                'artisan_tools': 'Artisan Tool',
+                'musical_instruments': 'Musical Instrument',
+                'gaming_sets': 'Gaming Set',
+                'misc': 'Miscellaneous'
+            },
+            'wondrous': {
+                'wondrous': 'Wondrous Item'
+            }
+        };
+        
+        if (subcategories[category] && subcategories[category][subcategory]) {
+            return subcategories[category][subcategory];
+        }
+        
+        // Return a formatted version of the subcategory if no mapping exists
+        return subcategory.split('_').map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(' ');
+    }
+    
     function filterByCategory(e) {
         // Update active button
         document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -876,6 +951,8 @@ export function populateInventorySection(containerElement) {
     
     function toggleItemDetails() {
         const category = document.getElementById("itemCategory").value;
+        const subcategoryContainer = document.getElementById("itemSubcategoryContainer");
+        const subcategorySelect = document.getElementById("itemSubcategory");
         
         // Hide all detail sections first
         document.querySelectorAll('.item-details-section').forEach(section => {
@@ -885,11 +962,101 @@ export function populateInventorySection(containerElement) {
         // Show the appropriate section based on category
         if (category === 'weapon') {
             document.getElementById('weaponDetails').style.display = 'block';
+            subcategoryContainer.style.display = 'flex';
+            populateSubcategories(category, subcategorySelect);
         } else if (category === 'armor') {
             document.getElementById('armorDetails').style.display = 'block';
+            subcategoryContainer.style.display = 'flex';
+            populateSubcategories(category, subcategorySelect);
         } else if (category === 'clothing') {
             document.getElementById('clothingDetails').style.display = 'block';
+            subcategoryContainer.style.display = 'flex';
+            populateSubcategories(category, subcategorySelect);
+        } else if (['scroll', 'potion', 'wondrous', 'misc'].includes(category)) {
+            subcategoryContainer.style.display = 'flex';
+            populateSubcategories(category, subcategorySelect);
+        } else {
+            subcategoryContainer.style.display = 'none';
         }
+    }
+    
+    function populateSubcategories(category, selectElement) {
+        selectElement.innerHTML = '<option value="">Loading subcategories...</option>';
+        
+        fetch("/static/items.json")
+            .then(response => response.json())
+            .then(data => {
+                const predefinedItems = data.predefined_items || {};
+                selectElement.innerHTML = '';
+                
+                // Define subcategory mappings
+                const subcategories = {
+                    'weapon': {
+                        'simple_melee': 'Simple Melee Weapons',
+                        'simple_ranged': 'Simple Ranged Weapons',
+                        'martial_melee': 'Martial Melee Weapons',
+                        'martial_ranged': 'Martial Ranged Weapons'
+                    },
+                    'armor': {
+                        'light_armor': 'Light Armor',
+                        'medium_armor': 'Medium Armor',
+                        'heavy_armor': 'Heavy Armor'
+                    },
+                    'shield': {
+                        'shields': 'Shields'
+                    },
+                    'clothing': {
+                        'head': 'Head',
+                        'neck': 'Neck',
+                        'shoulders': 'Shoulders',
+                        'chest': 'Chest',
+                        'back': 'Back',
+                        'wrists': 'Wrists',
+                        'hands': 'Hands',
+                        'waist': 'Waist',
+                        'legs': 'Legs',
+                        'feet': 'Feet',
+                        'finger': 'Finger'
+                    },
+                    'scroll': {
+                        'scrolls': 'Scrolls'
+                    },
+                    'potion': {
+                        'potions': 'Potions'
+                    },
+                    'misc': {
+                        'equipment_packs': 'Equipment Packs',
+                        'tools': 'Tools',
+                        'artisan_tools': 'Artisan Tools',
+                        'musical_instruments': 'Musical Instruments',
+                        'gaming_sets': 'Gaming Sets',
+                        'misc': 'Miscellaneous'
+                    },
+                    'wondrous': {
+                        'wondrous': 'Wondrous Items'
+                    }
+                };
+                
+                // Add subcategories based on the selected category
+                if (subcategories[category]) {
+                    Object.entries(subcategories[category]).forEach(([value, label]) => {
+                        const option = document.createElement('option');
+                        option.value = value;
+                        option.textContent = label;
+                        selectElement.appendChild(option);
+                    });
+                } else {
+                    // Default option if no subcategories found
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = 'General';
+                    selectElement.appendChild(option);
+                }
+            })
+            .catch(error => {
+                console.error("Error loading subcategories:", error);
+                selectElement.innerHTML = '<option value="">Failed to load subcategories</option>';
+            });
     }
 
     function loadPredefinedItems() {
@@ -1030,6 +1197,11 @@ export function populateInventorySection(containerElement) {
             itemElement.classList.add(categoryClass);
         }
         
+        // Add subcategory as a data attribute for filtering
+        if (item.subcategory) {
+            itemElement.dataset.subcategory = item.subcategory;
+        }
+        
         // Build the item details HTML
         let detailsHtml = '';
         
@@ -1055,6 +1227,7 @@ export function populateInventorySection(containerElement) {
                 <span>Value: ${item.value} gp</span>
                 <span>Weight: ${item.weight} lb</span>
                 <span>Quantity: ${item.quantity}</span>
+                ${item.subcategory ? `<span>Type: ${getSubcategoryLabel(item.category, item.subcategory)}</span>` : ''}
             </div>
         `;
         
@@ -1119,6 +1292,29 @@ export function populateInventorySection(containerElement) {
             
             // Trigger category-specific fields
             toggleItemDetails();
+            
+            // Set subcategory after toggleItemDetails populates the options
+            setTimeout(() => {
+                if (item.subcategory) {
+                    const subcategorySelect = document.getElementById("itemSubcategory");
+                    if (subcategorySelect) {
+                        // Wait for options to be populated
+                        const checkOptions = setInterval(() => {
+                            if (subcategorySelect.options.length > 0) {
+                                clearInterval(checkOptions);
+                                
+                                // Try to find the matching option
+                                for (let i = 0; i < subcategorySelect.options.length; i++) {
+                                    if (subcategorySelect.options[i].value === item.subcategory) {
+                                        subcategorySelect.selectedIndex = i;
+                                        break;
+                                    }
+                                }
+                            }
+                        }, 100);
+                    }
+                }
+            }, 100);
             
             // Fill in category-specific data
             if (item.category === 'weapon') {
@@ -1207,6 +1403,7 @@ export function populateInventorySection(containerElement) {
             itemData.value = parseFloat(document.getElementById("itemValue").value) || 0;
             itemData.weight = parseFloat(document.getElementById("itemWeight").value) || 0;
             itemData.category = document.getElementById("itemCategory").value;
+            itemData.subcategory = document.getElementById("itemSubcategory").value;
             itemData.quantity = parseInt(document.getElementById("itemQuantity").value) || 1;
             
             // Category-specific data
