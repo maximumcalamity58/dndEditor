@@ -1887,6 +1887,8 @@ export function populateInventorySection(containerElement) {
             body: JSON.stringify({ index }),
         }).then(() => {
             loadInventory();
+            // Update all panels to reflect the removed item
+            window.updateCharacterStats();
         });
     }
 
@@ -2070,6 +2072,9 @@ export function populateInventorySection(containerElement) {
             
             loadInventory();
             closeItemModal();
+            
+            // Update all panels to reflect the new item
+            window.updateCharacterStats();
         }).catch(error => {
             console.error("Error saving item:", error);
             alert("Failed to save item.");

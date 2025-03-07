@@ -129,6 +129,7 @@ export function populateActionsSection(containerElement, characterData) {
             }
             .dice-roller {
                 display: flex;
+                flex-wrap: wrap;
                 align-items: center;
                 gap: 10px;
                 margin-top: 15px;
@@ -518,7 +519,7 @@ export function populateActionsSection(containerElement, characterData) {
                     ${item.properties ? `<span class="action-stat">Properties: ${item.properties.join(', ')}</span>` : ''}
                 </div>
                 <div class="action-buttons">
-                    ${itemActions.length > 0 ? 
+                    ${itemActions && itemActions.length > 0 ? 
                         itemActions.map(action => 
                             `<button class="action-button custom-action-button" 
                                 data-item="${item.name}" 
@@ -531,7 +532,9 @@ export function populateActionsSection(containerElement, characterData) {
                                 ${action.name || (action.actionType === 'action' ? 'Action' : 'Bonus Action')}
                             </button>`
                         ).join('') :
-                        `<button class="action-button use-item-button" data-item="${item.name}">Use</button>`
+                        (item.category === "potion" || item.category === "scroll" || itemEffects.length > 0) ?
+                        `<button class="action-button use-item-button" data-item="${item.name}">Use</button>` :
+                        ''
                     }
                 </div>
             `;

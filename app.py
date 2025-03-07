@@ -309,8 +309,15 @@ def toggle_equipped():
                 
                 is_light = "Light" in properties
 
+                # Check if this is the same weapon already equipped in another slot
+                if character_data['equipped']['weapon'] == item_name:
+                    # Already equipped in main hand, do nothing
+                    pass
+                elif character_data['equipped']['offhand'] == item_name:
+                    # Already equipped in offhand, do nothing
+                    pass
                 # If main hand is empty, equip there
-                if not character_data['equipped']['weapon']:
+                elif not character_data['equipped']['weapon']:
                     character_data['equipped']['weapon'] = item_name
                 # If main hand is full but item is Light and offhand is empty, equip to offhand
                 elif is_light and not character_data['equipped']['offhand']:
