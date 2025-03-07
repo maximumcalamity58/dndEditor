@@ -246,8 +246,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const addBtn = document.createElement('div');
                     addBtn.className = 'lm_add_tab_btn';
                     addBtn.innerHTML = '+';
-                    addBtn.style.right = 'auto'; // Remove right positioning
-                    addBtn.style.left = '0'; // Position at left
+                    addBtn.style.right = '5px'; // Position at right
+                    addBtn.style.left = 'auto'; // Remove left positioning
                     addBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
                         
@@ -263,11 +263,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                         dropdown = document.createElement('div');
                         dropdown.className = 'lm_tab_dropdown active';
                         
-                        // Add closed tabs to dropdown
+                        // Add all component options to dropdown
+                        const componentNames = ["player-info", "combat-stats", "conditions", "abilities", 
+                                              "skills", "actions", "spells", "equipment", "inventory", 
+                                              "notes", "features", "traits", "bonuses"];
+                        
+                        // First add closed tabs if any
                         if (Object.keys(closedTabs).length > 0) {
-                            // Get the stack this header belongs to
-                            const stackElement = header.closest('.lm_item');
-                            const stackId = stackElement ? stackElement.id : null;
+                            const closedTabsHeader = document.createElement('div');
+                            closedTabsHeader.className = 'lm_tab_dropdown_header';
+                            closedTabsHeader.textContent = 'Recently Closed';
+                            dropdown.appendChild(closedTabsHeader);
                             
                             Object.entries(closedTabs).forEach(([title, config]) => {
                                 const item = document.createElement('div');

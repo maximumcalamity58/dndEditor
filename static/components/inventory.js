@@ -126,6 +126,66 @@ export function populateInventorySection(containerElement) {
                 margin: 0;
             }
             
+            /* Damage Dice Styling */
+            #damageDiceContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+            .damage-dice-row {
+                display: flex;
+                align-items: center;
+                width: 100%;
+            }
+            .damage-controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 8px;
+            }
+            .add-damage-btn {
+                background-color: var(--accent-color, rgba(74, 111, 165, 0.2));
+                color: var(--accent-color, #6a8fc5);
+                border: 1px solid rgba(74, 111, 165, 0.3);
+                border-radius: 4px;
+                padding: 4px 8px;
+                font-size: 0.85em;
+                cursor: pointer;
+            }
+            .add-damage-btn:hover {
+                background-color: var(--accent-color, #4a6fa5);
+                color: white;
+            }
+            .remove-damage-btn {
+                background-color: rgba(221, 51, 51, 0.2);
+                color: var(--danger-color, #f55);
+                border: 1px solid rgba(221, 51, 51, 0.3);
+                border-radius: 50%;
+                width: 22px;
+                height: 22px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 12px;
+                padding: 0;
+                margin-left: 5px;
+            }
+            .remove-damage-btn:hover {
+                background-color: var(--danger-color, #d33);
+                color: white;
+            }
+            .damage-modifier {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+            .damage-modifier input {
+                width: 50px;
+                text-align: center;
+            }
+            
             /* Category Styling */
             .item-category-weapon {
                 border-left: 4px solid var(--weapon-color, #e55);
@@ -699,32 +759,54 @@ export function populateInventorySection(containerElement) {
                         <div class="form-row">
                             <div class="form-group half">
                                 <label>Damage:</label>
-                                <div class="structured-input">
-                                    <select id="itemDamageDice">
-                                        <option value="1d4">1d4</option>
-                                        <option value="1d6">1d6</option>
-                                        <option value="1d8">1d8</option>
-                                        <option value="1d10">1d10</option>
-                                        <option value="1d12">1d12</option>
-                                        <option value="2d4">2d4</option>
-                                        <option value="2d6">2d6</option>
-                                        <option value="2d8">2d8</option>
-                                    </select>
-                                    <select id="itemDamageType">
-                                        <option value="slashing">Slashing</option>
-                                        <option value="piercing">Piercing</option>
-                                        <option value="bludgeoning">Bludgeoning</option>
-                                        <option value="fire">Fire</option>
-                                        <option value="cold">Cold</option>
-                                        <option value="lightning">Lightning</option>
-                                        <option value="acid">Acid</option>
-                                        <option value="poison">Poison</option>
-                                        <option value="psychic">Psychic</option>
-                                        <option value="necrotic">Necrotic</option>
-                                        <option value="radiant">Radiant</option>
-                                        <option value="force">Force</option>
-                                        <option value="thunder">Thunder</option>
-                                    </select>
+                                <div id="damageDiceContainer">
+                                    <div class="damage-dice-row">
+                                        <div class="structured-input">
+                                            <select class="item-damage-dice">
+                                                <option value="1d4">1d4</option>
+                                                <option value="1d6">1d6</option>
+                                                <option value="1d8">1d8</option>
+                                                <option value="1d10">1d10</option>
+                                                <option value="1d12">1d12</option>
+                                                <option value="2d4">2d4</option>
+                                                <option value="2d6">2d6</option>
+                                                <option value="2d8">2d8</option>
+                                                <option value="2d10">2d10</option>
+                                                <option value="2d12">2d12</option>
+                                                <option value="3d6">3d6</option>
+                                                <option value="3d8">3d8</option>
+                                                <option value="4d6">4d6</option>
+                                                <option value="4d8">4d8</option>
+                                                <option value="6d6">6d6</option>
+                                                <option value="8d6">8d6</option>
+                                                <option value="10d6">10d6</option>
+                                                <option value="12d6">12d6</option>
+                                            </select>
+                                            <select class="item-damage-type">
+                                                <option value="slashing">Slashing</option>
+                                                <option value="piercing">Piercing</option>
+                                                <option value="bludgeoning">Bludgeoning</option>
+                                                <option value="fire">Fire</option>
+                                                <option value="cold">Cold</option>
+                                                <option value="lightning">Lightning</option>
+                                                <option value="acid">Acid</option>
+                                                <option value="poison">Poison</option>
+                                                <option value="psychic">Psychic</option>
+                                                <option value="necrotic">Necrotic</option>
+                                                <option value="radiant">Radiant</option>
+                                                <option value="force">Force</option>
+                                                <option value="thunder">Thunder</option>
+                                            </select>
+                                            <button class="remove-damage-btn" style="display: none;">✖</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="damage-controls">
+                                    <button id="addDamageBtn" class="add-damage-btn">+ Add Damage</button>
+                                    <div class="damage-modifier">
+                                        <label>Bonus:</label>
+                                        <input type="number" id="damageModifier" value="0" min="-10" max="10">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group half">
@@ -806,6 +888,14 @@ export function populateInventorySection(containerElement) {
             btn.addEventListener('click', filterByCategory);
         });
         
+        // Add event listener for add damage button
+        setTimeout(() => {
+            const addDamageBtn = document.getElementById("addDamageBtn");
+            if (addDamageBtn) {
+                addDamageBtn.addEventListener("click", () => addDamageRow());
+            }
+        }, 200);
+        
         // Add event listeners to category filter buttons
         document.querySelectorAll('.category-filter').forEach(btn => {
             btn.addEventListener('click', filterPredefinedByCategory);
@@ -816,6 +906,97 @@ export function populateInventorySection(containerElement) {
     }, 100);
 
     let editingItemIndex = null;
+
+    // Helper function to set select value if it exists in options
+    function setSelectValueIfExists(selectElement, value) {
+        for (let i = 0; i < selectElement.options.length; i++) {
+            if (selectElement.options[i].value === value) {
+                selectElement.selectedIndex = i;
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // Function to add a new damage row
+    function addDamageRow(dice = null, type = null) {
+        const container = document.getElementById("damageDiceContainer");
+        const newRow = document.createElement("div");
+        newRow.className = "damage-dice-row";
+        
+        newRow.innerHTML = `
+            <div class="structured-input">
+                <select class="item-damage-dice">
+                    <option value="1d4">1d4</option>
+                    <option value="1d6">1d6</option>
+                    <option value="1d8">1d8</option>
+                    <option value="1d10">1d10</option>
+                    <option value="1d12">1d12</option>
+                    <option value="2d4">2d4</option>
+                    <option value="2d6">2d6</option>
+                    <option value="2d8">2d8</option>
+                    <option value="2d10">2d10</option>
+                    <option value="2d12">2d12</option>
+                    <option value="3d6">3d6</option>
+                    <option value="3d8">3d8</option>
+                    <option value="4d6">4d6</option>
+                    <option value="4d8">4d8</option>
+                    <option value="6d6">6d6</option>
+                    <option value="8d6">8d6</option>
+                    <option value="10d6">10d6</option>
+                    <option value="12d6">12d6</option>
+                </select>
+                <select class="item-damage-type">
+                    <option value="slashing">Slashing</option>
+                    <option value="piercing">Piercing</option>
+                    <option value="bludgeoning">Bludgeoning</option>
+                    <option value="fire">Fire</option>
+                    <option value="cold">Cold</option>
+                    <option value="lightning">Lightning</option>
+                    <option value="acid">Acid</option>
+                    <option value="poison">Poison</option>
+                    <option value="psychic">Psychic</option>
+                    <option value="necrotic">Necrotic</option>
+                    <option value="radiant">Radiant</option>
+                    <option value="force">Force</option>
+                    <option value="thunder">Thunder</option>
+                </select>
+                <button class="remove-damage-btn">✖</button>
+            </div>
+        `;
+        
+        // Set values if provided
+        if (dice) {
+            setSelectValueIfExists(newRow.querySelector('.item-damage-dice'), dice);
+        }
+        if (type) {
+            setSelectValueIfExists(newRow.querySelector('.item-damage-type'), type);
+        }
+        
+        // Add event listener to remove button
+        newRow.querySelector('.remove-damage-btn').addEventListener('click', function() {
+            newRow.remove();
+            updateDamageRowButtons();
+        });
+        
+        container.appendChild(newRow);
+        updateDamageRowButtons();
+    }
+    
+    // Function to update remove buttons visibility
+    function updateDamageRowButtons() {
+        const rows = document.querySelectorAll('.damage-dice-row');
+        
+        // Hide all remove buttons if there's only one row
+        if (rows.length === 1) {
+            rows[0].querySelector('.remove-damage-btn').style.display = 'none';
+        } else {
+            // Show all remove buttons
+            rows.forEach(row => {
+                row.querySelector('.remove-damage-btn').style.display = 'flex';
+            });
+        }
+    }
 
     function openItemModal() {
         document.getElementById("itemModalTitle").textContent = "Add Item";
@@ -828,6 +1009,58 @@ export function populateInventorySection(containerElement) {
         document.getElementById("itemQuantity").value = "1";
         document.getElementById("predefinedQuantity").value = "1";
         document.getElementById("itemEffectsContainer").innerHTML = "";
+        
+        // Reset damage rows to just one
+        const damageContainer = document.getElementById("damageDiceContainer");
+        if (damageContainer) {
+            damageContainer.innerHTML = `
+                <div class="damage-dice-row">
+                    <div class="structured-input">
+                        <select class="item-damage-dice">
+                            <option value="1d4">1d4</option>
+                            <option value="1d6">1d6</option>
+                            <option value="1d8">1d8</option>
+                            <option value="1d10">1d10</option>
+                            <option value="1d12">1d12</option>
+                            <option value="2d4">2d4</option>
+                            <option value="2d6">2d6</option>
+                            <option value="2d8">2d8</option>
+                            <option value="2d10">2d10</option>
+                            <option value="2d12">2d12</option>
+                            <option value="3d6">3d6</option>
+                            <option value="3d8">3d8</option>
+                            <option value="4d6">4d6</option>
+                            <option value="4d8">4d8</option>
+                            <option value="6d6">6d6</option>
+                            <option value="8d6">8d6</option>
+                            <option value="10d6">10d6</option>
+                            <option value="12d6">12d6</option>
+                        </select>
+                        <select class="item-damage-type">
+                            <option value="slashing">Slashing</option>
+                            <option value="piercing">Piercing</option>
+                            <option value="bludgeoning">Bludgeoning</option>
+                            <option value="fire">Fire</option>
+                            <option value="cold">Cold</option>
+                            <option value="lightning">Lightning</option>
+                            <option value="acid">Acid</option>
+                            <option value="poison">Poison</option>
+                            <option value="psychic">Psychic</option>
+                            <option value="necrotic">Necrotic</option>
+                            <option value="radiant">Radiant</option>
+                            <option value="force">Force</option>
+                            <option value="thunder">Thunder</option>
+                        </select>
+                        <button class="remove-damage-btn" style="display: none;">✖</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Reset damage modifier
+        if (document.getElementById("damageModifier")) {
+            document.getElementById("damageModifier").value = "0";
+        }
         
         // Show predefined tab by default
         document.getElementById("predefinedTabBtn").classList.add("active");
@@ -866,6 +1099,12 @@ export function populateInventorySection(containerElement) {
             // Sync quantity
             const quantity = document.getElementById("predefinedQuantity").value;
             document.getElementById("itemQuantity").value = quantity;
+            
+            // Make sure subcategories are populated
+            const category = document.getElementById("itemCategory").value;
+            if (category) {
+                toggleItemDetails();
+            }
         }
     }
 
@@ -1458,32 +1697,52 @@ export function populateInventorySection(containerElement) {
             
             // Fill in category-specific data
             if (item.category === 'weapon') {
-                // Parse damage string into dice and type
+                // Clear existing damage rows except the first one
+                document.querySelectorAll('.damage-dice-row:not(:first-child)').forEach(row => row.remove());
+                
+                // Parse damage string into parts (handling multiple damage types)
                 if (item.damage) {
-                    const damageParts = item.damage.split(' ');
-                    if (damageParts.length >= 2) {
-                        const damageDice = damageParts[0];
-                        const damageType = damageParts[1];
-                        
-                        // Set the damage dice if it's a valid option
-                        const diceSelect = document.getElementById("itemDamageDice");
-                        for (let i = 0; i < diceSelect.options.length; i++) {
-                            if (diceSelect.options[i].value === damageDice) {
-                                diceSelect.selectedIndex = i;
-                                break;
+                    const allDamageParts = item.damage.split(' plus ');
+                    let modifier = 0;
+                    
+                    // Process each damage part
+                    allDamageParts.forEach((damagePart, index) => {
+                        // Check for modifier in the first damage part
+                        if (index === 0) {
+                            const modMatch = damagePart.match(/([+-]\d+)$/);
+                            if (modMatch) {
+                                modifier = parseInt(modMatch[1]);
+                                damagePart = damagePart.replace(/([+-]\d+)$/, '').trim();
                             }
                         }
                         
-                        // Set the damage type if it's a valid option
-                        const typeSelect = document.getElementById("itemDamageType");
-                        for (let i = 0; i < typeSelect.options.length; i++) {
-                            if (typeSelect.options[i].value === damageType) {
-                                typeSelect.selectedIndex = i;
-                                break;
+                        const parts = damagePart.trim().split(' ');
+                        if (parts.length >= 2) {
+                            const damageDice = parts[0];
+                            const damageType = parts[1];
+                            
+                            // For first damage part, use the existing row
+                            if (index === 0) {
+                                const firstRow = document.querySelector('.damage-dice-row');
+                                const diceSelect = firstRow.querySelector('.item-damage-dice');
+                                const typeSelect = firstRow.querySelector('.item-damage-type');
+                                
+                                // Set values if they exist in the options
+                                setSelectValueIfExists(diceSelect, damageDice);
+                                setSelectValueIfExists(typeSelect, damageType);
+                            } else {
+                                // For additional damage parts, add new rows
+                                addDamageRow(damageDice, damageType);
                             }
                         }
-                    }
+                    });
+                    
+                    // Set the damage modifier
+                    document.getElementById("damageModifier").value = modifier;
                 }
+                
+                // Show remove buttons if there are multiple damage rows
+                updateDamageRowButtons();
                 
                 // Set properties checkboxes
                 if (item.properties && Array.isArray(item.properties)) {
@@ -1595,9 +1854,22 @@ export function populateInventorySection(containerElement) {
             
             // Category-specific data
             if (itemData.category === 'weapon') {
-                const damageDice = document.getElementById("itemDamageDice").value;
-                const damageType = document.getElementById("itemDamageType").value;
-                itemData.damage = `${damageDice} ${damageType}`;
+                // Get all damage dice and types
+                const damageParts = [];
+                document.querySelectorAll('.damage-dice-row').forEach(row => {
+                    const dice = row.querySelector('.item-damage-dice').value;
+                    const type = row.querySelector('.item-damage-type').value;
+                    damageParts.push(`${dice} ${type}`);
+                });
+                
+                // Add modifier if not zero
+                const modifier = parseInt(document.getElementById("damageModifier").value) || 0;
+                if (modifier !== 0) {
+                    damageParts[0] = `${damageParts[0]} ${modifier >= 0 ? '+' : ''}${modifier}`;
+                }
+                
+                // Join all damage parts
+                itemData.damage = damageParts.join(' plus ');
                 
                 // Get selected properties
                 itemData.properties = [];

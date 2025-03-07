@@ -45,14 +45,23 @@ export function populateConditionsSection(containerElement, characterData) {
             .condition-description {
                 font-size: 0.9em;
                 color: #aaa;
-                margin-top: 5px;
-                display: none;
+                margin-top: 0;
+                max-height: 0;
+                overflow: hidden;
                 background: #333;
                 border: 1px solid #555;
-                padding: 8px;
-                border-radius: 4px;
+                border-top: none;
+                border-radius: 0 0 4px 4px;
                 width: 100%;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                transition: all 0.3s ease-in-out;
+                opacity: 0;
+            }
+            .condition-description.expanded {
+                padding: 8px;
+                margin-top: 5px;
+                max-height: 300px;
+                opacity: 1;
             }
             .condition-item {
                 position: relative;
@@ -195,8 +204,7 @@ export function populateConditionsSection(containerElement, characterData) {
         const expandArrow = conditionItem.querySelector('.expand-arrow');
         expandArrow.addEventListener('click', function() {
             const description = conditionItem.querySelector('.condition-description');
-            const isExpanded = description.style.display === 'block';
-            description.style.display = isExpanded ? 'none' : 'block';
+            description.classList.toggle('expanded');
             this.classList.toggle('expanded');
         });
     });
