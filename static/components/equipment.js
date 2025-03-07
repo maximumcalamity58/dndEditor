@@ -303,6 +303,18 @@ export function populateEquipmentSection(containerElement, characterData) {
                              item.properties && 
                              item.properties.includes("Light");
         
+        console.log("Sending toggle_equipped request:", {
+            type, name, equipped: isEquipped, 
+            item_data: {
+                category: item.category,
+                damage: item.damage,
+                properties: item.properties,
+                armor_class: item.armor_class,
+                subcategory: item.subcategory,
+                isLight: isLightWeapon
+            }
+        });
+        
         fetch("/toggle_equipped", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -319,7 +331,14 @@ export function populateEquipmentSection(containerElement, characterData) {
                     isLight: isLightWeapon
                 }
             }),
-        }).then(response => response.json())
+        })
+        .then(response => {
+            console.log("Toggle equipped response status:", response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 // Update UI to reflect changes

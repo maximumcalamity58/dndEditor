@@ -8,6 +8,11 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+@app.route("/test", methods=["GET"])
+def test_route():
+    """A simple test route to verify the server is working."""
+    return jsonify({"status": "ok", "message": "Server is running"})
+
 # Ensure static files (JS, CSS, JSON) are served correctly
 @app.route('/static/<path:filename>')
 def static_files(filename):
@@ -174,7 +179,25 @@ def remove_bonus():
     else:
         return jsonify({"error": "Bonuses data structure is missing or incorrect"}), 500
 
+# Add a route to check all registered routes
+@app.route('/debug/routes', methods=['GET'])
+def debug_routes():
+    """Returns all registered routes for debugging."""
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append({
+            'endpoint': rule.endpoint,
+            'methods': [method for method in rule.methods if method != 'OPTIONS' and method != 'HEAD'],
+            'path': str(rule)
+        })
+    return jsonify(routes)
+
 if __name__ == "__main__":
+    # Print all routes at startup
+    print("Registered routes:")
+    for rule in app.url_map.iter_rules():
+        print(f"{rule} - {rule.endpoint} - {rule.methods}")
+    
     app.run(debug=True)
 @app.route('/toggle_condition', methods=['POST'])
 def toggle_condition():
@@ -235,7 +258,9 @@ def toggle_condition():
 
 @app.route('/toggle_equipped', methods=['POST'])
 def toggle_equipped():
+    print("toggle_equipped route called")
     data = request.json
+    print(f"Request data: {data}")
     item_type = data.get('type')
     item_name = data.get('name')
     is_equipped = data.get('equipped')
