@@ -183,6 +183,9 @@ export function populateEquipmentSection(containerElement, characterData) {
                         if (cb !== this) cb.checked = false;
                     });
                 }
+                
+                // Update all panels immediately
+                window.updateCharacterStats();
             });
         });
     }
@@ -219,6 +222,9 @@ export function populateEquipmentSection(containerElement, characterData) {
                         if (cb !== this) cb.checked = false;
                     });
                 }
+                
+                // Update all panels immediately
+                window.updateCharacterStats();
             });
         });
     }
@@ -249,6 +255,9 @@ export function populateEquipmentSection(containerElement, characterData) {
             const checkbox = clothingItem.querySelector('.equipment-checkbox');
             checkbox.addEventListener('change', function() {
                 toggleEquipped(this.dataset.type, this.dataset.name, this.checked);
+                
+                // Update all panels immediately
+                window.updateCharacterStats();
             });
         });
     }
@@ -383,6 +392,9 @@ export function populateEquipmentSection(containerElement, characterData) {
     function useItem(name) {
         // For now, just show an alert
         alert(`Used item: ${name}`);
+        
+        // Update all panels immediately
+        window.updateCharacterStats();
         
         // In the future, this could apply temporary effects, reduce quantity, etc.
         // fetch("/use_item", {

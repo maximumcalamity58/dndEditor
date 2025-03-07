@@ -345,7 +345,8 @@ export function populateActionsSection(containerElement, characterData) {
         if (weaponItem && (
             weaponItem.category === "weapon" || 
             weaponData.category === "weapon" || 
-            (weaponItem.damage && weaponItem.damage.includes("d"))
+            (weaponItem.damage && weaponItem.damage.includes("d")) ||
+            (weaponData.damage && weaponData.damage.includes("d"))
         )) {
             // Determine if weapon uses Strength or Dexterity
             const properties = Array.isArray(weaponItem.properties) ? weaponItem.properties : [];
