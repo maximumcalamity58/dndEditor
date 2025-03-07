@@ -1,4 +1,4 @@
-import { calculateModifier, getFinalProficiencyBonus, getFinalStat, hasProficiency } from "../helpers.js";
+import { calculateModifier, getFinalProficiencyBonus, getFinalStat, hasProficiency, getRollAdvantage } from "../helpers.js";
 
 export function populateSkillsSection(containerElement, characterData) {
     if (!containerElement) return;
@@ -21,12 +21,19 @@ export function populateSkillsSection(containerElement, characterData) {
 
         // Ensure "+" is added for positive values
         totalModifier = totalModifier >= 0 ? `+${totalModifier}` : totalModifier;
+        
+        // Check for advantage/disadvantage
+        const advantageState = getRollAdvantage(skill.name, characterData);
+        const advantageIcon = advantageState === "advantage" ? "↑" : 
+                             advantageState === "disadvantage" ? "↓" : "";
+        const advantageClass = advantageState === "advantage" ? "advantage" : 
+                              advantageState === "disadvantage" ? "disadvantage" : "";
 
         html += `
             <div class="skill-row">
                 <input type="checkbox" ${isProficient ? "checked" : ""} disabled>
-                <label>${skill.name} (${skill.related_stat.toUpperCase()})</label>
-                <span class="modifier">${totalModifier}</span>
+                <label>${skill.name} (${skill.related_stat.charAt(0).toUpperCase() + skill.related_stat.slice(1)})</label>
+                <span class="modifier ${advantageClass}">${totalModifier} ${advantageIcon}</span>
             </div>
         `;
     });

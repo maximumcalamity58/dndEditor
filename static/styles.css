@@ -362,10 +362,19 @@ h3 {
 }
 
 /* Skill Modifier Display */
-.skill-modifier {
+.skill-modifier, .modifier {
     font-weight: bold;
     font-size: 18px;
     color: #0a84ff;
+}
+
+/* Advantage/Disadvantage Styling */
+.advantage {
+    color: #2ecc71 !important; /* Green for advantage */
+}
+
+.disadvantage {
+    color: #e74c3c !important; /* Red for disadvantage */
 }
 
 /* === Bonuses Section === */

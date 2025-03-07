@@ -7,6 +7,12 @@
         "level": 5,
         "experience": 3200
     },
+    "conditions": {
+        "active": [],
+        "resistances": ["Fire", "Cold"],
+        "immunities": [],
+        "vulnerabilities": []
+    },
     "combat_stats": {
         "speed": 30,
         "initiative": 2,

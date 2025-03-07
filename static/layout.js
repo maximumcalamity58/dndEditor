@@ -5,6 +5,7 @@ import { populateAbilitiesSection } from "./components/abilities.js";
 import { populateSkillsSection } from "./components/skills.js";
 import { populateBonusesSection } from "./components/bonuses.js";
 import { populateInventorySection } from "./components/inventory.js";
+import { populateConditionsSection } from "./components/conditions.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const layoutContainer = document.getElementById("layout-container");
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             content: [
                                 { type: 'component', componentName: 'player-info', title: 'Player Info' },
                                 { type: 'component', componentName: 'combat-stats', title: 'Combat Stats' },
+                                { type: 'component', componentName: 'conditions', title: 'Conditions' },
                             ]
                         },
                         {
@@ -121,6 +123,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 populateBonusesSection(panel.querySelector(".panel-content"), characterData);
             } else if (section === "inventory") {
                 populateInventorySection(panel.querySelector(".panel-content"), characterData);
+            } else if (section === "conditions") {
+                populateConditionsSection(panel.querySelector(".panel-content"), characterData);
             }
         });
     });
@@ -148,6 +152,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 populateBonusesSection(contentContainer, characterData);
             } else if (section === "inventory") {
                 populateInventorySection(contentContainer, characterData);
+            } else if (section === "conditions") {
+                populateConditionsSection(contentContainer, characterData);
             }
         });
     };

@@ -195,6 +195,12 @@ export function populateBonusesSection(containerElement) {
         <select class="effect-category">
             <option value="stat" ${effect.category === "stat" ? "selected" : ""}>Stat</option>
             <option value="proficiency" ${effect.category === "proficiency" ? "selected" : ""}>Proficiency</option>
+            <option value="advantage" ${effect.category === "advantage" ? "selected" : ""}>Advantage</option>
+            <option value="disadvantage" ${effect.category === "disadvantage" ? "selected" : ""}>Disadvantage</option>
+            <option value="condition" ${effect.category === "condition" ? "selected" : ""}>Condition</option>
+            <option value="resistance" ${effect.category === "resistance" ? "selected" : ""}>Resistance</option>
+            <option value="immunity" ${effect.category === "immunity" ? "selected" : ""}>Immunity</option>
+            <option value="vulnerability" ${effect.category === "vulnerability" ? "selected" : ""}>Vulnerability</option>
         </select>
         <select class="effect-target"></select>
         <input type="number" class="effect-amount" placeholder="Flat Bonus" style="width: 100px;">
@@ -217,11 +223,46 @@ export function populateBonusesSection(containerElement) {
 
         // Function to update visibility based on category
         function updateFields() {
+            const ALL_CONDITIONS = [
+                "Blinded", "Charmed", "Deafened", "Exhaustion", "Frightened", 
+                "Grappled", "Incapacitated", "Invisible", "Paralyzed", "Petrified", 
+                "Poisoned", "Prone", "Restrained", "Stunned", "Unconscious"
+            ];
+            
+            const ALL_DAMAGE_TYPES = [
+                "Acid", "Bludgeoning", "Cold", "Fire", "Force", "Lightning", 
+                "Necrotic", "Piercing", "Poison", "Psychic", "Radiant", "Slashing", "Thunder"
+            ];
+            
+            const ALL_ROLLS = [
+                "Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma",
+                "Strength Save", "Dexterity Save", "Constitution Save", "Intelligence Save", "Wisdom Save", "Charisma Save",
+                "Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", 
+                "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", 
+                "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival",
+                "Attack Rolls", "Melee Attack Rolls", "Ranged Attack Rolls", "Spell Attack Rolls"
+            ];
+            
             if (categorySelect.value === "proficiency") {
                 targetSelect.innerHTML = ALL_PROFICIENCIES.map(prof => `<option value="${prof}">${prof}</option>`).join("");
                 amountField.style.display = "none"; // Hide amount for proficiency
                 modifierSelect.style.display = "none";
                 perContainer.style.display = "none"; // Hide "per" section
+            } else if (categorySelect.value === "advantage" || categorySelect.value === "disadvantage") {
+                targetSelect.innerHTML = ALL_ROLLS.map(roll => `<option value="${roll}">${roll}</option>`).join("");
+                amountField.style.display = "none";
+                modifierSelect.style.display = "none";
+                perContainer.style.display = "none";
+            } else if (categorySelect.value === "condition") {
+                targetSelect.innerHTML = ALL_CONDITIONS.map(cond => `<option value="${cond}">${cond}</option>`).join("");
+                amountField.style.display = "none";
+                modifierSelect.style.display = "none";
+                perContainer.style.display = "none";
+            } else if (["resistance", "immunity", "vulnerability"].includes(categorySelect.value)) {
+                targetSelect.innerHTML = ALL_DAMAGE_TYPES.map(type => `<option value="${type}">${type}</option>`).join("");
+                amountField.style.display = "none";
+                modifierSelect.style.display = "none";
+                perContainer.style.display = "none";
             } else {
                 targetSelect.innerHTML = ALL_STATS.map(stat => `<option value="${stat}">${stat}</option>`).join("");
                 targetSelect.innerHTML += ALL_PROFICIENCIES.map(prof => `<option value="${prof}">${prof}</option>`).join("");

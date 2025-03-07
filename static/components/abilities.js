@@ -1,4 +1,4 @@
-import { calculateModifier, getFinalProficiencyBonus, getFinalStat, hasProficiency } from "../helpers.js";
+import { calculateModifier, getFinalProficiencyBonus, getFinalStat, hasProficiency, getRollAdvantage } from "../helpers.js";
 
 export function populateAbilitiesSection(containerElement, characterData) {
     if (!containerElement) return;
@@ -13,11 +13,19 @@ export function populateAbilitiesSection(containerElement, characterData) {
 
     Object.keys(characterData.ability_scores).forEach(stat => {
         let finalStat = getFinalStat(stat, characterData); // Get final ability score
+        
+        // Check for advantage/disadvantage on ability checks
+        const advantageState = getRollAdvantage(stat, characterData);
+        const advantageIcon = advantageState === "advantage" ? "↑" : 
+                             advantageState === "disadvantage" ? "↓" : "";
+        const advantageClass = advantageState === "advantage" ? "advantage" : 
+                              advantageState === "disadvantage" ? "disadvantage" : "";
+        
         html += `
             <div class="ability-row">
                 <label>${stat.toUpperCase()}</label>
                 <span class="ability-value">${finalStat}</span>
-                <span class="modifier-value">${calculateModifier(finalStat, true)}</span>
+                <span class="modifier-value ${advantageClass}">${calculateModifier(finalStat, true)} ${advantageIcon}</span>
             </div>
         `;
     });
@@ -37,12 +45,19 @@ export function populateAbilitiesSection(containerElement, characterData) {
 
         // Ensure "+" is added for positive values
         totalMod = totalMod >= 0 ? `+${totalMod}` : totalMod;
+        
+        // Check for advantage/disadvantage on saving throws
+        const advantageState = getRollAdvantage(`${stat} Save`, characterData);
+        const advantageIcon = advantageState === "advantage" ? "↑" : 
+                             advantageState === "disadvantage" ? "↓" : "";
+        const advantageClass = advantageState === "advantage" ? "advantage" : 
+                              advantageState === "disadvantage" ? "disadvantage" : "";
 
         html += `
             <div class="save-row">
                 <input type="checkbox" ${isProficient ? "checked" : ""} disabled>
                 <label>${stat.toUpperCase()}</label>
-                <span class="modifier-value">${totalMod}</span>
+                <span class="modifier-value ${advantageClass}">${totalMod} ${advantageIcon}</span>
             </div>
         `;
     });
