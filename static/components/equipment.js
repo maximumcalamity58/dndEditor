@@ -328,10 +328,12 @@ export function populateEquipmentSection(containerElement, characterData) {
                 item_data: {
                     category: item.category,
                     damage: item.damage,
-                    properties: item.properties,
+                    properties: item.properties || [],
                     armor_class: item.armor_class,
                     subcategory: item.subcategory,
-                    isLight: isLightWeapon
+                    isLight: isLightWeapon,
+                    effect: item.effect || [],
+                    actions: item.actions || []
                 }
             }),
         })

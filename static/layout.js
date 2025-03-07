@@ -143,36 +143,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     layout.init();
 
     window.updateCharacterStats = async function() {
-        // Re-fetch the latest character data
-        characterData = await fetch("/static/data.json").then(response => response.json());
+        try {
+            // Add cache-busting parameter to prevent browser caching
+            const timestamp = new Date().getTime();
+            // Re-fetch the latest character data
+            characterData = await fetch(`/static/data.json?t=${timestamp}`).then(response => response.json());
+            console.log("Updated character data:", characterData);
 
-        document.querySelectorAll(".goldenlayout-container").forEach(panel => {
-            const section = panel.querySelector(".panel-header span").textContent.toLowerCase().replace(" ", "-");
-            const contentContainer = panel.querySelector(".panel-content");
-            contentContainer.innerHTML = ""; // Clear existing content
+            document.querySelectorAll(".goldenlayout-container").forEach(panel => {
+                const section = panel.querySelector(".panel-header span").textContent.toLowerCase().replace(/\s+/g, "-");
+                const contentContainer = panel.querySelector(".panel-content");
+                
+                if (!contentContainer) return;
+                
+                contentContainer.innerHTML = ""; // Clear existing content
+                console.log(`Updating section: ${section}`);
 
-            if (section === "player-info") {
-                populatePlayerInfo(contentContainer, characterData);
-            } else if (section === "combat-stats") {
-                populateCombatStats(contentContainer, characterData);
-            } else if (section === "abilities") {
-                populateAbilitiesSection(contentContainer, characterData);
-            } else if (section === "skills") {
-                populateSkillsSection(contentContainer, characterData);
-            } else if (section === "bonuses") {
-                populateBonusesSection(contentContainer, characterData);
-            } else if (section === "inventory") {
-                populateInventorySection(contentContainer, characterData);
-            } else if (section === "conditions") {
-                populateConditionsSection(contentContainer, characterData);
-            } else if (section === "equipment") {
-                populateEquipmentSection(contentContainer, characterData);
-            } else if (section === "notes") {
-                populateNotesSection(contentContainer, characterData);
-            } else if (section === "actions") {
-                populateActionsSection(contentContainer, characterData);
-            }
-        });
+                if (section === "player-info") {
+                    populatePlayerInfo(contentContainer, characterData);
+                } else if (section === "combat-stats") {
+                    populateCombatStats(contentContainer, characterData);
+                } else if (section === "abilities") {
+                    populateAbilitiesSection(contentContainer, characterData);
+                } else if (section === "skills") {
+                    populateSkillsSection(contentContainer, characterData);
+                } else if (section === "bonuses") {
+                    populateBonusesSection(contentContainer, characterData);
+                } else if (section === "inventory") {
+                    populateInventorySection(contentContainer, characterData);
+                } else if (section === "conditions") {
+                    populateConditionsSection(contentContainer, characterData);
+                } else if (section === "equipment") {
+                    populateEquipmentSection(contentContainer, characterData);
+                } else if (section === "notes") {
+                    populateNotesSection(contentContainer, characterData);
+                } else if (section === "actions") {
+                    populateActionsSection(contentContainer, characterData);
+                }
+            });
+        } catch (error) {
+            console.error("Error updating character stats:", error);
+        }
     };
 
 

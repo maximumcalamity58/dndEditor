@@ -323,6 +323,9 @@ export function populateActionsSection(containerElement, characterData) {
     const equipmentData = characterData.equipment_data || {};
     const inventory = characterData.inventory || [];
     
+    console.log("Actions component - equipped items:", equipped);
+    console.log("Actions component - equipment data:", equipmentData);
+    
     // Calculate ability modifiers and other stats
     const strMod = Math.floor((getFinalStat("strength", characterData) - 10) / 2);
     const dexMod = Math.floor((getFinalStat("dexterity", characterData) - 10) / 2);
