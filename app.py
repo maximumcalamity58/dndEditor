@@ -292,7 +292,12 @@ def toggle_equipped():
         if is_equipped:
             # Special handling for weapons with the Light property
             if item_type == "weapon":
-                is_light = item_data.get('isLight', False)
+                # Ensure properties is a list before checking for Light property
+                properties = item_data.get('properties', [])
+                if properties is None:
+                    properties = []
+                
+                is_light = "Light" in properties if isinstance(properties, list) else False
 
                 # If main hand is empty, equip there
                 if not character_data['equipped']['weapon']:
@@ -322,11 +327,11 @@ def toggle_equipped():
                 'type': item_type,
                 'category': item_data.get('category', ''),
                 'damage': item_data.get('damage', ''),
-                'properties': item_data.get('properties', []) if item_data.get('properties') else [],
+                'properties': item_data.get('properties', []) if isinstance(item_data.get('properties'), list) else [],
                 'armor_class': item_data.get('armor_class', ''),
                 'subcategory': item_data.get('subcategory', ''),
-                'effect': item_data.get('effect', []) if item_data.get('effect') else [],
-                'actions': item_data.get('actions', []) if item_data.get('actions') else []
+                'effect': item_data.get('effect', []) if isinstance(item_data.get('effect'), list) else [],
+                'actions': item_data.get('actions', []) if isinstance(item_data.get('actions'), list) else []
             }
         else:
             # Handle unequipping

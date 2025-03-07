@@ -326,14 +326,14 @@ export function populateEquipmentSection(containerElement, characterData) {
                 name: name,
                 equipped: isEquipped,
                 item_data: {
-                    category: item.category,
-                    damage: item.damage,
-                    properties: item.properties || [],
-                    armor_class: item.armor_class,
-                    subcategory: item.subcategory,
+                    category: item.category || "",
+                    damage: item.damage || "",
+                    properties: Array.isArray(item.properties) ? item.properties : [],
+                    armor_class: item.armor_class || "",
+                    subcategory: item.subcategory || "",
                     isLight: isLightWeapon,
-                    effect: item.effect || [],
-                    actions: item.actions || []
+                    effect: Array.isArray(item.effect) ? item.effect : [],
+                    actions: Array.isArray(item.actions) ? item.actions : []
                 }
             }),
         })

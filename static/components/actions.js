@@ -341,10 +341,16 @@ export function populateActionsSection(containerElement, characterData) {
         const weaponData = equipmentData[equipped.weapon] || {};
         const weaponItem = inventory.find(item => item.name === equipped.weapon);
         
-        if (weaponItem && (weaponItem.category === "weapon" || weaponData.category === "weapon")) {
+        // Check if it's a weapon by category or if it has damage dice
+        if (weaponItem && (
+            weaponItem.category === "weapon" || 
+            weaponData.category === "weapon" || 
+            (weaponItem.damage && weaponItem.damage.includes("d"))
+        )) {
             // Determine if weapon uses Strength or Dexterity
-            const isFinesse = weaponItem.properties && weaponItem.properties.includes("Finesse");
-            const isThrowing = weaponItem.properties && weaponItem.properties.includes("Thrown");
+            const properties = Array.isArray(weaponItem.properties) ? weaponItem.properties : [];
+            const isFinesse = properties.includes("Finesse");
+            const isThrowing = properties.includes("Thrown");
             const isRanged = weaponItem.subcategory && weaponItem.subcategory.includes("ranged");
             
             // Use the higher of Str or Dex for finesse weapons
@@ -380,7 +386,8 @@ export function populateActionsSection(containerElement, characterData) {
                 <div class="action-stats">
                     <span class="action-stat">Attack: ${attackBonusStr} (${attackStat})</span>
                     <span class="action-stat">Range: ${isRanged ? "Ranged" : "Melee"}</span>
-                    ${weaponItem.properties ? `<span class="action-stat">Properties: ${weaponItem.properties.join(", ")}</span>` : ""}
+                    ${Array.isArray(weaponItem.properties) && weaponItem.properties.length > 0 ? 
+                      `<span class="action-stat">Properties: ${weaponItem.properties.join(", ")}</span>` : ""}
                 </div>
                 <div class="action-buttons">
                     <button class="action-button attack-button" data-weapon="${weaponItem.name}" data-bonus="${attackBonus}">Attack</button>
@@ -397,10 +404,15 @@ export function populateActionsSection(containerElement, characterData) {
         const offhandData = equipmentData[equipped.offhand] || {};
         const offhandItem = inventory.find(item => item.name === equipped.offhand);
         
-        if (offhandItem && (offhandItem.category === "weapon" || equipmentData[equipped.offhand]?.category === "weapon")) {
+        if (offhandItem && (
+            offhandItem.category === "weapon" || 
+            equipmentData[equipped.offhand]?.category === "weapon" ||
+            (offhandItem.damage && offhandItem.damage.includes("d"))
+        )) {
             // Determine if weapon uses Strength or Dexterity
-            const isFinesse = offhandItem.properties && offhandItem.properties.includes("Finesse");
-            const isThrowing = offhandItem.properties && offhandItem.properties.includes("Thrown");
+            const properties = Array.isArray(offhandItem.properties) ? offhandItem.properties : [];
+            const isFinesse = properties.includes("Finesse");
+            const isThrowing = properties.includes("Thrown");
             const isRanged = offhandItem.subcategory && offhandItem.subcategory.includes("ranged");
             
             // Use the higher of Str or Dex for finesse weapons
@@ -436,7 +448,8 @@ export function populateActionsSection(containerElement, characterData) {
                 <div class="action-stats">
                     <span class="action-stat">Attack: ${attackBonusStr} (${attackStat})</span>
                     <span class="action-stat">Range: ${isRanged ? "Ranged" : "Melee"}</span>
-                    ${offhandItem.properties ? `<span class="action-stat">Properties: ${offhandItem.properties.join(", ")}</span>` : ""}
+                    ${Array.isArray(offhandItem.properties) && offhandItem.properties.length > 0 ? 
+                      `<span class="action-stat">Properties: ${offhandItem.properties.join(", ")}</span>` : ""}
                 </div>
                 <div class="action-buttons">
                     <button class="action-button attack-button" data-weapon="${offhandItem.name}" data-bonus="${attackBonus}">Attack</button>
