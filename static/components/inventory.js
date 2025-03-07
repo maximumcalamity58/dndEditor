@@ -437,17 +437,36 @@ export function populateInventorySection(containerElement) {
             }
             .effect-row {
                 display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                margin-bottom: 10px;
+                flex-direction: column;
+                margin-bottom: 15px;
                 padding-bottom: 10px;
                 border-bottom: 1px dashed var(--border-color-light, rgba(255, 255, 255, 0.1));
-                align-items: center;
             }
             .effect-row:last-child {
                 border-bottom: none;
                 margin-bottom: 0;
                 padding-bottom: 0;
+            }
+            .effect-main-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: center;
+                margin-bottom: 8px;
+            }
+            .per-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: center;
+                background-color: rgba(30, 30, 30, 0.4);
+                padding: 8px;
+                border-radius: 4px;
+                margin-left: 20px;
+            }
+            .per-label {
+                font-size: 0.9em;
+                color: rgba(255, 255, 255, 0.7);
             }
             .effect-row select, 
             .effect-row input {
@@ -457,6 +476,15 @@ export function populateInventorySection(containerElement) {
                 font-size: 0.9em;
                 background-color: rgba(30, 30, 30, 0.6);
                 color: rgba(255, 255, 255, 0.9);
+            }
+            .effect-category {
+                min-width: 100px;
+            }
+            .effect-target {
+                min-width: 140px;
+            }
+            .effect-per-target {
+                min-width: 140px;
             }
             .remove-effect-btn {
                 background-color: rgba(221, 51, 51, 0.2);
@@ -1038,7 +1066,7 @@ export function populateInventorySection(containerElement) {
                 if (effect.category === "stat") {
                     effectText += `: ${effect.amount > 0 ? '+' : ''}${effect.amount}`;
                     if (effect.modifier === "per") {
-                        effectText += ` per ${effect.perTarget} (${effect.perAmount})`;
+                        effectText += ` per ${effect.perAmount} ${effect.perTarget}`;
                     }
                 }
                 detailsHtml += `<li>${effectText}</li>`;
@@ -1246,22 +1274,28 @@ export function populateInventorySection(containerElement) {
         const container = document.getElementById("itemEffectsContainer");
         const effectRow = document.createElement("div");
         effectRow.classList.add("effect-row");
+        
+        // Create a more structured layout with flex containers
         effectRow.innerHTML = `
-            <select class="effect-category">
-                <option value="stat" ${effect.category === "stat" ? "selected" : ""}>Stat</option>
-                <option value="proficiency" ${effect.category === "proficiency" ? "selected" : ""}>Proficiency</option>
-            </select>
-            <select class="effect-target"></select>
-            <input type="number" class="effect-amount" placeholder="Flat Bonus" style="width: 100px;">
-            <select class="effect-modifier">
-                <option value="none" ${effect.modifier === "none" ? "selected" : ""}>None</option>
-                <option value="per" ${effect.modifier === "per" ? "selected" : ""}>Per</option>
-            </select>
-            <div class="per-container" style="display: none;">
-                <select class="effect-per-target"></select>
-                <input type="number" class="effect-per-amount" placeholder="Per amount" style="width: 100px;">
+            <div class="effect-main-row">
+                <select class="effect-category">
+                    <option value="stat" ${effect.category === "stat" ? "selected" : ""}>Stat</option>
+                    <option value="proficiency" ${effect.category === "proficiency" ? "selected" : ""}>Proficiency</option>
+                </select>
+                <select class="effect-target"></select>
+                <input type="number" class="effect-amount" placeholder="Bonus" style="width: 80px;">
+                <select class="effect-modifier">
+                    <option value="none" ${effect.modifier === "none" ? "selected" : ""}>Flat</option>
+                    <option value="per" ${effect.modifier === "per" ? "selected" : ""}>Per</option>
+                </select>
+                <button class="remove-effect-btn">✖</button>
             </div>
-            <button class="remove-effect-btn">✖</button>
+            <div class="per-container" style="display: none;">
+                <div class="per-label">Per</div>
+                <select class="effect-per-target"></select>
+                <div class="per-label">Divide by</div>
+                <input type="number" class="effect-per-amount" placeholder="Amount" style="width: 80px;" value="${effect.perAmount || 1}">
+            </div>
         `;
 
         const categorySelect = effectRow.querySelector(".effect-category");
@@ -1269,6 +1303,7 @@ export function populateInventorySection(containerElement) {
         const amountField = effectRow.querySelector(".effect-amount");
         const modifierSelect = effectRow.querySelector(".effect-modifier");
         const perContainer = effectRow.querySelector(".per-container");
+        const perTargetSelect = effectRow.querySelector(".effect-per-target");
 
         const ALL_STATS = [
             "Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma",
@@ -1295,16 +1330,35 @@ export function populateInventorySection(containerElement) {
                 modifierSelect.style.display = "inline-block";
                 updatePerFields();
             }
+            
+            // Always populate the per-target dropdown with all stats
+            perTargetSelect.innerHTML = ALL_STATS.map(stat => `<option value="${stat}">${stat}</option>`).join("");
+            
+            // Set selected values if provided
+            if (effect.target) {
+                targetSelect.value = effect.target;
+            }
+            if (effect.amount) {
+                amountField.value = effect.amount;
+            }
+            if (effect.perTarget) {
+                perTargetSelect.value = effect.perTarget;
+            }
         }
 
         function updatePerFields() {
-            perContainer.style.display = modifierSelect.value === "per" ? "inline-block" : "none";
+            perContainer.style.display = modifierSelect.value === "per" ? "flex" : "none";
         }
 
         categorySelect.addEventListener("change", updateFields);
         modifierSelect.addEventListener("change", updatePerFields);
 
         categorySelect.dispatchEvent(new Event("change"));
+        
+        // Set the modifier value and trigger the event after the fields are populated
+        if (effect.modifier) {
+            modifierSelect.value = effect.modifier;
+        }
         modifierSelect.dispatchEvent(new Event("change"));
 
         effectRow.querySelector(".remove-effect-btn").addEventListener("click", () => {
