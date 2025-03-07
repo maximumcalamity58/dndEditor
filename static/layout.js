@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const layout = new GoldenLayout(config, layoutContainer);
 
     // Register Components
-    const componentNames = ["player-info", "combat-stats", "abilities", "skills", "actions", "spells", "equipment", "inventory", "notes", "features", "traits", "bonuses"];
+    const componentNames = ["player-info", "combat-stats", "conditions", "abilities", "skills", "actions", "spells", "equipment", "inventory", "notes", "features", "traits", "bonuses"];
 
     componentNames.forEach(section => {
         layout.registerComponent(section, function(container) {
