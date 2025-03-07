@@ -300,3 +300,69 @@ def remove_bonus():
         save_data(character_data)
     
     return jsonify({'success': True})
+
+@app.route('/toggle_equipped', methods=['POST'])
+def toggle_equipped():
+    data = request.json
+    item_type = data.get('type')
+    item_name = data.get('name')
+    is_equipped = data.get('equipped')
+    
+    character_data = load_data()
+    
+    # Initialize equipped if it doesn't exist
+    if 'equipped' not in character_data:
+        character_data['equipped'] = {}
+    
+    # Handle equipping/unequipping
+    if is_equipped:
+        character_data['equipped'][item_type] = item_name
+    else:
+        if item_type in character_data['equipped'] and character_data['equipped'][item_type] == item_name:
+            character_data['equipped'][item_type] = ""
+    
+    save_data(character_data)
+    return jsonify({'success': True})
+
+@app.route('/save_backstory', methods=['POST'])
+def save_backstory():
+    data = request.json
+    backstory = data.get('backstory')
+    
+    character_data = load_data()
+    
+    # Ensure player_info exists
+    if 'player_info' not in character_data:
+        character_data['player_info'] = {}
+    
+    character_data['player_info']['backstory'] = backstory
+    save_data(character_data)
+    
+    return jsonify({'success': True})
+
+@app.route('/save_character_image', methods=['POST'])
+def save_character_image():
+    data = request.json
+    image_url = data.get('image_url')
+    
+    character_data = load_data()
+    
+    # Ensure player_info exists
+    if 'player_info' not in character_data:
+        character_data['player_info'] = {}
+    
+    character_data['player_info']['image_url'] = image_url
+    save_data(character_data)
+    
+    return jsonify({'success': True})
+
+@app.route('/save_notes', methods=['POST'])
+def save_notes():
+    data = request.json
+    notes = data.get('notes')
+    
+    character_data = load_data()
+    character_data['notes'] = notes
+    save_data(character_data)
+    
+    return jsonify({'success': True})

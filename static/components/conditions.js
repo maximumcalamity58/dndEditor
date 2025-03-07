@@ -279,34 +279,8 @@ export function populateConditionsSection(containerElement, characterData) {
             const arrow = this.querySelector('.expand-arrow');
             arrow.classList.toggle('expanded');
             
-            // Don't cycle status if clicking the expand arrow
-            if (e.target.classList.contains('expand-arrow')) return;
-            
-            const statusSpan = this.querySelector('.damage-status');
-            const condition = statusSpan.dataset.condition;
-            const currentStatus = statusSpan.dataset.status;
-            
-            // Cycle through states: none -> resistance -> immunity -> vulnerability -> none
-            let newStatus;
-            if (currentStatus === 'none') {
-                newStatus = 'resistance';
-            } else if (currentStatus === 'resistance') {
-                newStatus = 'immunity';
-            } else if (currentStatus === 'immunity') {
-                newStatus = 'vulnerability';
-            } else {
-                newStatus = 'none';
-            }
-            
-            // Remove current status if any
-            if (currentStatus !== 'none') {
-                toggleCondition(condition, currentStatus, false);
-            }
-            
-            // Add new status if not none
-            if (newStatus !== 'none') {
-                toggleCondition(condition, newStatus, true);
-            }
+            // Only toggle description, no status cycling
+            return;
         });
     });
     

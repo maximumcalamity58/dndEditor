@@ -148,6 +148,23 @@
             ]
         }
     ],
+    "equipped": {
+        "weapon": "",
+        "armor": "",
+        "shield": "",
+        "head": "",
+        "neck": "",
+        "shoulders": "",
+        "chest": "",
+        "back": "",
+        "wrists": "",
+        "hands": "",
+        "waist": "",
+        "legs": "",
+        "feet": "",
+        "finger": ""
+    },
+    "notes": "",
     "inventory": [
         {
             "name": "Silk Rope (50 feet)",
