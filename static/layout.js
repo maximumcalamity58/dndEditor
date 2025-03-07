@@ -193,17 +193,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelectorAll('.lm_tab').forEach(tab => {
             // Only add if not already present
             if (!tab.querySelector('.lm_close_tab')) {
-                const closeBtn = document.createElement('span');
-                closeBtn.className = 'lm_close_tab';
-                closeBtn.innerHTML = '×';
-                closeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    
-                    // Get the tab's content component
-                    const tabTitle = tab.querySelector('.lm_title').textContent;
-                    const contentItem = layout.root.getItemsByFilter(item => {
-                        return item.config.title === tabTitle;
-                    })[0];
+                // First find the title element
+                const titleElement = tab.querySelector('.lm_title');
+                if (titleElement) {
+                    const closeBtn = document.createElement('span');
+                    closeBtn.className = 'lm_close_tab';
+                    closeBtn.innerHTML = '×';
+                    closeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        
+                        // Get the tab's content component
+                        const tabTitle = titleElement.textContent;
+                        const contentItem = layout.root.getItemsByFilter(item => {
+                            return item.config.title === tabTitle;
+                        })[0];
                     
                     if (contentItem) {
                         // Store the closed tab info
@@ -219,7 +222,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                         updateAddTabButton();
                     }
                 });
-                tab.appendChild(closeBtn);
+                    // Insert after the title element
+                    titleElement.insertAdjacentElement('afterend', closeBtn);
+                }
             }
         });
         
@@ -233,12 +238,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const existingBtn = document.querySelector('.lm_add_tab_btn');
         if (existingBtn) {
             existingBtn.remove();
-        }
         
-        // Only show if there are closed tabs
-        if (Object.keys(closedTabs).length > 0) {
-            document.querySelectorAll('.lm_header').forEach(header => {
-                if (!header.querySelector('.lm_add_tab_btn')) {
+        // Always show the add tab button, even if there are no closed tabs
+        document.querySelectorAll('.lm_header').forEach(header => {
+            if (!header.querySelector('.lm_add_tab_btn')) {
                     const addBtn = document.createElement('div');
                     addBtn.className = 'lm_add_tab_btn';
                     addBtn.innerHTML = '+';
@@ -257,29 +260,39 @@ document.addEventListener("DOMContentLoaded", async () => {
                         dropdown = document.createElement('div');
                         dropdown.className = 'lm_tab_dropdown active';
                         
-                        // Add closed tabs to dropdown
-                        Object.entries(closedTabs).forEach(([title, config]) => {
-                            const item = document.createElement('div');
-                            item.className = 'lm_tab_dropdown_item';
-                            item.textContent = title;
-                            item.addEventListener('click', () => {
-                                // Find the stack to add to
-                                const stack = header.closest('.lm_item').layoutManager._dragSources[0]._element.layoutManager;
-                                
-                                // Add the tab back
-                                stack.addComponent(config.componentName, config.title);
-                                
-                                // Remove from closed tabs
-                                delete closedTabs[title];
-                                
-                                // Close dropdown
-                                dropdown.remove();
-                                
-                                // Update add tab button
-                                updateAddTabButton();
+                        // Add closed tabs to dropdown if there are any
+                        if (Object.keys(closedTabs).length > 0) {
+                            Object.entries(closedTabs).forEach(([title, config]) => {
+                                const item = document.createElement('div');
+                                item.className = 'lm_tab_dropdown_item';
+                                item.textContent = title;
+                                item.addEventListener('click', () => {
+                                    // Find the stack to add to
+                                    const stack = header.closest('.lm_item').layoutManager._dragSources[0]._element.layoutManager;
+                                    
+                                    // Add the tab back
+                                    stack.addComponent(config.componentName, config.title);
+                                    
+                                    // Remove from closed tabs
+                                    delete closedTabs[title];
+                                    
+                                    // Close dropdown
+                                    dropdown.remove();
+                                    
+                                    // Update add tab button
+                                    updateAddTabButton();
+                                });
+                                dropdown.appendChild(item);
                             });
-                            dropdown.appendChild(item);
-                        });
+                        } else {
+                            // If no closed tabs, show a message
+                            const message = document.createElement('div');
+                            message.className = 'lm_tab_dropdown_item';
+                            message.textContent = 'No closed tabs';
+                            message.style.fontStyle = 'italic';
+                            message.style.color = '#888';
+                            dropdown.appendChild(message);
+                        }
                         
                         // Add dropdown to DOM
                         header.appendChild(dropdown);

@@ -60,13 +60,12 @@ h3 {
 .lm_tab {
     display: flex;
     align-items: center;
-    justify-content: center;
     background: #333; /* Dark mode */
     color: #e0e0e0;
     border-bottom: 2px solid #444;
     height: 30px; /* Ensure tab has enough height */
     position: relative;
-    padding-right: 25px; /* Space for close button */
+    padding: 0 10px;
 }
 
 .lm_header {
@@ -96,20 +95,17 @@ h3 {
 
 /* Tab close button */
 .lm_close_tab {
-    position: absolute;
-    right: 6px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    text-align: center;
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-left: 6px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
     color: #ccc;
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
     opacity: 0.7;
     transition: all 0.2s;
