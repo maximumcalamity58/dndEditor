@@ -479,8 +479,8 @@ export function populateActionsSection(containerElement, characterData) {
         item.category === "potion" || 
         item.category === "scroll" || 
         (item.actions && item.actions.length > 0) ||
-        (item.effect && item.effect.length > 0) ||
-        (item.name && equipmentData[item.name]?.effect)
+        (item.effect && Array.isArray(item.effect) && item.effect.length > 0) ||
+        (item.name && equipmentData[item.name]?.effect && Array.isArray(equipmentData[item.name].effect) && equipmentData[item.name].effect.length > 0)
     );
     
     // Filter out weapons that are already shown in weapon actions
@@ -538,7 +538,8 @@ export function populateActionsSection(containerElement, characterData) {
                                 ${action.name || (action.actionType === 'action' ? 'Action' : 'Bonus Action')}
                             </button>`
                         ).join('') :
-                        (item.category === "potion" || item.category === "scroll" || itemEffects.length > 0) ?
+                        (item.category === "potion" || item.category === "scroll" || 
+                         (itemEffects && Array.isArray(itemEffects) && itemEffects.length > 0)) ?
                         `<button class="action-button use-item-button" data-item="${item.name}">Use</button>` :
                         ''
                     }
