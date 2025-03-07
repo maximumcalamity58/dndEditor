@@ -1,0 +1,54 @@
+{
+    "player_info": {
+        "name": "John Doe",
+        "race": "Elf",
+        "class": "Wizard",
+        "background": "Sage",
+        "level": 5,
+        "experience": 3200
+    },
+    "combat_stats": {
+        "speed": 30,
+        "initiative": 2,
+        "hit_points": { "max": 25, "current": 18, "temp": 0 },
+        "armor_class": 15,
+        "death_saves": { "successes": 1, "failures": 0 },
+        "spellcasting": { "ability": "Intelligence", "save_dc": 14, "attack": "+6" }
+    },
+    "ability_scores": {
+        "strength": 14,
+        "dexterity": 7,
+        "constitution": 10,
+        "intelligence": 10,
+        "wisdom": 17,
+        "charisma": 10
+    },
+    "saving_throws": {
+        "strength": false,
+        "dexterity": false,
+        "constitution": true,
+        "intelligence": false,
+        "wisdom": false,
+        "charisma": false
+    },
+    "skills": [
+        { "name": "Acrobatics", "related_stat": "dexterity", "proficient": false },
+        { "name": "Animal Handling", "related_stat": "wisdom", "proficient": false },
+        { "name": "Arcana", "related_stat": "intelligence", "proficient": false },
+        { "name": "Athletics", "related_stat": "strength", "proficient": false },
+        { "name": "Deception", "related_stat": "charisma", "proficient": false },
+        { "name": "History", "related_stat": "intelligence", "proficient": false },
+        { "name": "Insight", "related_stat": "wisdom", "proficient": true },
+        { "name": "Intimidation", "related_stat": "charisma", "proficient": true },
+        { "name": "Investigation", "related_stat": "intelligence", "proficient": false },
+        { "name": "Medicine", "related_stat": "wisdom", "proficient": false },
+        { "name": "Nature", "related_stat": "intelligence", "proficient": false },
+        { "name": "Perception", "related_stat": "wisdom", "proficient": false },
+        { "name": "Performance", "related_stat": "charisma", "proficient": false },
+        { "name": "Persuasion", "related_stat": "charisma", "proficient": false },
+        { "name": "Religion", "related_stat": "intelligence", "proficient": false },
+        { "name": "Sleight of Hand", "related_stat": "dexterity", "proficient": false },
+        { "name": "Stealth", "related_stat": "dexterity", "proficient": false },
+        { "name": "Survival", "related_stat": "wisdom", "proficient": false }
+    ]
+}

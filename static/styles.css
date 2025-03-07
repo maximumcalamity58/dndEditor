@@ -1,0 +1,273 @@
+/* === GLOBAL STYLES === */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text */
+}
+
+/* === LAYOUT CONTAINER === */
+#layout-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    border: 2px solid #333; /* Subtle dark border */
+}
+
+/* === GOLDENLAYOUT STYLING === */
+.goldenlayout-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border: 2px solid #444; /* Darker border */
+    background: #1e1e1e; /* Dark UI */
+    color: #e0e0e0;
+}
+
+/* === PANEL HEADER (Tabs) === */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    padding: 5px;
+    background: #2a2a2a; /* Darker shade for contrast */
+    border-bottom: 2px solid #444;
+    color: #ffffff;
+}
+
+.lm_tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #333; /* Dark mode */
+    color: #e0e0e0;
+    border-bottom: 2px solid #444;
+    height: 35px; /* Ensure tab has enough height */
+}
+
+.lm_tab.lm_active {
+    background: #444; /* Highlight active tab */
+    color: #ffffff;
+    border-bottom: 2px solid #0a84ff; /* Accent color */
+}
+
+/* === MAXIMIZE BUTTON === */
+.maximize-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    float: right;
+    padding: 5px;
+    color: #bbb;
+}
+
+.maximize-button:hover {
+    color: #fff;
+}
+
+/* === CONTENT STYLING === */
+.panel-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+/* Scrollable sections */
+.scrollable {
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+/* === PLAYER INFO & EXPERIENCE BOX === */
+.player-name {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.player-info-section {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Experience Box */
+.experience-box {
+    background: #292929;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.experience-box h3 {
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #f39c12; /* Gold color */
+}
+
+.experience-details {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Proficiency Bonus Box */
+.proficiency-box {
+    background: #333;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.proficiency-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #0a84ff; /* Blue for proficiency bonus */
+}
+
+/* === COMBAT STATS === */
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.stat-item {
+    text-align: center;
+    background: #333;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100px;
+}
+
+/* === DEATH SAVES === */
+.death-saves {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+}
+
+.death-saves input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
+
+/* === ABILITY SCORES & SAVING THROWS === */
+.abilities-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}
+
+/* Ability Scores */
+.ability-scores {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 60%;
+    padding: 10px;
+}
+
+/* Saving Throws */
+.saving-throws {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    padding: 10px;
+    background: #222;
+    border-radius: 5px;
+    min-width: 150px;
+}
+
+/* Proficiency Bonus */
+.proficiency-bonus {
+    text-align: center;
+    background: #333;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #0a84ff;
+}
+
+/* Individual Ability Row */
+.ability-row {
+    display: flex;
+    justify-content: space-between;
+    background: #222;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #444;
+}
+
+/* Ability Value & Modifier */
+.ability-value {
+    flex: 1;
+    text-align: right;
+    padding-right: 15px;
+    color: #ffffff;
+}
+
+.modifier-value {
+    text-align: right;
+    font-weight: bold;
+    min-width: 20px;
+    color: #0a84ff;
+}
+
+/* === SKILLS === */
+#skills-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Skill Row */
+.skill-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #222;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #444;
+}
+
+/* Skill Modifier Display */
+.skill-modifier {
+    font-weight: bold;
+    font-size: 18px;
+    color: #0a84ff;
+}
+
+/* === DRAG AND DROP PREVIEW === */
+.lm_dragProxy {
+    border: 2px dashed #0a84ff !important;
+    background: rgba(10, 132, 255, 0.1) !important;
+}
+
+/* Drop Target Indicators */
+.lm_dropTargetIndicator {
+    border: 3px dashed #ff0a0a !important;
+    background: rgba(255, 10, 10, 0.2) !important;
+}
